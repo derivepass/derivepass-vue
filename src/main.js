@@ -17,7 +17,8 @@ import Settings from './pages/settings.vue';
 import storeConfig from './store/index';
 
 // Immediately start connecting to iCloud
-import CloudKitPromise from './utils/sync/cloud-kit';
+import CloudKit from './utils/sync/cloud-kit';
+import CloudKitLoader from './utils/cloud-kit-loader';
 import LocalStorage from './utils/sync/local-storage';
 
 Vue.config.productionTip = false;
@@ -29,7 +30,12 @@ Vue.use(BootstrapVue);
 const store = new Vuex.Store(storeConfig);
 
 // Enable cloud sync
-CloudKitPromise.then((CloudKit) => CloudKit.setStore(store));
+CloudKitLoader.then(async (config) => {
+  const cloudKit = new CloudKit(config);
+  cloudKit.setStore(store);
+
+  await cloudKit.init();
+});
 
 // Enable local sync
 const localStorage = new LocalStorage();

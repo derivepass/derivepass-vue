@@ -5,7 +5,7 @@ export default class Sync {
     this.store = null;
 
     this.received = new Map();
-    this.buffer = new Map();
+    this.buffer = new Set();
     this.bufferTimer = null;
   }
 
@@ -30,17 +30,17 @@ export default class Sync {
       }
 
       this.received.set(payload.uuid, payload);
-      this.buffer.set(payload.uuid, payload);
+      this.buffer.add(payload.uuid);
 
       if (this.bufferTimer) {
         clearTimeout(this.bufferTimer);
       }
       this.bufferTimer = setTimeout(() => {
-        const apps = Array.from(this.buffer.values());
+        const uuids = Array.from(this.buffer);
         this.buffer.clear();
         this.bufferTimer = null;
 
-        this.sendApps(apps);
+        this.sendApps(uuids);
       }, COALESCE_DELAY);
     });
   }
@@ -53,5 +53,14 @@ export default class Sync {
 
   sendApps() {
     throw new Error('Not implemented');
+  }
+
+  getApps(uuids) {
+    // Could this be more efficient?
+    return uuids.map((uuid) => {
+      return this.store.state.applications.find((app) => {
+        return app.uuid === uuid;
+      });
+    });
   }
 }

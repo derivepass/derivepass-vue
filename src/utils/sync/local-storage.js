@@ -34,11 +34,12 @@ export default class LocalStorage extends Sync {
     }
   }
 
-  sendApps(apps) {
+  sendApps(uuids) {
     if (!this.db) {
       return;
     }
 
+    const apps = this.getApps(uuids);
     for (const app of apps) {
       this.db.setItem(`${PREFIX}/${app.uuid}`, JSON.stringify(app));
     }

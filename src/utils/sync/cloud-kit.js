@@ -1,6 +1,5 @@
 import Sync from './base';
 import * as createDebug from 'debug';
-import { ENV } from '../common';
 
 const debug = createDebug('derivepass:sync:cloud-kit');
 
@@ -9,15 +8,17 @@ const RETRY_DELAY = 1500;
 // TODO(indutny): make this configurable
 const SYNC_EVERY = 60 * 60 * 1000; // 1 hour
 
-class CloudKitSync extends Sync {
-  constructor(api) {
+export default class CloudKit extends Sync {
+  constructor(options) {
     super();
 
-    this.api = api;
-    this.container = this.api.getDefaultContainer();
-    this.db = this.container.privateCloudDatabase;
+    this.container = options.container;
+    this.db = options.db;
     this.user = null;
     this.syncTimer = null;
+
+    // Map from app uuid to recordChangeTag
+    this.changeTags = new Map();
 
     this.buttons = {
       signIn: document.getElementById('apple-sign-in-button'),
@@ -52,66 +53,31 @@ class CloudKitSync extends Sync {
   }
 
   // Override
-  async sendApps(apps) {
-    debug('sending apps', apps);
 
-    debug('fetching latest versions');
-    const fetchRes = await this.db.fetchRecords(apps.map((app) => app.uuid));
+  async sendApps(uuids) {
+    debug('sending apps uuids.len=%d', uuids.length);
 
-    const records = new Map();
-    if (fetchRes.hasErrors) {
-      for (const err in fetchRes.errors) {
-        if (err.ckErrorCode === 'NOT_FOUND') {
-          records.set(err.recordName, this.emptyRecord(err.recordName));
-        } else {
-          debug('fetch error', err);
-        }
-      }
+    // Always fetch fresh apps from storage
+    const apps = this.getApps(uuids);
+
+    const records = apps.map((app) => this.appToRecord(app));
+
+    const res = await this.db.saveRecords(records);
+    if (!res.hasErrors) {
+      debug('successfully sent apps');
+      return;
     }
 
-    for (const record of fetchRes.records) {
-      records.set(record.recordName, record);
+    const hasConflicts =
+      res.errors.some((err) => err.ckErrorCode === 'CONFLICT');
+    if (hasConflicts) {
+      debug('has conflicts, forcing full synchronization');
+      this.sync();
     }
 
-    const missing = [];
-    const toSave = [];
-    for (const app of apps) {
-      if (!records.has(app.uuid)) {
-        missing.push(app);
-        continue;
-      }
-
-      const record = records.get(app.uuid);
-
-      if (record.modified.timestamp > app.changedAt) {
-        debug('CloudKit has newer version of record %j', app.uuid);
-        this.receiveRecord(record);
-        continue;
-      }
-
-      if (record.modified.timestamp === app.changedAt) {
-        debug('likely same record remote and locally %j', app.uuid);
-        continue;
-      }
-
-      record.fields.domain.value = app.domain;
-      record.fields.login.value = app.login;
-      record.fields.revision.value = app.revision;
-
-      record.fields.master.value = app.master;
-      record.fields.index.value = app.index;
-      record.fields.removed.value = app.removed ? 1 : 0;
-
-      toSave.push(record);
-    }
-
-    const saveRes = await this.db.saveRecords(toSave);
-    if (saveRes.hasErrors) {
-      debug('save failed, retrying', saveRes.errors);
-      return setTimeout(() => this.sendApps(apps), RETRY_DELAY);
-    }
-
-    debug('successfully sent apps');
+    const uuidsLeft = res.errors.map((err) => err.recordName);
+    debug('apps with errors uuidsLeft.len=%d', uuidsLeft.length);
+    await this.sendApps(uuidsLeft);
   }
 
   // Internal
@@ -153,6 +119,9 @@ class CloudKitSync extends Sync {
   }
 
   async sync() {
+    // Cancel any pending sync cal
+    this.pauseSync();
+
     debug('sync: attempting sync');
     try {
       let marker = null;
@@ -181,9 +150,13 @@ class CloudKitSync extends Sync {
       debug('sync: received %d apps', received);
     } catch(e) {
       debug('sync: error', e);
-    } finally {
-      this.syncTimer = setTimeout(() => this.sync(), SYNC_EVERY);
     }
+
+    // Concurrent `sync()` calls
+    if (this.syncTimer) {
+      return;
+    }
+    this.syncTimer = setTimeout(() => this.sync(), SYNC_EVERY);
   }
 
   pauseSync() {
@@ -210,66 +183,30 @@ class CloudKitSync extends Sync {
       changedAt: record.modified.timestamp,
     };
 
+    if (record.recordChangeTag) {
+      this.changeTags.set(app.uuid, record.recordChangeTag);
+    }
+
     this.receiveApp(app);
   }
 
-  emptyRecord(uuid) {
+  appToRecord(app) {
+    const recordChangeTag = this.changeTags.get(app.uuid);
+
+    const wrap = (value) => ({ value });
+
     return {
       recordType: 'EncryptedApplication',
-      recordName: uuid,
+      recordName: app.uuid,
+      recordChangeTag,
       fields: {
-        domain: {},
-        login: {},
-        revision: {},
-        master: {},
-        index: {},
-        removed: {}
+        domain: wrap(app.domain),
+        login: wrap(app.login),
+        revision: wrap(app.revision),
+        master: wrap(app.master),
+        index: wrap(app.index),
+        removed: wrap(app.removed ? 1 : 0),
       }
     };
   }
 }
-
-const API_TOKENS = {
-  'development':
-    'a549ed0b287668fdcef031438d4350e1e96ec12e758499bc1360a03564becaf8',
-  'production': 
-    'cd95e9dcb918b2d45b94a10416eaed02df8727d7b6fdde4669a5fbcacefafe1b',
-};
-
-export default new Promise((resolve, reject) => {
-  const onCloudKit = async (CloudKit) => {
-    const sync = new CloudKitSync(CloudKit);
-    await sync.init();
-    return sync;
-  };
-
-  // Development
-  if (window.CloudKit) {
-    resolve(onCloudKit(window.CloudKit));
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.async = true;
-  script.addEventListener('load', () => {
-    const CloudKit = window.CloudKit;
-
-    CloudKit.configure({
-      containers: [{
-        containerIdentifier: 'iCloud.com.indutny.DerivePass',
-        apiTokenAuth: {
-          apiToken: API_TOKENS[ENV],
-          persist: true,
-        },
-        environment: ENV,
-      }]
-    });
-    document.body.removeChild(script);
-
-    resolve(onCloudKit(CloudKit));
-  });
-  script.addEventListener('error', (err) => reject(err));
-
-  script.src = 'https://cdn.apple-cloudkit.com/ck/2/cloudkit.js';
-  document.body.appendChild(script);
-});
