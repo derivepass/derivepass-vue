@@ -7,8 +7,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import App from './App.vue';
+
+// Pages
 import MasterPassword from './pages/master-password.vue';
 import Applications from './pages/applications.vue';
+import Sync from './pages/sync.vue';
+
+// Store
 import * as storeApplications from './store/applications';
 import * as storeCrypto from './store/crypto';
 
@@ -26,8 +31,10 @@ const store = new Vuex.Store({
 });
 
 const routes = [
-  { path: '/', component: MasterPassword },
+  { path: '/', redirect: '/master' },
+  { path: '/master', component: MasterPassword },
   { path: '/applications', component: Applications },
+  { path: '/sync', component: Sync },
 ];
 
 const router = new VueRouter({
