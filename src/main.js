@@ -7,8 +7,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import App from './App.vue';
-import Index from './pages/index.vue';
-import About from './pages/about.vue';
+import MasterPassword from './pages/master-password.vue';
+import Applications from './pages/applications.vue';
+import * as storeApplications from './store/applications';
+import * as storeCrypto from './store/crypto';
 
 Vue.config.productionTip = false;
 
@@ -16,9 +18,16 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
+const store = new Vuex.Store({
+  modules: {
+    applications: storeApplications,
+    crypto: storeCrypto,
+  }
+});
+
 const routes = [
-  { path: '/', component: Index },
-  { path: '/about', component: About },
+  { path: '/', component: MasterPassword },
+  { path: '/applications', component: Applications },
 ];
 
 const router = new VueRouter({
@@ -26,6 +35,7 @@ const router = new VueRouter({
 });
 
 new Vue({
+  store,
   router,
   render: (h) => h(App),
 }).$mount('#app');
