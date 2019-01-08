@@ -1,7 +1,7 @@
 <template>
   <b-navbar class="m-navbar" toggleable="md" type="dark" variant="info">
     <b-navbar-brand to="/">
-      Derivepass
+      DerivePass
     </b-navbar-brand>
 
     <b-navbar-nav>

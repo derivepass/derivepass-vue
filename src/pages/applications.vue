@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Layout from '../layouts/default';
 
 export default {
@@ -25,13 +26,23 @@ export default {
     return { filter: '' };
   },
 
-  computed: {
-    applications() {
-      return this.$store.state.applications.map((app) => {
-        return app;
+  computed: mapState({
+    applications(state) {
+      return state.applications.filter((app) => {
+        return app.master === state.emoji && !app.removed;
+      }).map((app) => {
+        return {
+          domain: app.domain,
+          login: app.login,
+          revision: app.revision,
+
+          index: app.index,
+        };
+      }).sort((a, b) => {
+        return a.index - b.index;
       });
     },
-  }
+  })
 };
 </script>
 

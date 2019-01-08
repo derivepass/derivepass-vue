@@ -1,6 +1,6 @@
-import App from './app';
 import Sync from './base';
 import * as createDebug from 'debug';
+import { ENV } from '../common';
 
 const debug = createDebug('derivepass:sync:cloud-kit');
 
@@ -18,8 +18,6 @@ class CloudKitSync extends Sync {
     this.db = this.container.privateCloudDatabase;
     this.user = null;
     this.syncTimer = null;
-
-    this.store = null;
 
     this.buttons = {
       signIn: document.getElementById('apple-sign-in-button'),
@@ -39,10 +37,6 @@ class CloudKitSync extends Sync {
     return !!this.user;
   }
 
-  setStore(store) {
-    this.store = store;
-  }
-
   async signIn() {
     // XXX(indutny): Terrible hacks
     const res = this.container.whenUserSignsIn();
@@ -55,6 +49,69 @@ class CloudKitSync extends Sync {
     const res = this.container.whenUserSignsOut();
     this.buttons.signOut.children[0].click();
     return res;
+  }
+
+  // Override
+  async sendApps(apps) {
+    debug('sending apps', apps);
+
+    debug('fetching latest versions');
+    const fetchRes = await this.db.fetchRecords(apps.map((app) => app.uuid));
+
+    const records = new Map();
+    if (fetchRes.hasErrors) {
+      for (const err in fetchRes.errors) {
+        if (err.ckErrorCode === 'NOT_FOUND') {
+          records.set(err.recordName, this.emptyRecord(err.recordName));
+        } else {
+          debug('fetch error', err);
+        }
+      }
+    }
+
+    for (const record of fetchRes.records) {
+      records.set(record.recordName, record);
+    }
+
+    const missing = [];
+    const toSave = [];
+    for (const app of apps) {
+      if (!records.has(app.uuid)) {
+        missing.push(app);
+        continue;
+      }
+
+      const record = records.get(app.uuid);
+
+      if (record.modified.timestamp > app.changedAt) {
+        debug('CloudKit has newer version of record %j', app.uuid);
+        this.receiveRecord(record);
+        continue;
+      }
+
+      if (record.modified.timestamp === app.changedAt) {
+        debug('likely same record remote and locally %j', app.uuid);
+        continue;
+      }
+
+      record.fields.domain.value = app.domain;
+      record.fields.login.value = app.login;
+      record.fields.revision.value = app.revision;
+
+      record.fields.master.value = app.master;
+      record.fields.index.value = app.index;
+      record.fields.removed.value = app.removed ? 1 : 0;
+
+      toSave.push(record);
+    }
+
+    const saveRes = await this.db.saveRecords(toSave);
+    if (saveRes.hasErrors) {
+      debug('save failed, retrying', saveRes.errors);
+      return setTimeout(() => this.sendApps(apps), RETRY_DELAY);
+    }
+
+    debug('successfully sent apps');
   }
 
   // Internal
@@ -114,22 +171,7 @@ class CloudKitSync extends Sync {
         }
 
         for (const record of res.records) {
-          const fields = record.fields;
-
-          const app = new App({
-            uuid: record.recordName,
-
-            domain: fields.domain.value,
-            login: fields.login.value,
-            revision: fields.revision.value,
-
-            emoji: fields.master.value,
-            index: fields.index.value,
-            removed: fields.removed.value ? true : false,
-            changedAt: new Date(record.modified.timestamp),
-          });
-
-          this.store.commit('receiveApp', app);
+          this.receiveRecord(record);
           received++;
         }
 
@@ -151,9 +193,42 @@ class CloudKitSync extends Sync {
     }
     this.syncTimer = null;
   }
+
+  receiveRecord(record) {
+    const fields = record.fields;
+
+    const app = {
+      uuid: record.recordName,
+
+      domain: fields.domain.value,
+      login: fields.login.value,
+      revision: fields.revision.value,
+
+      master: fields.master.value,
+      index: fields.index.value,
+      removed: fields.removed.value ? true : false,
+      changedAt: record.modified.timestamp,
+    };
+
+    this.receiveApp(app);
+  }
+
+  emptyRecord(uuid) {
+    return {
+      recordType: 'EncryptedApplication',
+      recordName: uuid,
+      fields: {
+        domain: {},
+        login: {},
+        revision: {},
+        master: {},
+        index: {},
+        removed: {}
+      }
+    };
+  }
 }
 
-const ENV = process.env.ENV === 'production' ? 'production' : 'development';
 const API_TOKENS = {
   'development':
     'a549ed0b287668fdcef031438d4350e1e96ec12e758499bc1360a03564becaf8',

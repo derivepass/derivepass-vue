@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Layout from '../layouts/default';
 import emojiHash from '../utils/emoji-hash';
 
@@ -46,14 +48,15 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      hasApps(state) {
+        const apps = state.applications;
+        const emoji = this.emojiHash;
+        return apps.some((app) => app.master === emoji);
+      },
+    }),
     emojiHash() {
       return emojiHash(this.password);
-    },
-
-    hasApps() {
-      const apps = this.$store.state.applications;
-      const emoji = this.emojiHash;
-      return apps.some((app) => app.emoji === emoji);
     },
 
     submitText() {

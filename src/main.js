@@ -14,10 +14,11 @@ import Applications from './pages/applications.vue';
 import Settings from './pages/settings.vue';
 
 // Store
-import * as storeConfig from './store/index';
+import storeConfig from './store/index';
 
 // Immediately start connecting to iCloud
 import CloudKitPromise from './utils/sync/cloud-kit';
+import LocalStorage from './utils/sync/local-storage';
 
 Vue.config.productionTip = false;
 
@@ -29,6 +30,10 @@ const store = new Vuex.Store(storeConfig);
 
 // Enable cloud sync
 CloudKitPromise.then((CloudKit) => CloudKit.setStore(store));
+
+// Enable local sync
+const localStorage = new LocalStorage();
+localStorage.setStore(store);
 
 const routes = [
   { path: '/', redirect: '/master' },

@@ -1,0 +1,41 @@
+import * as createDebug from 'debug';
+
+const debug = createDebug('derivepass:store');
+
+export default {
+  receiveApp(state, app) {
+    const existing = state.applications.find((existing) => {
+      return existing.uuid === app.uuid;
+    });
+
+    if (!existing) {
+      debug('new app with uuid: %j', app.uuid);
+      state.applications.push(app);
+      return;
+    }
+
+    if (existing.changedAt >= app.changedAt) {
+      return;
+    }
+
+    // NOTE: `removed` should not flip from `true` to `false`
+    const removed = existing.removed || app.removed;
+    let changedAt = app.changedAt;
+
+    if (removed !== app.removed) {
+      changedAt = Date.now();
+    }
+
+    debug('updating existing app from %j to %j', existing.changedAt,
+      app.changedAt);
+    Object.assign(existing, app, {
+      removed,
+      changedAt,
+    });
+  },
+
+  setAESKey(state, payload) {
+    state.aesKey = payload.aesKey;
+    state.emoji = payload.emoji;
+  }
+};
