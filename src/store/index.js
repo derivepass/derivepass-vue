@@ -1,14 +1,15 @@
-export const namespaced = true;
-
 export const state = () => {
   return {
     aesKey: false,
     emoji: false,
+    applications: [
+      { emoji: '😅👉🐷🍨🛎' },
+    ],
   };
 };
 
 export const getters = {
-  isReady(state) {
+  hasAESKey(state) {
     return state.aesKey && state.emoji;
   }
 };

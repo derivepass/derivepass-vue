@@ -25,4 +25,8 @@ export default {
   width: 32px;
   height: 32px;
 }
+
+.m-navbar {
+  margin-bottom: 16px;
+}
 </style>

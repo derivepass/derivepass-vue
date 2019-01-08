@@ -1,26 +1,21 @@
 <template>
   <layout>
-  Sync {{loading ? 'loading' : 'loaded'}}
+    <b-card title="iCloud Sync">
+      <cloud-kit/>
+    </b-card>
   </layout>
 </template>
 
 <script>
 import Layout from '../layouts/default';
+import CloudKit from '../components/cloud-kit.vue';
 
 export default {
   name: 'sync',
   components: {
     Layout,
+    CloudKit,
   },
-
-  data: () => {
-    return { loading: true };
-  },
-
-  async mounted() {
-    const CloudKit = await import('../utils/cloudkit');
-    this.loading = false;
-  }
 };
 </script>
 

@@ -16,18 +16,18 @@ export default {
 
   beforeMount() {
     // Redirect to master password when not ready
-    if (!this.$store.getters['crypto/isReady']) {
+    if (!this.$store.getters.hasAESKey) {
       this.$router.replace('/');
     }
   },
 
-  data: () => {
+  data() {
     return { filter: '' };
   },
 
   computed: {
     applications() {
-      return this.$store.state.applications.list.map((app) => {
+      return this.$store.state.applications.map((app) => {
         return app;
       });
     },

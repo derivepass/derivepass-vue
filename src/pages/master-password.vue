@@ -41,7 +41,7 @@ export default {
   name: 'master-password',
   components: { Layout },
 
-  data: () => {
+  data() {
     return { password: '', isConfirming: false, confirmPassword: '' };
   },
 
@@ -51,7 +51,7 @@ export default {
     },
 
     hasApps() {
-      const apps = this.$store.state.applications.list;
+      const apps = this.$store.state.applications;
       const emoji = this.emojiHash;
       return apps.some((app) => app.emoji === emoji);
     },
@@ -115,7 +115,7 @@ export default {
       }
 
       // TODO(indutny): scrypt-generate AES key
-      this.$store.commit('crypto/setAESKey', {
+      this.$store.commit('setAESKey', {
         aesKey: this.password,
         emoji: emoji,
       });

@@ -14,8 +14,10 @@ import Applications from './pages/applications.vue';
 import Sync from './pages/sync.vue';
 
 // Store
-import * as storeApplications from './store/applications';
-import * as storeCrypto from './store/crypto';
+import * as storeConfig from './store/index';
+
+// Immediately start connecting to iCloud
+import CloudKitPromise from './utils/cloud-kit';
 
 Vue.config.productionTip = false;
 
@@ -23,12 +25,10 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
-const store = new Vuex.Store({
-  modules: {
-    applications: storeApplications,
-    crypto: storeCrypto,
-  }
-});
+const store = new Vuex.Store(storeConfig);
+
+// Enable cloud sync
+CloudKitPromise.then((CloudKit) => CloudKit.setStore(store));
 
 const routes = [
   { path: '/', redirect: '/master' },
