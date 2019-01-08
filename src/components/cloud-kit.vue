@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import CloudKitPromise from '../utils/cloud-kit';
+import CloudKitPromise from '../utils/sync/cloud-kit';
 
 let CloudKit;
 

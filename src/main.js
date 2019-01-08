@@ -11,13 +11,13 @@ import App from './App.vue';
 // Pages
 import MasterPassword from './pages/master-password.vue';
 import Applications from './pages/applications.vue';
-import Sync from './pages/sync.vue';
+import Settings from './pages/settings.vue';
 
 // Store
 import * as storeConfig from './store/index';
 
 // Immediately start connecting to iCloud
-import CloudKitPromise from './utils/cloud-kit';
+import CloudKitPromise from './utils/sync/cloud-kit';
 
 Vue.config.productionTip = false;
 
@@ -34,7 +34,7 @@ const routes = [
   { path: '/', redirect: '/master' },
   { path: '/master', component: MasterPassword },
   { path: '/applications', component: Applications },
-  { path: '/sync', component: Sync },
+  { path: '/settings', component: Settings },
 ];
 
 const router = new VueRouter({

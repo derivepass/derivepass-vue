@@ -11,7 +11,7 @@ import Layout from '../layouts/default';
 import CloudKit from '../components/cloud-kit.vue';
 
 export default {
-  name: 'sync',
+  name: 'settings',
   components: {
     Layout,
     CloudKit,

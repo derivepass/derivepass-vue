@@ -3,7 +3,6 @@ export const state = () => {
     aesKey: false,
     emoji: false,
     applications: [
-      { emoji: '😅👉🐷🍨🛎' },
     ],
   };
 };
@@ -15,6 +14,10 @@ export const getters = {
 };
 
 export const mutations = {
+  receiveApp(state, app) {
+    state.applications.push(app);
+  },
+
   setAESKey(state, payload) {
     state.aesKey = payload.aesKey;
     state.emoji = payload.emoji;

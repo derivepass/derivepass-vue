@@ -5,11 +5,11 @@
     </b-navbar-brand>
 
     <b-navbar-nav>
-      <b-nav-item to="/master" v-if="!$store.getters['crypto/isReady']">
-        Master Password
+      <b-nav-item to="/master">Master Password</b-nav-item>
+      <b-nav-item to="/applications" v-if="$store.getters.hasAESKey">
+        Applications
       </b-nav-item>
-      <b-nav-item to="/applications" v-else>Applications</b-nav-item>
-      <b-nav-item to="/sync">Cloud Synchronization</b-nav-item>
+      <b-nav-item to="/settings">Settings</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
