@@ -1,5 +1,8 @@
 import Sync from './base';
 import { ENV } from '../common';
+import * as createDebug from 'debug';
+
+const debug = createDebug('derivepass:sync:local-storage');
 
 const PREFIX = `derivepass/${ENV}`;
 
@@ -17,6 +20,7 @@ export default class LocalStorage extends Sync {
       return;
     }
 
+    let count = 0;
     for (let i = 0; i < this.db.length; i++) {
       const key = this.db.key(i);
       if (!key.startsWith(PREFIX)) {
@@ -30,11 +34,13 @@ export default class LocalStorage extends Sync {
         continue;
       }
 
+      count++;
       this.receiveApp(app);
     }
+    debug('emitting initial db.len=%d', count);
   }
 
-  sendApps(uuids) {
+  async sendApps(uuids) {
     if (!this.db) {
       return;
     }
@@ -43,5 +49,6 @@ export default class LocalStorage extends Sync {
     for (const app of apps) {
       this.db.setItem(`${PREFIX}/${app.uuid}`, JSON.stringify(app));
     }
+    debug('updated uuids.len=%d', uuids.length);
   }
 }

@@ -8,7 +8,7 @@
     no-close-on-esc
     no-close-on-backdrop
     title="Computing...">
-    <div class="text-center">{{text}}</div>
+    <div class="text-center mb-1">{{text}}</div>
     <b-progress
       :value="progress"
       variant="info"

@@ -8,27 +8,29 @@
       </b-form-group>
       <b-form-group
         label="Enter your Master Password"
-        label-for="master-password-input"
+        label-for="master-input"
         description="The Master Password is used for storage decryption and website password derivation"
         :invalid-feedback="invalidFeedback"
         :state="state">
         <b-form-input
+          autocomplete="off"
           required
           :disabled="computing"
-          id="master-password-input"
+          id="master-input"
           type="password"
           v-model="password"/>
       </b-form-group>
       <b-form-group
         v-if="isConfirming"
         label="Confirm your Master Password"
-        label-for="master-password-confirmation"
+        label-for="master-confirmation"
         :invalid-feedback="invalidConfirmFeedback"
         :state="confirmState">
         <b-form-input
+          autocomplete="off"
           :required="confirmPassword"
           :disabled="computing"
-          id="master-password-confirmation"
+          id="master-confirmation"
           type="password"
           v-model="confirmPassword"/>
       </b-form-group>

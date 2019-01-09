@@ -26,6 +26,8 @@ import Layout from '../layouts/default';
 import { decryptApp } from '../utils/crypto';
 import * as uuidV4 from 'uuid/v4';
 
+// TODO(indutny): re-order apps
+
 export default {
   name: 'application-list',
   components: { Layout },
