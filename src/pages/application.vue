@@ -36,6 +36,7 @@
             <b-button
               v-else
               variant="primary"
+              :disabled="isEmpty"
               @click="compute()">
               Compute Password
             </b-button>
@@ -185,6 +186,9 @@ export default {
     invalidRevisionFeedback() {
       return 'Revision must be greater than zero';
     },
+    isEmpty() {
+      return !this.app.domain || !this.app.login;
+    }
   },
 
   methods: {
