@@ -1,0 +1,18 @@
+{
+  "name": "derivepass",
+  "type": "static",
+  "static": {
+    "public": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "alias": "derivepass",
+  "files": [
+    "dist"
+  ]
+}
+
