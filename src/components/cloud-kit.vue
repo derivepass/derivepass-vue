@@ -19,6 +19,8 @@
 
 <script>
 export default {
+  name: 'cloud-kit',
+
   data() {
     return { loading: true, error: null, isAuthenticated: false };
   },

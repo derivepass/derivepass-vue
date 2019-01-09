@@ -1,7 +1,8 @@
 export default () => {
   return {
     cryptoKeys: null,
-    emoji: false,
+    emoji: '',
+    master: '',
     applications: [
     ],
     settings: {

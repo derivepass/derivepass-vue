@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
 import VueRouter from 'vue-router';
+import VueClipboard from 'vue-clipboard2'
 
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -13,7 +14,8 @@ import App from './App.vue';
 
 // Pages
 import MasterPassword from './pages/master-password.vue';
-import Applications from './pages/applications.vue';
+import ApplicationList from './pages/application-list.vue';
+import Application from './pages/application.vue';
 import Settings from './pages/settings.vue';
 
 // Store
@@ -31,6 +33,7 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+Vue.use(VueClipboard);
 Vue.use(DerivePass);
 
 const store = new Vuex.Store(storeConfig);
@@ -59,8 +62,10 @@ localStorage.setStore(store);
 const routes = [
   { path: '/', redirect: '/master' },
   { path: '/master', component: MasterPassword },
-  { path: '/applications', component: Applications },
+  { path: '/applications', component: ApplicationList },
+  { path: '/applications/:uuid', component: Application },
   { path: '/settings', component: Settings },
+  { path: '*', redirect: '/master' },
 ];
 
 const router = new VueRouter({

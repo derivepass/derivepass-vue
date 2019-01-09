@@ -2,7 +2,7 @@
   <layout>
     <b-form @submit="onSubmit" @reset="onReset" autocomplete="off">
       <b-form-group>
-        <div class="emoji-hash">
+        <div class="emoji-hash text-center">
           {{emojiHash}}
         </div>
       </b-form-group>
@@ -13,6 +13,7 @@
         :invalid-feedback="invalidFeedback"
         :state="state">
         <b-form-input
+          required
           :disabled="computing"
           id="master-password-input"
           type="password"
@@ -25,32 +26,22 @@
         :invalid-feedback="invalidConfirmFeedback"
         :state="confirmState">
         <b-form-input
+          :required="confirmPassword"
           :disabled="computing"
           id="master-password-confirmation"
           type="password"
           v-model="confirmPassword"/>
       </b-form-group>
+
       <b-button
         :disabled="computing"
         type="submit"
         variant="primary">{{submitText}}</b-button>
     </b-form>
 
-    <b-modal
-      v-model="computing"
-      centered
-      hide-header-close
-      hide-footer
-      busy
-      no-close-on-esc
-      no-close-on-backdrop
-      title="Computing...">
-      <div class="text-center">Decryption keys are being computed...</div>
-      <b-progress
-        :value="computingProgress"
-        variant="info"
-        animated/>
-    </b-modal>
+    <computing
+      :active="computing"
+      text="Decryption keys are being computed..."/>
   </layout>
 </template>
 
@@ -58,14 +49,12 @@
 import { mapState } from 'vuex';
 
 import Layout from '../layouts/default';
+import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
-
-const COMPUTING_TIME = 2000;
-const COMPUTING_STEPS = 20;
 
 export default {
   name: 'master-password',
-  components: { Layout },
+  components: { Layout, Computing },
 
   data() {
     return {
@@ -73,7 +62,6 @@ export default {
       isConfirming: false,
       confirmPassword: '',
       computing: false,
-      computingProgress: 0,
       error: null,
     };
   },
@@ -150,11 +138,9 @@ export default {
 
       this.computing = true;
 
-      // Some animation to make it less boring
-      this.animate();
-
       this.$derivepass.computeKeys(this.password).then((keys) => {
         this.$store.commit('setCryptoKeys', {
+          master: this.password,
           crypto: keys,
           emoji: emoji,
         });
@@ -171,20 +157,6 @@ export default {
     onReset() {
       this.password = '';
     },
-
-    animate() {
-      let steps = 0;
-      const doStep = () => {
-        if (steps++ === COMPUTING_STEPS) {
-          return;
-        }
-        this.computingProgress = 100 * steps / COMPUTING_STEPS;
-
-        setTimeout(doStep, COMPUTING_TIME / COMPUTING_STEPS);
-      }
-
-      doStep();
-    }
   }
 };
 </script>

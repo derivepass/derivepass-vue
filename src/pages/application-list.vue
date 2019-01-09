@@ -1,20 +1,28 @@
 <template>
   <layout>
-    <b-form-input v-model="filter" placeholder="Filter applications"/>
-    <b-table hover :items="applications"/>
+    <b-form-input
+      class="mb-2"
+      v-model="filter"
+      placeholder="Filter applications"/>
+    <template v-for="app in applications">
+      <router-link :to="`/applications/${app.uuid}`" :key="app.uuid">
+        <b-card
+          class="application mb-1"
+          :title="app.domain"
+          :sub-title="app.login"/>
+      </router-link>
+    </template>
   </layout>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import Layout from '../layouts/default';
-import { decrypt } from '../utils/crypto';
+import { decryptApp } from '../utils/crypto';
 
 export default {
-  name: 'applications',
-  components: {
-    Layout,
-  },
+  name: 'application-list',
+  components: { Layout },
 
   beforeMount() {
     // Redirect to master password when not ready
@@ -32,13 +40,7 @@ export default {
       return state.applications.filter((app) => {
         return app.master === state.emoji && !app.removed;
       }).map((app) => {
-        return {
-          domain: decrypt(app.domain, state.cryptoKeys),
-          login: decrypt(app.login, state.cryptoKeys),
-          revision: decrypt(app.revision, state.cryptoKeys),
-
-          index: app.index,
-        };
+        return decryptApp(app, state.cryptoKeys);
       });
     },
     applications() {
@@ -55,9 +57,20 @@ export default {
           }
         });
     },
-  })
+  }),
 };
 </script>
 
-<style>
+<style scoped>
+.application:hover {
+  background: #eee;
+}
+
+.application-buttons {
+  opacity: 0;
+}
+
+.application:hover .application-buttons {
+  opacity: 1;
+}
 </style>

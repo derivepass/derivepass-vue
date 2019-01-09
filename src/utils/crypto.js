@@ -125,3 +125,11 @@ export function decrypt(value, keys) {
     return '<decrypt failed #2>';
   }
 }
+
+export function decryptApp(app, keys) {
+  return Object.assign({}, app, {
+    domain: decrypt(app.domain, keys),
+    login: decrypt(app.login, keys),
+    revision: decrypt(app.revision, keys),
+  });
+}
