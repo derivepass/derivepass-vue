@@ -6,11 +6,10 @@ import derivepass from './derivepass';
 
 const debug = createDebug('derivepass:utils:crypto');
 
-const SCRYPT_AES_DOMAIN = 'derivepass/aes';
-const AES_KEY_SIZE = 32;
-const IV_SIZE = 16;
-const MAC_KEY_SIZE = 64;
-const MAC_SIZE = 32;
+export const AES_KEY_SIZE = 32;
+export const IV_SIZE = 16;
+export const MAC_KEY_SIZE = 64;
+export const MAC_SIZE = 32;
 
 export function fromHex(hex) {
   if (hex.length % 2 !== 0) {

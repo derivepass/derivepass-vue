@@ -21,16 +21,14 @@ import CloudKit from './utils/sync/cloud-kit';
 import CloudKitLoader from './utils/cloud-kit-loader';
 import LocalStorage from './utils/sync/local-storage';
 
-import DerivePass from './utils/derivepass';
+import DerivePass from './plugins/derivepass';
 
 Vue.config.productionTip = false;
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
-
-window.derivepass = new DerivePass();
-window.derivepass.init();
+Vue.use(DerivePass);
 
 const store = new Vuex.Store(storeConfig);
 

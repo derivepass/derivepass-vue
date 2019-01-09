@@ -13,6 +13,7 @@
         :invalid-feedback="invalidFeedback"
         :state="state">
         <b-form-input
+          :disabled="computing"
           id="master-password-input"
           type="password"
           v-model="password"/>
@@ -24,12 +25,28 @@
         :invalid-feedback="invalidConfirmFeedback"
         :state="confirmState">
         <b-form-input
+          :disabled="computing"
           id="master-password-confirmation"
           type="password"
           v-model="confirmPassword"/>
       </b-form-group>
-      <b-button type="submit" variant="primary">{{submitText}}</b-button>
+      <b-button
+        :disabled="computing"
+        type="submit"
+        variant="primary">{{submitText}}</b-button>
     </b-form>
+
+    <b-modal
+      v-model="computing"
+      centered
+      hide-header-close
+      hide-footer
+      busy
+      no-close-on-esc
+      no-close-on-backdrop
+      title="Computing...">
+      <div class="text-center">Decryption keys are being computed...</div>
+    </b-modal>
   </layout>
 </template>
 
@@ -44,7 +61,13 @@ export default {
   components: { Layout },
 
   data() {
-    return { password: '', isConfirming: false, confirmPassword: '' };
+    return {
+      password: '',
+      isConfirming: false,
+      confirmPassword: '',
+      computing: false,
+      error: null,
+    };
   },
 
   computed: {
@@ -117,14 +140,19 @@ export default {
         // Has known apps, submit!
       }
 
-      // TODO(indutny): scrypt-generate AES key
-      this.$store.commit('setAESKey', {
-        aesKey: this.password,
-        emoji: emoji,
-      });
+      this.computing = true;
+      this.$derivepass.computeKeys(this.password).then((keys) => {
+        this.$store.commit('setCryptoKeys', Object.assign({}, keys, {
+          emoji: emoji,
+        }));
 
-      // TODO(indutny): reset password after timeout
-      this.$router.push('/applications');
+        // TODO(indutny): reset password after timeout
+        this.$router.push('/applications');
+      }).catch((err) => {
+        this.error = err;
+      }).finally(() => {
+        this.computing = false;
+      });
     },
 
     onReset() {
