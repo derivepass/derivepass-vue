@@ -6,6 +6,9 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import * as createDebug from 'debug';
+const debug = createDebug('derivepass:main');
+
 import App from './App.vue';
 
 // Pages
@@ -18,7 +21,7 @@ import storeConfig from './store/index';
 
 // Immediately start connecting to iCloud
 import CloudKit from './utils/sync/cloud-kit';
-import CloudKitLoader from './utils/cloud-kit-loader';
+import CloudKitProvider from './utils/cloud-kit-provider';
 import LocalStorage from './utils/sync/local-storage';
 
 import DerivePass from './plugins/derivepass';
@@ -33,11 +36,20 @@ Vue.use(DerivePass);
 const store = new Vuex.Store(storeConfig);
 
 // Enable cloud sync
-CloudKitLoader.then(async (config) => {
-  const cloudKit = new CloudKit(config);
+const cloudKit = new CloudKit();
+Vue.prototype.$cloudKit = cloudKit;
+
+debug('loading CloudKit provider');
+CloudKitProvider.then(async (provider) => {
+  cloudKit.setProvider(provider);
   cloudKit.setStore(store);
 
+  debug('initializing CloudKit instance');
   await cloudKit.init();
+
+  debug('CloudKit fully operational');
+}).catch((e) => {
+  debug('CloudKit error', e);
 });
 
 // Enable local sync

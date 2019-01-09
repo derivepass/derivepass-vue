@@ -4,7 +4,11 @@
       <b-alert show variant="info">Connecting to iCloud APIs...</b-alert>
     </template>
     <template v-else-if="error">
-      <b-alert show variant="error">Failed to connect to iCloud APIs!</b-alert>
+      <b-alert show variant="error">
+        <p>Failed to connect to iCloud APIs!</p>
+        <p>Details: <i>{{error.message || err}}</i></p>
+        <b-btn @click="error = undefined">Dismiss</b-btn>
+      </b-alert>
     </template>
     <template v-else>
       <b-btn @click="signOut" v-if="isAuthenticated">Disable</b-btn>
@@ -14,48 +18,51 @@
 </template>
 
 <script>
-import CloudKitPromise from '../utils/sync/cloud-kit';
-
-let CloudKit;
-
 export default {
   data() {
     return { loading: true, error: null, isAuthenticated: false };
   },
 
-  created() {
-    this.asyncInit().finally(() => {
-      this.loading = false;
-    }).catch((e) => {
+  async created() {
+    try {
+      await this.asyncInit();
+    } catch (e) {
       this.error = e;
-    });
+    } finally {
+      this.loading = false;
+    }
   },
 
   methods: {
     async asyncInit() {
-      CloudKit = await CloudKitPromise;
-      this.isAuthenticated = CloudKit.isAuthenticated;
+      await this.$cloudKit.init();
+      this.isAuthenticated = this.$cloudKit.isAuthenticated;
     },
 
-    signIn() {
+    async signIn() {
       this.loading = true;
-      CloudKit.signIn().then(() => {
+      try {
+        await this.$cloudKit.signIn();
         this.isAuthenticated = true;
-      }).catch((err) => {
-        this.error = err;
-      }).finally(() => {
+      } catch (e) {
+        this.error = e;
+        return;
+      } finally {
         this.loading = false;
-      });
+      }
     },
 
-    signOut() {
-      CloudKit.signOut().then(() => {
+    async signOut() {
+      this.loading = true;
+      try {
+        await this.$cloudKit.signOut();
         this.isAuthenticated = false;
-      }).catch((err) => {
-        this.error = err;
-      }).finally(() => {
+      } catch (e) {
+        this.error = e;
+        return;
+      } finally {
         this.loading = false;
-      });
+      }
     }
   },
 };

@@ -9,11 +9,16 @@ const RETRY_DELAY = 1500;
 const SYNC_EVERY = 60 * 60 * 1000; // 1 hour
 
 export default class CloudKit extends Sync {
-  constructor(options) {
+  constructor() {
     super();
 
-    this.container = options.container;
-    this.db = options.db;
+    this.ready = false;
+    this.initPromise = new Promise((resolve) => {
+      this.initResolve = resolve;
+    });
+
+    this.container = null;
+    this.db = null;
     this.user = null;
     this.syncTimer = null;
 
@@ -26,7 +31,24 @@ export default class CloudKit extends Sync {
     };
   }
 
+  setProvider(provider) {
+    if (this.container) {
+      throw new Error('Already has a provider');
+    }
+
+    this.container = provider.container;
+    this.db = provider.db;
+
+    this.initResolve();
+  }
+
   async init() {
+    await this.initPromise;
+    if (this.ready) {
+      return;
+    }
+    this.ready = true;
+
     debug('setting up authentication');
     this.user = await this.container.setUpAuth();
 
@@ -42,14 +64,14 @@ export default class CloudKit extends Sync {
     // XXX(indutny): Terrible hacks
     const res = this.container.whenUserSignsIn();
     this.buttons.signIn.children[0].click();
-    return res;
+    return await res;
   }
 
   async signOut() {
     // XXX(indutny): Terrible hacks
     const res = this.container.whenUserSignsOut();
     this.buttons.signOut.children[0].click();
-    return res;
+    return await res;
   }
 
   // Override

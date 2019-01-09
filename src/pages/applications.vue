@@ -41,7 +41,7 @@ export default {
         };
       });
     },
-    applications(state) {
+    applications() {
       return this.decryptedApps
         .sort((a, b) => {
           return a.index - b.index;

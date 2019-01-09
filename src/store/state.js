@@ -4,5 +4,8 @@ export default () => {
     emoji: false,
     applications: [
     ],
+    settings: {
+      cloudKitReady: false,
+    }
   };
 };
