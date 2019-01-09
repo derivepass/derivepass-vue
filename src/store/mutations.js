@@ -26,7 +26,8 @@ export default {
       changedAt = Date.now();
     }
 
-    debug('updating existing app from %j to %j', existing.changedAt,
+    debug('updating existing app %j from %j to %j', app.uuid,
+      existing.changedAt,
       app.changedAt);
     Object.assign(existing, app, {
       removed,

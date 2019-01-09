@@ -67,7 +67,7 @@ export function isEqual(a, b) {
 
 export function encrypt(value, keys) {
   const iv = new Uint8Array(IV_SIZE);
-  window.crypto.randomValues(iv);
+  window.crypto.getRandomValues(iv);
   const cipher = createCipheriv('aes-256-cbc', keys.aesKey, iv);
 
   const content = [
@@ -76,11 +76,11 @@ export function encrypt(value, keys) {
     cipher.final()
   ];
 
-  const hmac = hmac(sha256, keys.macKey);
+  const macStream = hmac(sha256, keys.macKey);
   for (const elem of content) {
-    hmac.update(elem);
+    macStream.update(elem);
   }
-  const mac = hmac.digest();
+  const mac = macStream.digest();
 
   return 'v1:' + content.map(toHex).join('') + toHex(mac);
 }
@@ -130,6 +130,14 @@ export function decryptApp(app, keys) {
   return Object.assign({}, app, {
     domain: decrypt(app.domain, keys),
     login: decrypt(app.login, keys),
-    revision: decrypt(app.revision, keys),
+    revision: parseInt(decrypt(app.revision, keys), 10) || 1,
+  });
+}
+
+export function encryptApp(app, keys) {
+  return Object.assign({}, app, {
+    domain: encrypt(app.domain, keys),
+    login: encrypt(app.login, keys),
+    revision: encrypt(app.revision.toString(), keys),
   });
 }

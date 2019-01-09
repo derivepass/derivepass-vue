@@ -1,35 +1,55 @@
 <template>
   <layout>
-    <div class="text-center">
-      <h3>{{app.domain}}</h3>
-      <p><i>{{app.login}}</i></p>
-      <b-alert
-        fade
-        variant="success"
-        :show="copied">
-        Password copied to Clipboard
-      </b-alert>
-      <b-button-group>
-        <b-button
-          v-if="password"
-          variant="primary"
-          @click="copyPassword">
-          Copy Password
-        </b-button>
-        <b-button
-          v-else
-          variant="primary"
-          @click="compute()">
-          Compute Password
-        </b-button>
-        <b-button v-b-toggle.application-collapse>Details</b-button>
-      </b-button-group>
-    </div>
+    <b-alert
+      fade
+      variant="success"
+      :show="copied">
+      Password copied to Clipboard
+    </b-alert>
+
+    <b-alert
+      fade
+      variant="success"
+      :show="saved">
+      Application saved
+    </b-alert>
+
+    <b-container>
+      <b-row align-h="center">
+        <h1>
+          <template v-if="isNew">New Application</template>
+          <template v-else>Application</template>
+        </h1>
+      </b-row>
+      <b-row align-v="center">
+        <b-col v-if="app.domain || app.login">
+          <b>{{app.domain}}</b>/<i>{{app.login}}</i>
+        </b-col>
+        <b-col>
+          <b-button-group>
+            <b-button
+              v-if="password"
+              variant="primary"
+              @click="copyPassword">
+              Copy Password
+            </b-button>
+            <b-button
+              v-else
+              variant="primary"
+              @click="compute()">
+              Compute Password
+            </b-button>
+            <b-button @click="showDetails = !showDetails">Details</b-button>
+            <b-button to="/applications">Back</b-button>
+          </b-button-group>
+        </b-col>
+      </b-row>
+    </b-container>
 
     <computing :active="computing" text="Computing secure password"/>
 
-    <b-collapse id="application-collapse" class="mt-3">
-      <b-form @submit="onSubmit" autocomplete="off">
+    <b-collapse class="mt-3" id="application-details" v-model="showDetails">
+      <b-form @submit="onSave" autocomplete="off">
         <b-form-group
           label="Domain name"
           label-for="application-domain"
@@ -41,6 +61,7 @@
             :state="domainState ? null : 'invalid'"
             id="application-domain"
             v-model="app.domain"
+            placeholder="gmail.com"
             @input="resetPassword"/>
         </b-form-group>
         <b-form-group
@@ -54,6 +75,7 @@
             :state="loginState ? null : 'invalid'"
             id="application-login"
             v-model="app.login"
+            placeholder="my@email.com"
             @input="resetPassword"/>
         </b-form-group>
         <b-form-group
@@ -71,26 +93,67 @@
             @input="resetPassword"/>
         </b-form-group>
         <b-button-group class="text-right">
-          <b-button>Save</b-button>
-          <b-button variant="danger">Delete</b-button>
+          <b-button type="submit" variant="primary">Save</b-button>
+          <b-button variant="danger" v-b-modal.application-confirm-delete>
+            Delete
+          </b-button>
         </b-button-group>
       </b-form>
     </b-collapse>
+
+    <b-modal
+      id="application-confirm-delete"
+      title="Confirm Deletion"
+      ok-variant="danger"
+      ok-title="Delete"
+      @ok="onDelete">
+      <p>This action will irreversibly delete:</p>
+      <p><b>{{app.domain}}</b>/<i>{{app.login}}</i></p>
+      <p>...from the application list.</p>
+    </b-modal>
   </layout>
 </template>
 
 <script>
 import Layout from '../layouts/default';
 import Computing from '../components/computing';
-import { decryptApp } from '../utils/crypto';
+import { decryptApp, encryptApp } from '../utils/crypto';
 
 export default {
   name: 'application',
   components: { Layout, Computing },
+
   data() {
+    const uuid = this.$route.params.uuid;
+
+    let app = this.$store.state.applications.find((app) => app.uuid === uuid);
+    let isNew;
+    if (app) {
+      isNew = false;
+      app = decryptApp(app, this.$store.state.cryptoKeys);
+    } else {
+      isNew = true;
+      app = {
+        uuid,
+
+        domain: '',
+        login: '',
+        revision: 1,
+
+        master: this.$store.state.emoji,
+        index: parseInt(this.$route.query.index, 10) || 0,
+        removed: false,
+        changedAt: Date.now(),
+      };
+    }
+
     return {
-      app: { domain: '', login: '', revision: 1, new: true },
+      app,
+      isNew,
+
+      showDetails: isNew,
       copied: false,
+      saved: false,
       computing: false,
       password: '',
     };
@@ -99,15 +162,8 @@ export default {
   beforeMount() {
     // Redirect to master password when not ready
     if (!this.$store.getters.showApps) {
-      return this.$router.replace('/');
+      this.$router.replace('/');
     }
-
-    const uuid = this.$route.params.uuid;
-
-    const app = this.$store.state.applications.find((app) => app.uuid === uuid);
-    Object.assign(this.app, decryptApp(app, this.$store.state.cryptoKeys), {
-      new: false,
-    });
   },
 
   computed: {
@@ -152,6 +208,7 @@ export default {
     resetPassword() {
       this.password = '';
       this.copied = false;
+      this.saved = false;
     },
     copyPassword() {
       if (this.copied) {
@@ -162,7 +219,27 @@ export default {
       setTimeout(() => this.copied = false, 2500);
       navigator.clipboard.writeText(this.password);
     },
-    onSubmit() {
+    onSave() {
+      const app = Object.assign(
+        encryptApp(this.app, this.$store.state.cryptoKeys),
+        {
+          changedAt: Date.now(),
+        });
+      this.$store.commit('receiveApp', app);
+
+      this.saved = true;
+      this.showDetails = false;
+      setTimeout(() => this.saved = false, 2500);
+    },
+    onDelete() {
+      const app = Object.assign(
+        encryptApp(this.app, this.$store.state.cryptoKeys),
+        {
+          removed: true,
+          changedAt: Date.now(),
+        });
+      this.$store.commit('receiveApp', app);
+      this.$router.replace('/applications');
     }
   }
 };

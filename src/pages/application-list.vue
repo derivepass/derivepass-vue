@@ -12,6 +12,11 @@
           :sub-title="app.login"/>
       </router-link>
     </template>
+    <b-card class="application-add text-center">
+      <b-button variant="primary" @click="addApplication">
+        Add application
+      </b-button>
+    </b-card>
   </layout>
 </template>
 
@@ -19,6 +24,7 @@
 import { mapState } from 'vuex';
 import Layout from '../layouts/default';
 import { decryptApp } from '../utils/crypto';
+import * as uuidV4 from 'uuid/v4';
 
 export default {
   name: 'application-list',
@@ -58,6 +64,16 @@ export default {
         });
     },
   }),
+
+  methods: {
+    addApplication() {
+      const index = Math.max(...this.applications.map((app) => app.index)) + 1;
+      this.$router.push({
+        path: `/applications/${uuidV4()}`,
+        query: { index },
+      });
+    },
+  }
 };
 </script>
 

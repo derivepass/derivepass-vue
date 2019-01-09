@@ -46,7 +46,7 @@ export default class Sync {
   }
 
   receiveApp(app) {
-    this.received.set(app.uuid, app);
+    this.received.set(app.uuid, Object.assign({}, app));
 
     this.store.commit('receiveApp', app);
   }
