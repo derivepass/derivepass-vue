@@ -1,4 +1,4 @@
-import wasmURI from 'file-loader?name=[hash].wasm!./binding.wasm.bin';
+import wasmURI from 'url-loader?mimetype=application/wasm!./binding.wasm.bin';
 
 let wasm;
 

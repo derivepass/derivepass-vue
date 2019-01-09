@@ -65,6 +65,26 @@ export function isEqual(a, b) {
   return res === 0;
 }
 
+export function encrypt(value, keys) {
+  const iv = new Uint8Array(IV_SIZE);
+  window.crypto.randomValues(iv);
+  const cipher = createCipheriv('aes-256-cbc', keys.aesKey, iv);
+
+  const content = [
+    iv,
+    cipher.update(value),
+    cipher.final()
+  ];
+
+  const hmac = hmac(sha256, keys.macKey);
+  for (const elem of content) {
+    hmac.update(elem);
+  }
+  const mac = hmac.digest();
+
+  return 'v1:' + content.map(toHex).join('') + toHex(mac);
+}
+
 export function decrypt(value, keys) {
   let version = 0;
   if (/^v1:/.test(value)) {
