@@ -142,9 +142,10 @@ export default {
 
       this.computing = true;
       this.$derivepass.computeKeys(this.password).then((keys) => {
-        this.$store.commit('setCryptoKeys', Object.assign({}, keys, {
+        this.$store.commit('setCryptoKeys', {
+          crypto: keys,
           emoji: emoji,
-        }));
+        });
 
         // TODO(indutny): reset password after timeout
         this.$router.push('/applications');

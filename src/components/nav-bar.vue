@@ -6,7 +6,7 @@
 
     <b-navbar-nav>
       <b-nav-item to="/master">Master Password</b-nav-item>
-      <b-nav-item to="/applications" v-if="$store.getters.hasAESKey">
+      <b-nav-item to="/applications" v-if="$store.getters.showApps">
         Applications
       </b-nav-item>
       <b-nav-item to="/settings">Settings</b-nav-item>

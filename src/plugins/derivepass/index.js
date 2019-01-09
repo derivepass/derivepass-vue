@@ -2,13 +2,12 @@
 import Worker from 'worker-loader!./worker.js';
 import * as createDebug from 'debug';
 
+import { AES_KEY_SIZE, MAC_KEY_SIZE } from '../../utils/crypto';
+
 const debug = createDebug('derivepass:plugins:derivepass');
-const encoder = new TextEncoder('utf8');
+const encoder = new TextEncoder('utf-8');
 const SCRYPT_AES_DOMAIN = 'derivepass/aes';
 const PASSWORD_OUT_SIZE = 18;
-
-const AES_KEY_SIZE = 32;
-const MAC_KEY_SIZE = 64;
 
 class DeriveWorker {
   constructor() {
@@ -109,6 +108,11 @@ class DerivePass {
       aesKey: buf.slice(0, AES_KEY_SIZE),
       macKey: buf.slice(AES_KEY_SIZE),
     };
+  }
+
+  async computePassword(master, domain) {
+    // TODO(indutny): formatting
+    return await this.scrypt(master, domain, PASSWORD_OUT_SIZE);
   }
 }
 

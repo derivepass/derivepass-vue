@@ -2,7 +2,6 @@
 import { createCipheriv, createDecipheriv } from 'browserify-aes';
 import { sha256, hmac } from 'hash.js';
 import * as createDebug from 'debug';
-import derivepass from './derivepass';
 
 const debug = createDebug('derivepass:utils:crypto');
 
@@ -39,6 +38,18 @@ export function fromHex(hex) {
   return out;
 }
 
+export function toHex(buf) {
+  let res = '';
+  for (let i = 0; i < buf.length; i++) {
+    let d = buf[i].toString(16);
+    if (d.length < 2) {
+      d = '0' + d;
+    }
+    res += d;
+  }
+  return res;
+}
+
 export function isEqual(a, b) {
   if (a.length !== b.length) {
     return false;
@@ -54,7 +65,7 @@ export function isEqual(a, b) {
   return res === 0;
 }
 
-export function decrypt(value, aesKey, macKey) {
+export function decrypt(value, keys) {
   let version = 0;
   if (/^v1:/.test(value)) {
     version = 1;
@@ -64,19 +75,18 @@ export function decrypt(value, aesKey, macKey) {
   value = fromHex(value);
 
   if (version === 1) {
-    assert(value.length > IV_SIZE + MAC_SIZE);
+    if (value.length <= IV_SIZE + MAC_SIZE) {
+      debug('invalid encrypted value');
+      return '<decrypt failed #0>';
+    }
 
-    const actual = hmac(sha256, 'sha256', macKey)
+    const actual = hmac(sha256, keys.macKey)
         .update(value.slice(0, value.length - MAC_SIZE))
         .digest();
     const mac = value.slice(value.length - MAC_SIZE);
-    try {
-      if (!isEqual(actual, mac)) {
-        throw new Error('MAC mismatch');
-      }
-    } catch (e) {
-      console.error(e);
-      return '<decrypt failed>';
+    if (!isEqual(actual, mac)) {
+      debug('MAC mismatch');
+      return '<decrypt failed #1>';
     }
 
     value = value.slice(0, value.length - MAC_SIZE);
@@ -85,12 +95,13 @@ export function decrypt(value, aesKey, macKey) {
   const iv = value.slice(0, IV_SIZE);
   const content = value.slice(IV_SIZE);
 
-  const d = createDecipheriv('aes-256-cbc', aesKey, iv);
+  const d = createDecipheriv('aes-256-cbc', keys.aesKey, iv);
 
   try {
-    return d.update(content) + d.final();
+    /// XXX(indutny): temporary hack with `hex`
+    return d.update(toHex(content), 'hex') + d.final();
   } catch (err) {
     debug('decryption error', err);
-    return '<decrypt failed>';
+    return '<decrypt failed #2>';
   }
 }

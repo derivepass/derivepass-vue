@@ -35,8 +35,7 @@ export default {
   },
 
   setCryptoKeys(state, payload) {
-    state.aesKey = payload.aesKey;
-    state.macKey = payload.macKey;
+    state.cryptoKeys = payload.crypto;
     state.emoji = payload.emoji;
   }
 };

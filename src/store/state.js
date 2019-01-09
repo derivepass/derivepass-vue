@@ -1,7 +1,6 @@
 export default () => {
   return {
-    aesKey: false,
-    macKey: false,
+    cryptoKeys: null,
     emoji: false,
     applications: [
     ],

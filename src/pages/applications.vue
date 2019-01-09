@@ -8,6 +8,7 @@
 <script>
 import { mapState } from 'vuex';
 import Layout from '../layouts/default';
+import { decrypt } from '../utils/crypto';
 
 export default {
   name: 'applications',
@@ -17,7 +18,7 @@ export default {
 
   beforeMount() {
     // Redirect to master password when not ready
-    if (!this.$store.getters.hasAESKey) {
+    if (!this.$store.getters.showApps) {
       this.$router.replace('/');
     }
   },
@@ -27,20 +28,32 @@ export default {
   },
 
   computed: mapState({
-    applications(state) {
+    decryptedApps(state) {
       return state.applications.filter((app) => {
         return app.master === state.emoji && !app.removed;
       }).map((app) => {
         return {
-          domain: app.domain,
-          login: app.login,
-          revision: app.revision,
+          domain: decrypt(app.domain, state.cryptoKeys),
+          login: decrypt(app.login, state.cryptoKeys),
+          revision: decrypt(app.revision, state.cryptoKeys),
 
           index: app.index,
         };
-      }).sort((a, b) => {
-        return a.index - b.index;
       });
+    },
+    applications(state) {
+      return this.decryptedApps
+        .sort((a, b) => {
+          return a.index - b.index;
+        })
+        .filter((app) => {
+          if (this.filter) {
+            return app.domain.includes(this.filter) ||
+              app.login.includes(this.filter);
+          } else {
+            return true;
+          }
+        });
     },
   })
 };
