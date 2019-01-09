@@ -91,7 +91,7 @@ export default {
     },
     invalidFeedback() {
       if (this.password.length === 0) {
-        return 'Master password can\'t be empty';
+        return 'Master Password can\'t be empty';
       } else {
         return '';
       }
