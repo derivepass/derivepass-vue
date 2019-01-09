@@ -7,8 +7,11 @@ import { AES_KEY_SIZE, MAC_KEY_SIZE } from '../../utils/crypto';
 
 const debug = createDebug('derivepass:plugins:derivepass');
 const encoder = new TextEncoder('utf-8');
+
 const SCRYPT_AES_DOMAIN = 'derivepass/aes';
 const PASSWORD_OUT_SIZE = 18;
+const PASSWORD_BASE64 =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.'.split('');
 
 class DeriveWorker {
   constructor() {
@@ -112,8 +115,22 @@ class DerivePass {
   }
 
   async computePassword(master, domain) {
-    // TODO(indutny): formatting
-    return await this.scrypt(master, domain, PASSWORD_OUT_SIZE);
+    // TODO(indutny): website requirements
+    const raw = await this.scrypt(master, domain, PASSWORD_OUT_SIZE);
+
+    let out = '';
+    for (let i = 0; i < raw.length; i += 3) {
+      const a = raw[i];
+      const b = raw[i + 1];
+      const c = raw[i + 3];
+
+      out += PASSWORD_BASE64[a >>> 2];
+      out += PASSWORD_BASE64[((a & 3) << 4) | (b >>> 4)];
+      out += PASSWORD_BASE64[((b & 0x0f) << 2) | (c >>> 6)];
+      out += PASSWORD_BASE64[c & 0x3f];
+    }
+
+    return out;
   }
 }
 

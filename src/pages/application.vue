@@ -1,11 +1,19 @@
 <template>
   <layout>
     <div class="text-center">
+      <h3>{{app.domain}}</h3>
+      <p><i>{{app.login}}</i></p>
+      <b-alert
+        fade
+        variant="success"
+        :show="copied">
+        Password copied to Clipboard
+      </b-alert>
       <b-button-group>
         <b-button
           v-if="password"
           variant="primary"
-          @click="$copyText(password)">
+          @click="copyPassword">
           Copy Password
         </b-button>
         <b-button
@@ -81,7 +89,8 @@ export default {
   components: { Layout, Computing },
   data() {
     return {
-      app: { domain: '', login: '', revision: 0, new: true },
+      app: { domain: '', login: '', revision: 1, new: true },
+      copied: false,
       computing: false,
       password: '',
     };
@@ -142,6 +151,16 @@ export default {
     },
     resetPassword() {
       this.password = '';
+      this.copied = false;
+    },
+    copyPassword() {
+      if (this.copied) {
+        return;
+      }
+
+      this.copied = true;
+      setTimeout(() => this.copied = false, 2500);
+      this.$copyText(this.password);
     },
     onSubmit() {
     }
