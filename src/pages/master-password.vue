@@ -46,6 +46,10 @@
       no-close-on-backdrop
       title="Computing...">
       <div class="text-center">Decryption keys are being computed...</div>
+      <b-progress
+        :value="computingProgress"
+        variant="info"
+        animated/>
     </b-modal>
   </layout>
 </template>
@@ -55,6 +59,9 @@ import { mapState } from 'vuex';
 
 import Layout from '../layouts/default';
 import emojiHash from '../utils/emoji-hash';
+
+const COMPUTING_TIME = 2000;
+const COMPUTING_STEPS = 20;
 
 export default {
   name: 'master-password',
@@ -66,6 +73,7 @@ export default {
       isConfirming: false,
       confirmPassword: '',
       computing: false,
+      computingProgress: 0,
       error: null,
     };
   },
@@ -141,6 +149,10 @@ export default {
       }
 
       this.computing = true;
+
+      // Some animation to make it less boring
+      this.animate();
+
       this.$derivepass.computeKeys(this.password).then((keys) => {
         this.$store.commit('setCryptoKeys', {
           crypto: keys,
@@ -158,6 +170,20 @@ export default {
 
     onReset() {
       this.password = '';
+    },
+
+    animate() {
+      let steps = 0;
+      const doStep = () => {
+        if (steps++ === COMPUTING_STEPS) {
+          return;
+        }
+        this.computingProgress = 100 * steps / COMPUTING_STEPS;
+
+        setTimeout(doStep, COMPUTING_TIME / COMPUTING_STEPS);
+      }
+
+      doStep();
     }
   }
 };
