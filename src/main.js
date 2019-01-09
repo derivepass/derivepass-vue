@@ -26,6 +26,7 @@ import CloudKitProvider from './utils/cloud-kit-provider';
 import LocalStorage from './utils/sync/local-storage';
 
 import DerivePass from './plugins/derivepass';
+import './registerServiceWorker'
 
 Vue.config.productionTip = false;
 
