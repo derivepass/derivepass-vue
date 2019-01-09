@@ -1,3 +1,4 @@
+// TODO(indutny): dumb-crypto and wasm
 import { sha512 } from 'hash.js';
 import * as BN from 'bn.js';
 
