@@ -1,3 +1,4 @@
+// TODO(indutny): webpack.config.js
 import Worker from 'worker-loader!./derivepass.worker.js';
 import * as createDebug from 'debug';
 
@@ -7,6 +8,7 @@ export default class DerivePass {
   constructor() {
     this.worker = null;
     this.queue = [];
+    this.encoder = new TextEncoder('utf8');
   }
 
   async init() {
@@ -45,11 +47,14 @@ export default class DerivePass {
     };
   }
 
-  async derive(master, password) {
+  async derive(master, domain) {
+    master = this.encoder.encode(master);
+    domain = this.encoder.encode(domain);
+
     return await new Promise((resolve) => {
       this.worker.postMessage({
         type: 'derivepass',
-        payload: { master, password },
+        payload: { master, domain },
       });
 
       this.queue.push({ type: 'derivepass', resolve });
