@@ -128,7 +128,7 @@ export default {
 
     let app = this.$store.state.applications.find((app) => app.uuid === uuid);
     let isNew;
-    if (app) {
+    if (app && this.$store.getters.showApps) {
       isNew = false;
       app = decryptApp(app, this.$store.state.cryptoKeys);
     } else {
