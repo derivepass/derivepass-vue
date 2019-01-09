@@ -160,7 +160,7 @@ export default {
 
       this.copied = true;
       setTimeout(() => this.copied = false, 2500);
-      this.$copyText(this.password);
+      navigator.clipboard.writeText(this.password);
     },
     onSubmit() {
     }
