@@ -1,12 +1,16 @@
 <template>
   <layout>
-    <b-form @submit.prevent="onSubmit" @reset="onReset" autocomplete="off">
+    <b-form
+      @submit.prevent="onSubmit"
+      @reset.prevent="onReset"
+      autocomplete="off">
       <b-form-group>
         <div class="emoji-hash text-center">
           {{emojiHash}}
         </div>
       </b-form-group>
       <b-form-group
+        v-if="!isConfirming"
         label="Enter your Master Password"
         label-for="master-input"
         description="The Master Password is used for storage decryption and website password derivation"
@@ -28,7 +32,6 @@
         :state="confirmState">
         <b-form-input
           autocomplete="off"
-          :required="isConfirming"
           :disabled="computing"
           id="master-confirmation"
           type="password"
@@ -39,6 +42,10 @@
         :disabled="computing"
         type="submit"
         variant="primary">{{submitText}}</b-button>
+      <b-button
+        v-if="isConfirming"
+        type="reset"
+        variant="danger">Reset</b-button>
     </b-form>
 
     <computing
