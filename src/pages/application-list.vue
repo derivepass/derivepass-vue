@@ -1,9 +1,15 @@
 <template>
   <layout>
-    <b-form-input
-      class="mb-2"
-      v-model="filter"
-      placeholder="Filter applications"/>
+    <b-input-group prepend="Filter applications" class="mb-2">
+      <b-form-input
+        v-model="filter"
+        placeholder="Examples: gmail.com, username18, ..."/>
+      <b-input-group-append>
+        <b-btn variant="primary" class="float-right" @click="addApplication">
+          Add application
+        </b-btn>
+      </b-input-group-append>
+    </b-input-group>
     <template v-for="app in applications">
       <router-link :to="`/applications/${app.uuid}`" :key="app.uuid">
         <b-card
@@ -12,11 +18,6 @@
           :sub-title="app.login"/>
       </router-link>
     </template>
-    <b-card class="application-add text-center">
-      <b-button variant="primary" @click="addApplication">
-        Add application
-      </b-button>
-    </b-card>
   </layout>
 </template>
 
