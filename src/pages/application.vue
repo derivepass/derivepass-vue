@@ -27,7 +27,7 @@
               Compute Password
             </b-button>
             <b-button @click="showDetails = !showDetails">Details</b-button>
-            <b-button to="/applications">Back</b-button>
+            <b-button @click="$router.go(-1)">Back</b-button>
           </b-button-group>
         </b-col>
       </b-row>

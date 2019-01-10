@@ -40,7 +40,7 @@ export default {
   },
 
   data() {
-    return { filter: '' };
+    return { filter: this.$route.query.filter || '' };
   },
 
   computed: mapState({
@@ -66,6 +66,15 @@ export default {
         });
     },
   }),
+
+  watch: {
+    filter(newValue) {
+      this.$router.replace({
+        path: '/applications',
+        query: { filter: newValue },
+      });
+    }
+  },
 
   methods: {
     addApplication() {
