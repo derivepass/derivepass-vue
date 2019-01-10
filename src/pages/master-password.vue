@@ -28,7 +28,7 @@
         :state="confirmState">
         <b-form-input
           autocomplete="off"
-          :required="confirmPassword"
+          :required="isConfirming"
           :disabled="computing"
           id="master-confirmation"
           type="password"

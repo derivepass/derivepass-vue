@@ -41,7 +41,6 @@ if (missingFeatures) {
     elem.textContent = `* ${feature}`;
     document.body.appendChild(elem);
   }
-  throw new Error(missingFeatures);
 }
 
 Vue.config.productionTip = false;

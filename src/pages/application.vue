@@ -220,7 +220,22 @@ export default {
 
       this.copied = true;
       setTimeout(() => this.copied = false, 2500);
-      navigator.clipboard.writeText(this.password);
+
+      // Easy way
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(this.password);
+        return;
+      }
+
+      // Hard way
+      const area = document.createElement('textarea');
+      area.value = this.password;
+      area.style.position = 'absolute';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
     },
     onSave() {
       const app = Object.assign(

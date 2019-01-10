@@ -8,19 +8,12 @@ const FEATURES = [
     test: () => window.crypto && window.crypto.getRandomValues,
   },
   {
-    name: 'clipboard access',
-    test: () => {
-      return window.navigator.clipboard &&
-        window.navigator.clipboard.writeText;
-    },
-  },
-  {
     name: 'Web Workers',
     test: () => window.Worker,
   },
   {
     name: 'Web Assembly',
-    test: () => window.WebAssembly && window.WebAssembly.instantiateStreaming,
+    test: () => window.WebAssembly && window.WebAssembly.instantiate,
   },
   {
     name: 'Promise',

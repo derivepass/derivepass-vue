@@ -50,7 +50,12 @@ export default class Binding {
       return;
     }
 
-    const resource = await WebAssembly.instantiateStreaming(fetch(wasmURI));
+    const res = await fetch(wasmURI);
+    if (!res.ok) {
+      throw new Error('Failed to fetch wasm blob');
+    }
+    const ab = await res.arrayBuffer();
+    const resource = await WebAssembly.instantiate(ab);
     wasm = resource.instance.exports;
   }
 

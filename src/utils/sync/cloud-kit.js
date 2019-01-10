@@ -77,6 +77,9 @@ export default class CloudKit extends Sync {
   // Override
 
   async sendApps(uuids) {
+    if (!this.user) {
+      return;
+    }
     debug('sending apps uuids.len=%d', uuids.length);
 
     // Always fetch fresh apps from storage
