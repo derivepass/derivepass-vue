@@ -1,9 +1,9 @@
 <template>
   <layout>
-    <b-input-group prepend="Filter applications" class="mb-2">
+    <b-input-group class="mb-2">
       <b-form-input
         v-model="filter"
-        placeholder="Examples: gmail.com, username18, ..."/>
+        placeholder="Filter applications"/>
       <b-input-group-append>
         <b-btn variant="primary" class="float-right" @click="addApplication">
           Add application
