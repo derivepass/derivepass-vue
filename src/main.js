@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
 import VueRouter from 'vue-router';
+import VueClipboard from 'vue-clipboard2';
 
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -48,6 +49,7 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+Vue.use(VueClipboard);
 Vue.use(DerivePass);
 
 const store = new Vuex.Store(storeConfig);
