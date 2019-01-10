@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "npm run build && push-dir --dir=dist --branch=deploy --cleanup"
   },
   "dependencies": {
     "bn.js": "^4.11.8",
@@ -13,6 +14,7 @@
     "browserify-aes": "^1.2.0",
     "debug": "^4.1.1",
     "hash.js": "^1.1.7",
+    "push-dir": "^0.4.1",
     "register-service-worker": "^1.5.2",
     "uuid": "^3.3.2",
     "vue": "^2.5.21",
@@ -29,7 +31,6 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "gh-pages": "^2.0.1",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
