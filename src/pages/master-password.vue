@@ -71,6 +71,8 @@ import Layout from '../layouts/default';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
+const LOGOUT_TIMEOUT = 90000; // 90 seconds
+
 export default {
   name: 'master-password',
   components: { Layout, Computing },
@@ -167,9 +169,12 @@ export default {
           master: this.password,
           crypto: keys,
           emoji: emoji,
+          logoutTimer: setTimeout(() => {
+            this.$store.commit('resetCryptoKeys');
+            this.$router.go('/master');
+          }, LOGOUT_TIMEOUT),
         });
 
-        // TODO(indutny): reset password after timeout
         this.$router.push('/applications');
       }).catch((err) => {
         this.error = err;
