@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <b-form @submit="onSubmit" @reset="onReset" autocomplete="off">
+    <b-form @submit.prevent="onSubmit" @reset="onReset" autocomplete="off">
       <b-form-group>
         <div class="emoji-hash text-center">
           {{emojiHash}}

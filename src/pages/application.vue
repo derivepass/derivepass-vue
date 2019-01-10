@@ -36,7 +36,7 @@
     <computing :active="computing" text="Computing secure password"/>
 
     <b-collapse class="mt-3" id="application-details" v-model="showDetails">
-      <b-form @submit="onSave" autocomplete="off">
+      <b-form @submit.prevent="onSave" autocomplete="off">
         <b-form-group
           label="Domain name"
           label-for="application-domain"
