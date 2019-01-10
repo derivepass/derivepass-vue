@@ -15,14 +15,16 @@
           label="Enter your Master Password"
           label-for="master-input"
           description="Used for decrypting the storage and for computing application passwords"
-          :invalid-feedback="invalidFeedback"
-          :state="state">
+          :invalid-feedback="invalidPasswordFeedback"
+          :state="passwordState">
           <b-form-input
             autocomplete="off"
             required
             :disabled="computing"
+            :state="passwordState"
             id="master-input"
             type="password"
+            @input="passwordChanged = true"
             v-model="password"/>
         </b-form-group>
       </template>
@@ -41,16 +43,20 @@
           <b-form-input
             autocomplete="off"
             :disabled="computing"
+            :state="confirmState"
             id="master-confirmation"
             type="password"
+            @input="confirmChanged = true"
             v-model="confirmPassword"/>
         </b-form-group>
       </template>
 
       <b-button
-        :disabled="computing"
+        :disabled="computing || !canSubmit"
         type="submit"
-        variant="primary">{{submitText}}</b-button>
+        variant="primary">
+        {{(hasApps || !this.passwordChanged) ? 'Submit' : 'Confirm'}}
+      </b-button>
       <b-button
         class="ml-2"
         v-if="isConfirming"
@@ -80,8 +86,12 @@ export default {
   data() {
     return {
       password: '',
+      passwordChanged: false,
+
       isConfirming: false,
       confirmPassword: '',
+      confirmChanged: false,
+
       computing: false,
       error: null,
     };
@@ -104,16 +114,15 @@ export default {
       return emojiHash(this.confirmPassword);
     },
 
-    submitText() {
-      return this.hasApps ? 'Submit' : 'Confirm';
-    },
-
     // Form field validation
 
-    state() {
-      return this.password.length !== 0;
+    passwordState() {
+      if (!this.passwordChanged) {
+        return null;
+      }
+      return this.password.length !== 0 ? 'valid' : 'invalid';
     },
-    invalidFeedback() {
+    invalidPasswordFeedback() {
       if (this.password.length === 0) {
         return 'Master Password can\'t be empty';
       } else {
@@ -122,7 +131,10 @@ export default {
     },
 
     confirmState() {
-      return this.password === this.confirmPassword;
+      if (!this.confirmChanged) {
+        return null;
+      }
+      return this.password === this.confirmPassword ? 'valid' : 'invalid';
     },
     invalidConfirmFeedback() {
       if (this.confirmPassword.length === 0) {
@@ -132,6 +144,18 @@ export default {
       } else {
         return '';
       }
+    },
+
+    canSubmit() {
+      if (this.passwordState !== 'valid') {
+        return false;
+      }
+
+      if (this.hasApps) {
+        return true;
+      }
+
+      return !this.isConfirming || this.confirmState === 'valid';
     }
   },
 
