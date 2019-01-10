@@ -14,7 +14,7 @@
           v-if="!isConfirming"
           label="Enter your Master Password"
           label-for="master-input"
-          description="Used for decrypting storage and computing application passwords"
+          description="Used for decrypting storage and computing passwords"
           :invalid-feedback="invalidPasswordFeedback"
           :state="passwordState">
           <b-form-input
