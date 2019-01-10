@@ -43,29 +43,34 @@ export default {
     return { filter: this.$route.query.filter || '' };
   },
 
-  computed: mapState({
-    decryptedApps(state) {
-      return state.applications.filter((app) => {
-        return app.master === state.emoji && !app.removed;
-      }).map((app) => {
-        return decryptApp(app, state.cryptoKeys);
-      });
+  computed: {
+    lowFilter() {
+      return this.filter.toLowerCase();
     },
-    applications() {
-      return this.decryptedApps
-        .sort((a, b) => {
-          return a.index - b.index;
-        })
-        .filter((app) => {
-          if (this.filter) {
-            return app.domain.includes(this.filter) ||
-              app.login.includes(this.filter);
-          } else {
-            return true;
-          }
+    ...mapState({
+      decryptedApps(state) {
+        return state.applications.filter((app) => {
+          return app.master === state.emoji && !app.removed;
+        }).map((app) => {
+          return decryptApp(app, state.cryptoKeys);
         });
-    },
-  }),
+      },
+      applications() {
+        return this.decryptedApps
+          .sort((a, b) => {
+            return a.index - b.index;
+          })
+          .filter((app) => {
+            if (this.lowFilter) {
+              return app.domain.toLowerCase().includes(this.lowFilter) ||
+                app.login.toLowerCase().includes(this.lowFilter);
+            } else {
+              return true;
+            }
+          });
+      },
+    })
+  },
 
   watch: {
     filter(newValue) {
