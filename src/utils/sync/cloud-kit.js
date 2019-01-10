@@ -75,9 +75,10 @@ export default class CloudKit extends Sync {
     }
 
     debug('signIn clicked');
-    const res = this.container.whenUserSignsIn();
-    button.click();
-    return await res;
+    await Promise.all([
+      this.container.whenUserSignsIn(),
+      button.click(),
+    ]);
   }
 
   async signOut() {
@@ -94,9 +95,10 @@ export default class CloudKit extends Sync {
     }
 
     debug('signOut clicked');
-    const res = this.container.whenUserSignsOut();
-    button.click();
-    return await res;
+    await Promise.all([
+      this.container.whenUserSignsOut(),
+      button.click(),
+    ]);
   }
 
   // Override
@@ -165,7 +167,7 @@ export default class CloudKit extends Sync {
 
   async reloadUser() {
     try {
-      this.user = this.container.fetchCurrentUserIdentity();
+      this.user = await this.container.fetchCurrentUserIdentity();
     } catch (e) {
       this.user = null;
     }
