@@ -1,19 +1,5 @@
 <template>
   <layout>
-    <b-alert
-      fade
-      variant="success"
-      :show="copied">
-      Password copied to Clipboard
-    </b-alert>
-
-    <b-alert
-      fade
-      variant="success"
-      :show="saved">
-      Application saved
-    </b-alert>
-
     <b-container>
       <b-row align-h="center">
         <h1>
@@ -31,7 +17,7 @@
               v-if="password"
               variant="primary"
               @click="copyPassword">
-              Copy Password
+              {{ copied ? 'Copied' : 'Copy Password' }}
             </b-button>
             <b-button
               v-else
@@ -94,7 +80,9 @@
             @input="resetPassword"/>
         </b-form-group>
         <b-button-group class="text-right">
-          <b-button type="submit" variant="primary">Save</b-button>
+          <b-button type="submit" variant="primary" :disabled="!hasChanged">
+            {{ saved ? 'Saved' : 'Save' }}
+          </b-button>
           <b-button variant="danger" v-b-modal.application-confirm-delete>
             Delete
           </b-button>
@@ -148,8 +136,14 @@ export default {
       };
     }
 
+    // Nothing we can do to restore the app
+    if (app.removed) {
+      this.$router.replace('/');
+    }
+
     return {
       app,
+      savedApp: Object.assign({}, app),
       isNew,
 
       showDetails: isNew,
@@ -188,6 +182,11 @@ export default {
     },
     isEmpty() {
       return !this.app.domain || !this.app.login;
+    },
+    hasChanged() {
+      return this.app.domain !== this.savedApp.domain ||
+        this.app.login !== this.savedApp.login ||
+        this.app.revision !== this.savedApp.revision;
     }
   },
 
@@ -231,8 +230,8 @@ export default {
         });
       this.$store.commit('receiveApp', app);
 
+      Object.assign(this.savedApp, this.app);
       this.saved = true;
-      this.showDetails = false;
       setTimeout(() => this.saved = false, 2500);
     },
     onDelete() {
@@ -243,7 +242,7 @@ export default {
           changedAt: Date.now(),
         });
       this.$store.commit('receiveApp', app);
-      this.$router.replace('/applications');
+      this.$router.go(-1);
     }
   }
 };
