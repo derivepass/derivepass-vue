@@ -124,6 +124,9 @@ export default class CloudKit extends Sync {
         } else {
           debug('auth loop: awaiting sign in');
           this.user = await this.container.whenUserSignsIn();
+
+          debug('auth loop: user signed in, forcing update');
+          this.sendApps(this.store.state.applications.map((app) => app.uuid));
         }
       } catch (e) {
         debug('auth loop: got error %j, retrying in %d ms', e, RETRY_DELAY);
