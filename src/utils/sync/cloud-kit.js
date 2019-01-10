@@ -3,6 +3,7 @@ import * as createDebug from 'debug';
 
 const debug = createDebug('derivepass:sync:cloud-kit');
 
+const UI_RETRY_DELAY = 500;
 const RETRY_DELAY = 1500;
 
 // TODO(indutny): make this configurable
@@ -62,15 +63,39 @@ export default class CloudKit extends Sync {
 
   async signIn() {
     // XXX(indutny): Terrible hacks
+    if (this.buttons.signIn.children.length === 0) {
+      throw new Error('CloudKit initialization error');
+    }
+
+    const button = this.buttons.signIn.children[0];
+    if (button.style.display === 'none') {
+      debug('signIn button invisible, retrying after delay');
+      await new Promise((resolve) => setTimeout(resolve, UI_RETRY_DELAY));
+      return await this.signIn();
+    }
+
+    debug('signIn clicked');
     const res = this.container.whenUserSignsIn();
-    this.buttons.signIn.children[0].click();
+    button.click();
     return await res;
   }
 
   async signOut() {
     // XXX(indutny): Terrible hacks
+    if (this.buttons.signOut.children.length === 0) {
+      throw new Error('CloudKit initialization error');
+    }
+
+    const button = this.buttons.signOut.children[0];
+    if (button.style.display === 'none') {
+      debug('signOut button invisible, retrying after delay');
+      await new Promise((resolve) => setTimeout(resolve, UI_RETRY_DELAY));
+      return await this.signIn();
+    }
+
+    debug('signOut clicked');
     const res = this.container.whenUserSignsOut();
-    this.buttons.signOut.children[0].click();
+    button.click();
     return await res;
   }
 
