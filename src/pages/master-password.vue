@@ -14,7 +14,7 @@
           v-if="!isConfirming"
           label="Enter your Master Password"
           label-for="master-input"
-          description="The Master Password is used for storage decryption and website password derivation"
+          description="Used for decrypting the storage and for computing application passwords"
           :invalid-feedback="invalidFeedback"
           :state="state">
           <b-form-input
