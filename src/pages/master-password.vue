@@ -141,7 +141,7 @@ export default {
     invalidConfirmFeedback() {
       if (this.confirmPassword.length !== 0 &&
           this.password.startsWith(this.confirmPassword)) {
-        return 'Just few more...';
+        return 'Just a few more characters...';
       } else if (this.confirmPassword !== this.password) {
         return 'Password and confirmation should match';
       } else {
