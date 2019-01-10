@@ -4,8 +4,7 @@
       <b-alert show variant="info">Connecting to iCloud APIs...</b-alert>
     </template>
     <template v-else-if="error">
-      <!-- TODO(indutny): colors, remove b-alert -->
-      <b-alert show variant="error">
+      <b-alert show variant="danger">
         <p>Failed to connect to iCloud APIs!</p>
         <p>Details: <i>{{error.message || err}}</i></p>
         <b-btn @click="error = undefined">Dismiss</b-btn>
