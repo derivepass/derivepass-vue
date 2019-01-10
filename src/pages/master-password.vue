@@ -9,40 +9,50 @@
           {{emojiHash}}
         </div>
       </b-form-group>
-      <b-form-group
-        v-if="!isConfirming"
-        label="Enter your Master Password"
-        label-for="master-input"
-        description="The Master Password is used for storage decryption and website password derivation"
-        :invalid-feedback="invalidFeedback"
-        :state="state">
-        <b-form-input
-          autocomplete="off"
-          required
-          :disabled="computing"
-          id="master-input"
-          type="password"
-          v-model="password"/>
-      </b-form-group>
-      <b-form-group
-        v-if="isConfirming"
-        label="Confirm your Master Password"
-        label-for="master-confirmation"
-        :invalid-feedback="invalidConfirmFeedback"
-        :state="confirmState">
-        <b-form-input
-          autocomplete="off"
-          :disabled="computing"
-          id="master-confirmation"
-          type="password"
-          v-model="confirmPassword"/>
-      </b-form-group>
+      <template v-if="!isConfirming">
+        <b-form-group
+          v-if="!isConfirming"
+          label="Enter your Master Password"
+          label-for="master-input"
+          description="The Master Password is used for storage decryption and website password derivation"
+          :invalid-feedback="invalidFeedback"
+          :state="state">
+          <b-form-input
+            autocomplete="off"
+            required
+            :disabled="computing"
+            id="master-input"
+            type="password"
+            v-model="password"/>
+        </b-form-group>
+      </template>
+      <template v-else>
+        <b-form-group>
+          <div class="emoji-hash text-center">
+            {{emojiConfirmHash}}
+          </div>
+        </b-form-group>
+        <b-form-group
+          v-if="isConfirming"
+          label="Confirm your Master Password"
+          label-for="master-confirmation"
+          :invalid-feedback="invalidConfirmFeedback"
+          :state="confirmState">
+          <b-form-input
+            autocomplete="off"
+            :disabled="computing"
+            id="master-confirmation"
+            type="password"
+            v-model="confirmPassword"/>
+        </b-form-group>
+      </template>
 
       <b-button
         :disabled="computing"
         type="submit"
         variant="primary">{{submitText}}</b-button>
       <b-button
+        class="ml-2"
         v-if="isConfirming"
         type="reset"
         variant="danger">Reset</b-button>
@@ -83,8 +93,13 @@ export default {
         return apps.some((app) => app.master === emoji);
       },
     }),
+
     emojiHash() {
       return emojiHash(this.password);
+    },
+
+    emojiConfirmHash() {
+      return emojiHash(this.confirmPassword);
     },
 
     submitText() {
