@@ -2,12 +2,11 @@
   <b-modal
     v-model="active"
     centered
-    hide-header-close
+    hide-header
     hide-footer
     busy
     no-close-on-esc
-    no-close-on-backdrop
-    title="Computing...">
+    no-close-on-backdrop>
     <div class="text-center mb-1">{{text}}</div>
     <b-progress
       :value="progress"
