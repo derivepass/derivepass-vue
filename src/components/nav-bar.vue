@@ -9,9 +9,6 @@
     <b-collapse is-nav id="m-main-nav">
       <b-navbar-nav>
         <template v-if="$store.getters.showApps">
-          <b-nav-item to="/master" @click="$store.commit('resetCryptoKeys')">
-            Logout
-          </b-nav-item>
           <b-nav-item to="/applications" v-if="$store.getters.showApps">
             Applications
           </b-nav-item>
@@ -20,6 +17,11 @@
           <b-nav-item to="/master">Master Password</b-nav-item>
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
+        <template v-if="$store.getters.showApps">
+          <b-nav-item to="/master" @click="$store.commit('resetCryptoKeys')">
+            Logout
+          </b-nav-item>
+        </template>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
