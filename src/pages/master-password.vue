@@ -18,6 +18,7 @@
           :invalid-feedback="invalidPasswordFeedback"
           :state="passwordState">
           <b-form-input
+            ref="passwordRef"
             autocomplete="off"
             required
             :disabled="computing"
@@ -41,6 +42,7 @@
           :invalid-feedback="invalidConfirmFeedback"
           :state="confirmState">
           <b-form-input
+            ref="confirmRef"
             autocomplete="off"
             :disabled="computing"
             :state="confirmState"
@@ -180,13 +182,6 @@ export default {
     }
   },
 
-  watch: {
-    password() {
-      // Any password change should reset confirming state
-      this.isConfirming = false;
-    }
-  },
-
   methods: {
     onSubmit() {
       const emoji = this.emojiHash;
@@ -201,6 +196,7 @@ export default {
         if (!this.hasApps) {
           // No known apps, needs confirmation
           this.isConfirming = true;
+          setImmediate(() => this.$refs.confirmRef.focus());
           return;
         }
 
@@ -230,6 +226,9 @@ export default {
 
     onReset() {
       this.password = '';
+      this.confirmPassword = '';
+      this.isConfirming = false;
+      setImmediate(() => this.$refs.passwordRef.focus());
     },
   }
 };
