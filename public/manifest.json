@@ -1,6 +1,6 @@
 {
-  "name": "derivepass-vue",
-  "short_name": "derivepass-vue",
+  "name": "DerivePass",
+  "short_name": "DerivePass",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
