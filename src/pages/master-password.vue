@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <div>
     <b-form
       @submit.prevent="onSubmit"
       @reset.prevent="onReset"
@@ -67,13 +67,12 @@
     <computing
       :active="computing"
       text="Decryption keys are being computed..."/>
-  </layout>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
-import Layout from '../layouts/default';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
@@ -81,7 +80,7 @@ const LOGOUT_TIMEOUT = 90000; // 90 seconds
 
 export default {
   name: 'master-password',
-  components: { Layout, Computing },
+  components: { Computing },
 
   data() {
     return {
@@ -195,7 +194,7 @@ export default {
           emoji: emoji,
           logoutTimer: setTimeout(() => {
             this.$store.commit('resetCryptoKeys');
-            this.$router.go('/master');
+            this.$router.replace('/master');
           }, LOGOUT_TIMEOUT),
         });
 

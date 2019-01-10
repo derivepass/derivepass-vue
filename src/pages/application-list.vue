@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <div>
     <b-input-group class="mb-2">
       <b-form-input
         v-model="filter"
@@ -18,12 +18,11 @@
           :sub-title="app.login"/>
       </router-link>
     </template>
-  </layout>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import Layout from '../layouts/default';
 import { decryptApp } from '../utils/crypto';
 import * as uuidV4 from 'uuid/v4';
 
@@ -31,7 +30,6 @@ import * as uuidV4 from 'uuid/v4';
 
 export default {
   name: 'application-list',
-  components: { Layout },
 
   beforeMount() {
     // Redirect to master password when not ready

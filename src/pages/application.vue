@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <div>
     <b-container>
       <b-row align-h="center">
         <h1>
@@ -100,17 +100,16 @@
       <p><b>{{app.domain}}</b>/<i>{{app.login}}</i></p>
       <p>...from the application list.</p>
     </b-modal>
-  </layout>
+  </div>
 </template>
 
 <script>
-import Layout from '../layouts/default';
 import Computing from '../components/computing';
 import { decryptApp, encryptApp } from '../utils/crypto';
 
 export default {
   name: 'application',
-  components: { Layout, Computing },
+  components: { Computing },
 
   data() {
     const uuid = this.$route.params.uuid;

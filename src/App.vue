@@ -1,5 +1,13 @@
 <template>
-  <div id="app">
+  <layout>
     <router-view/>
-  </div>
+  </layout>
 </template>
+
+<script>
+import Layout from './layouts/default';
+
+export default {
+  components: { Layout },
+};
+</script>
