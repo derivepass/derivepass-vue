@@ -22,11 +22,27 @@ import storeConfig from './store/index';
 
 // Immediately start connecting to iCloud
 import CloudKit from './utils/sync/cloud-kit';
-import CloudKitProvider from './utils/cloud-kit-provider';
+import createCloudKit from './utils/cloud-kit-provider';
 import LocalStorage from './utils/sync/local-storage';
 
 import DerivePass from './plugins/derivepass';
 import './registerServiceWorker'
+
+import testFeatures from './utils/feature-test';
+
+const missingFeatures = testFeatures();
+if (missingFeatures) {
+  const title = document.createElement('b');
+  title.textContent =
+    'Following features are required for running this application:'
+  document.body.appendChild(title);
+  for (const feature of missingFeatures) {
+    const elem = document.createElement('p');
+    elem.textContent = `* ${feature}`;
+    document.body.appendChild(elem);
+  }
+  throw new Error(missingFeatures);
+}
 
 Vue.config.productionTip = false;
 
@@ -42,7 +58,7 @@ const cloudKit = new CloudKit();
 Vue.prototype.$cloudKit = cloudKit;
 
 debug('loading CloudKit provider');
-CloudKitProvider.then(async (provider) => {
+createCloudKit().then(async (provider) => {
   cloudKit.setProvider(provider);
   cloudKit.setStore(store);
 
