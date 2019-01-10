@@ -7,5 +7,14 @@ module.exports = {
       skipWaiting: true,
       clientsClaim: true,
     },
-  }
+  },
+  chainWebpack: config => {
+    const rule = config.module.rule('svg')
+
+    rule.uses.clear();
+    rule
+      .use('url-loader')
+        .loader('url-loader')
+        .end();
+  },
 }
