@@ -4,6 +4,7 @@
       <b-alert show variant="info">Connecting to iCloud APIs...</b-alert>
     </template>
     <template v-else-if="error">
+      <!-- TODO(indutny): colors, remove b-alert -->
       <b-alert show variant="error">
         <p>Failed to connect to iCloud APIs!</p>
         <p>Details: <i>{{error.message || err}}</i></p>
