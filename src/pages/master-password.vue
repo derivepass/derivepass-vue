@@ -12,7 +12,7 @@
       <template v-if="!isConfirming">
         <b-form-group
           v-if="!isConfirming"
-          label="Enter your Master Password"
+          :label="masterLabel"
           label-for="master-input"
           description="Used for decrypting storage and computing passwords"
           :invalid-feedback="invalidPasswordFeedback"
@@ -55,7 +55,7 @@
         :disabled="computing || !canSubmit"
         type="submit"
         variant="primary">
-        {{(hasApps || !this.passwordChanged) ? 'Submit' : 'Confirm'}}
+        {{submitText}}
       </b-button>
       <b-button
         class="ml-2"
@@ -103,6 +103,9 @@ export default {
         const emoji = this.emojiHash;
         return apps.some((app) => app.master === emoji);
       },
+      newUser(state) {
+        return state.applications.length === 0;
+      }
     }),
 
     emojiHash() {
@@ -143,6 +146,24 @@ export default {
       } else {
         return '';
       }
+    },
+
+    masterLabel() {
+      return this.newUser ?
+        'Choose your Master Password' :
+        'Enter your Master Password';
+    },
+
+    submitText() {
+      if (this.newUser && (this.isConfirming || !this.passwordChanged)) {
+        return 'Start';
+      }
+
+      if (this.hasApps || !this.passwordChanged || this.isConfirming) {
+        return 'Decrypt';
+      }
+
+      return 'Next';
     },
 
     canSubmit() {
