@@ -1,7 +1,7 @@
 <template>
-  <b-navbar class="mb-3" toggleable="md" type="dark" variant="info">
+  <b-navbar class="mb-3" toggleable="md">
     <b-navbar-brand to="/">
-      DerivePass
+      <img src="../assets/logo.svg" class="logo"/>
     </b-navbar-brand>
 
     <b-navbar-toggle target="m-main-nav"/>
@@ -26,7 +26,7 @@ export default {
 
 <style scoped>
 .logo {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
 }
 </style>
