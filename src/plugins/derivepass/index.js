@@ -122,7 +122,7 @@ class DerivePass {
     for (let i = 0; i < raw.length; i += 3) {
       const a = raw[i];
       const b = raw[i + 1];
-      const c = raw[i + 3];
+      const c = raw[i + 2];
 
       out += PASSWORD_BASE64[a >>> 2];
       out += PASSWORD_BASE64[((a & 3) << 4) | (b >>> 4)];
