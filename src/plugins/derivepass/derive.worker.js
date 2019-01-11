@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Binding from './wasm';
 
 const SCRYPT_R = 8;
