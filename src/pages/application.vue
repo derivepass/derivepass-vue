@@ -113,6 +113,7 @@ import bForm from 'bootstrap-vue/es/components/form/form';
 import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import bModal from 'bootstrap-vue/es/components/modal/modal';
+import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 import bRow from 'bootstrap-vue/es/components/layout/row';
 
 import Computing from '../components/computing';
@@ -125,6 +126,9 @@ export default {
     bFormGroup, bFormInput,
 
     Computing,
+  },
+  directives: {
+    bModal: bModalDirective,
   },
 
   data() {
