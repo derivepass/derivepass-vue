@@ -3,9 +3,9 @@ module.exports = {
     name: 'DerivePass',
     themeColor: '#3D79DE',
     msTileColor: '#3d79de',
+    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      skipWaiting: true,
-      clientsClaim: true,
+      swSrc: 'src/service-worker.js',
     },
   },
   chainWebpack: config => {

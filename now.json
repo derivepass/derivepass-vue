@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "derivepass",
-  "alias": [ "derivepass.com" ],
+  "alias": [ "dev.derivepass.com" ],
   "builds": [
     {"src": "package.json", "use": "@now/static-build"}
   ],
