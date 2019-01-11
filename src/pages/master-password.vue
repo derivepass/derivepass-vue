@@ -158,11 +158,11 @@ export default {
     },
 
     submitText() {
-      if (this.newUser && (this.isConfirming || !this.passwordChanged)) {
+      if (this.isConfirming) {
         return 'Start';
       }
 
-      if (this.hasApps || !this.passwordChanged || this.isConfirming) {
+      if (this.hasApps || !this.passwordChanged) {
         return 'Decrypt';
       }
 
