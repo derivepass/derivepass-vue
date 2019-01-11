@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "npm run build && push-dir --dir=dist --branch=deploy --cleanup"
+    "now-build": "npm run build",
+    "deploy": "now deploy && now alias dev.derivepass.com"
   },
   "dependencies": {
     "bn.js": "^4.11.8",
