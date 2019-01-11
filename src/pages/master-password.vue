@@ -241,5 +241,6 @@ export default {
 <style scoped>
 .emoji-hash {
   font-size: 48px;
+  font-family: Apple Color Emoji;
 }
 </style>
