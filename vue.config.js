@@ -3,10 +3,7 @@ module.exports = {
     name: 'DerivePass',
     themeColor: '#3D79DE',
     msTileColor: '#3d79de',
-    workboxOptions: {
-      skipWaiting: true,
-      clientsClaim: true,
-    },
+    workboxOptions: {},
   },
   chainWebpack: config => {
     const rule = config.module.rule('svg')
