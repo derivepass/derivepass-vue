@@ -1,7 +1,10 @@
  <template>
   <b-navbar class="mb-3" toggleable="md">
     <b-navbar-brand to="/">
-      <img src="../assets/logo.svg" :class="['logo', secureLogo]"/>
+      <img
+        src="../assets/logo.svg"
+        @load="isLogoVisible=true"
+        :class="['logo', secureLogo, visibleLogo]"/>
     </b-navbar-brand>
 
     <b-navbar-toggle target="m-main-nav"/>
@@ -31,7 +34,12 @@
 export default {
   name: 'nav-bar',
 
+  data() { return { isLogoVisible: false }; },
+
   computed: {
+    visibleLogo() {
+      return this.isLogoVisible ? 'visible' : '';
+    },
     secureLogo() {
       return this.$store.getters.showApps ? 'secure' : '';
     }
@@ -43,6 +51,9 @@ export default {
 .logo {
   width: 2rem;
   height: 2rem;
+}
+
+.logo.visible {
   background: rgba(0,0,0,0.9);
   transition: background 0.8s;
 }
