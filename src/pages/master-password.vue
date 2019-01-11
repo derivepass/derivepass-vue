@@ -98,6 +98,10 @@ export default {
     };
   },
 
+  beforeMount() {
+    this.$store.commit('resetCryptoKeys');
+  },
+
   computed: {
     ...mapState({
       hasApps(state) {

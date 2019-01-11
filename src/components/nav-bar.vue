@@ -1,6 +1,6 @@
  <template>
   <b-navbar class="mb-3" toggleable="md">
-    <b-navbar-brand to="/">
+    <b-navbar-brand :to="$store.getters.showApps ? '/applications' : '/'">
       <img
         src="../assets/logo.svg"
         @load="isLogoVisible=true"
@@ -21,7 +21,7 @@
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
         <template v-if="$store.getters.showApps">
-          <b-nav-item to="/master" @click="$store.commit('resetCryptoKeys')">
+          <b-nav-item to="/master">
             Logout
           </b-nav-item>
         </template>
