@@ -239,7 +239,10 @@ export default {
     onReset() {
       this.password = '';
       this.confirmPassword = '';
+      this.passwordChanged = false;
+      this.confirmChanged = false;
       this.isConfirming = false;
+
       setImmediate(() => this.$refs.passwordRef.focus());
     },
   }
