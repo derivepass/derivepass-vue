@@ -42,6 +42,10 @@ class DeriveWorker {
           throw new Error(`Unknown message type: "${type}"`);
         }
       };
+
+      worker.onerror = (e) => {
+        reject(e);
+      };
     });
 
     this.handle.onmessage = (e) => {
