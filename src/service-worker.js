@@ -5,7 +5,7 @@ workbox.clientsClaim();
 
 workbox.routing.registerRoute(
   'https://cdn.apple-cloudkit.com/ck/2/cloudkit.js',
-  workbox.strategies.networkFirst(),
+  workbox.strategies.staleWhileRevalidate(),
 );
 
 /**
