@@ -1,6 +1,5 @@
 workbox.core.setCacheNameDetails({prefix: "DerivePass"});
 
-workbox.skipWaiting();
 workbox.clientsClaim();
 
 workbox.routing.registerRoute(
