@@ -13,9 +13,6 @@ import App from './App.vue';
 
 // Pages
 import MasterPassword from './pages/master-password.vue';
-import ApplicationList from './pages/application-list.vue';
-import Application from './pages/application.vue';
-import Settings from './pages/settings.vue';
 
 // Store
 import storeConfig from './store/index';
@@ -78,9 +75,15 @@ localStorage.setStore(store);
 const routes = [
   { path: '/', redirect: '/master' },
   { path: '/master', component: MasterPassword },
-  { path: '/applications', component: ApplicationList },
-  { path: '/applications/:uuid', component: Application },
-  { path: '/settings', component: Settings },
+  {
+    path: '/applications',
+    component: () => import('./pages/application-list'),
+  },
+  {
+    path: '/applications/:uuid',
+    component: () => import('./pages/application'),
+  },
+  { path: '/settings', component: () => import('./pages/settings') },
   { path: '*', redirect: '/master' },
 ];
 
