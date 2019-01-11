@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "name": "vue",
+  "name": "derivepass",
+  "alias": [ "derivepass.com" ],
   "builds": [
     {"src": "package.json", "use": "@now/static-build"}
   ],
