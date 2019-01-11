@@ -5,9 +5,9 @@
         v-model="filter"
         placeholder="Filter applications"/>
       <b-input-group-append>
-        <b-btn variant="primary" class="float-right" @click="addApplication">
+        <b-button variant="primary" class="float-right" @click="addApplication">
           Add application
-        </b-btn>
+        </b-button>
       </b-input-group-append>
     </b-input-group>
     <template v-for="app in applications">
@@ -23,13 +23,23 @@
 
 <script>
 import { mapState } from 'vuex';
-import { decryptApp } from '../utils/crypto';
 import * as uuidV4 from 'uuid/v4';
+
+import bButton from 'bootstrap-vue/es/components/button/button';
+import bCard from 'bootstrap-vue/es/components/card/card';
+import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
+import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
+import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append';
+
+import { decryptApp } from '../utils/crypto';
 
 // TODO(indutny): re-order apps
 
 export default {
   name: 'application-list',
+  components: {
+    bInputGroup, bFormInput, bInputGroupAppend, bButton, bCard,
+  },
 
   beforeMount() {
     // Redirect to master password when not ready

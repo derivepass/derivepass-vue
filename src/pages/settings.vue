@@ -5,11 +5,16 @@
 </template>
 
 <script>
+import bCard from 'bootstrap-vue/es/components/card/card';
+
 import CloudKit from '../components/cloud-kit.vue';
 
 export default {
   name: 'settings',
-  components: { CloudKit },
+  components: {
+    bCard,
+    CloudKit,
+  },
 };
 </script>
 

@@ -7,19 +7,24 @@
       <b-alert show variant="danger">
         <p>Failed to connect to iCloud APIs!</p>
         <p>Details: <i>{{error.message || err}}</i></p>
-        <b-btn @click="error = undefined">Dismiss</b-btn>
+        <b-button @click="error = undefined">Dismiss</b-button>
       </b-alert>
     </template>
     <template v-else>
-      <b-btn @click="signOut" v-if="isAuthenticated">Disable</b-btn>
-      <b-btn @click="signIn" v-else>Enable</b-btn>
+      <b-button @click="signOut" v-if="isAuthenticated">Disable</b-button>
+      <b-button @click="signIn" v-else>Enable</b-button>
     </template>
   </div>
 </template>
 
 <script>
+import bAlert from 'bootstrap-vue/es/components/alert/alert';
+import bButton from 'bootstrap-vue/es/components/button/button';
+
 export default {
   name: 'cloud-kit',
+
+  components: { bAlert, bButton },
 
   data() {
     return { loading: true, error: null, isAuthenticated: false };

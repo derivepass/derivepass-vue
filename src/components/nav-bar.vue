@@ -31,8 +31,18 @@
 </template>
 
 <script>
+import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
+import bNavItem from 'bootstrap-vue/es/components/nav/nav-item';
+import bNavbar from 'bootstrap-vue/es/components/navbar/navbar';
+import bNavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
+import bNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
+import bNavbarToggle from 'bootstrap-vue/es/components/navbar/navbar-toggle';
+
 export default {
   name: 'nav-bar',
+  components: {
+    bNavbar, bNavbarBrand, bNavbarToggle, bNavbarNav, bNavItem, bCollapse,
+  },
 
   data() { return { isLogoVisible: false }; },
 

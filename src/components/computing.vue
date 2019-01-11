@@ -16,11 +16,15 @@
 </template>
 
 <script>
+import bModal from 'bootstrap-vue/es/components/modal/modal';
+import bProgress from 'bootstrap-vue/es/components/progress/progress';
+
 const COMPUTING_TIME = 2000;
 const COMPUTING_STEPS = 20;
 
 export default {
   name: 'computing',
+  components: { bModal, bProgress },
   props: {
     active: { type: Boolean, required: true },
     text: { type: String, required: true },

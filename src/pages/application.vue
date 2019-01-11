@@ -104,12 +104,28 @@
 </template>
 
 <script>
+import bButton from 'bootstrap-vue/es/components/button/button';
+import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
+import bCol from 'bootstrap-vue/es/components/layout/col';
+import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
+import bContainer from 'bootstrap-vue/es/components/layout/container';
+import bForm from 'bootstrap-vue/es/components/form/form';
+import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
+import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
+import bModal from 'bootstrap-vue/es/components/modal/modal';
+import bRow from 'bootstrap-vue/es/components/layout/row';
+
 import Computing from '../components/computing';
 import { decryptApp, encryptApp } from '../utils/crypto';
 
 export default {
   name: 'application',
-  components: { Computing },
+  components: {
+    bContainer, bRow, bCol, bCollapse, bModal, bButton, bButtonGroup, bForm,
+    bFormGroup, bFormInput,
+
+    Computing,
+  },
 
   data() {
     const uuid = this.$route.params.uuid;

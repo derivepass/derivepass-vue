@@ -75,6 +75,11 @@
 <script>
 import { mapState } from 'vuex';
 
+import bButton from 'bootstrap-vue/es/components/button/button';
+import bForm from 'bootstrap-vue/es/components/form/form';
+import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
+import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
+
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
@@ -82,7 +87,10 @@ const LOGOUT_TIMEOUT = 90000; // 90 seconds
 
 export default {
   name: 'master-password',
-  components: { Computing },
+  components: {
+    bButton, bForm, bFormGroup, bFormInput,
+    Computing,
+  },
 
   data() {
     return {

@@ -15,10 +15,17 @@
 </template>
 
 <script>
+import bCol from 'bootstrap-vue/es/components/layout/col';
+import bContainer from 'bootstrap-vue/es/components/layout/container';
+import bRow from 'bootstrap-vue/es/components/layout/row';
+
 import NavBar from '../components/nav-bar';
 
 export default {
   name: 'default-layout',
-  components: { NavBar },
+  components: {
+    bContainer, bRow, bCol,
+    NavBar
+  },
 };
 </script>
