@@ -166,7 +166,7 @@ export default {
         return 'Start';
       }
 
-      if (this.hasApps || !this.passwordChanged) {
+      if (this.hasApps) {
         return 'Decrypt';
       }
 
