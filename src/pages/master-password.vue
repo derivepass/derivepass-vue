@@ -6,7 +6,7 @@
       autocomplete="off">
       <b-form-group>
         <div class="emoji-hash text-center">
-          {{emojiHash}}
+          {{emoji}}
         </div>
       </b-form-group>
       <template v-if="!isConfirming">
@@ -32,7 +32,7 @@
       <template v-else>
         <b-form-group>
           <div class="emoji-hash text-center">
-            {{emojiConfirmHash}}
+            {{emojiConfirm}}
           </div>
         </b-form-group>
         <b-form-group
@@ -106,7 +106,7 @@ export default {
     ...mapState({
       hasApps(state) {
         const apps = state.applications;
-        const emoji = this.emojiHash;
+        const emoji = this.emoji;
         return apps.some((app) => app.master === emoji);
       },
       newUser(state) {
@@ -114,11 +114,11 @@ export default {
       }
     }),
 
-    emojiHash() {
+    emoji() {
       return emojiHash(this.password);
     },
 
-    emojiConfirmHash() {
+    emojiConfirm() {
       return emojiHash(this.confirmPassword);
     },
 
@@ -188,7 +188,7 @@ export default {
 
   methods: {
     onSubmit() {
-      const emoji = this.emojiHash;
+      const emoji = this.emoji;
 
       if (this.isConfirming) {
         if (!this.confirmState) {
