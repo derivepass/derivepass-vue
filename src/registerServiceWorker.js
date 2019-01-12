@@ -1,32 +1,30 @@
-/* eslint-disable no-console */
-
 import { register } from 'register-service-worker'
+import * as createDebug from 'debug';
+
+const debug = createDebug('derivepass:register-service-worker');
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
-    ready () {
-      console.log(
-        'App is being served from cache by a service worker.\n' +
-        'For more details, visit https://goo.gl/AFskqB'
-      )
+    ready() {
+      debug('app is being served from cache by a service worker');
     },
-    registered () {
-      console.log('Service worker has been registered.')
+    registered() {
+      debug('service worker has been registered');
     },
-    cached () {
-      console.log('Content has been cached for offline use.')
+    cached() {
+      debug('content has been cached for offline use');
     },
-    updatefound () {
-      console.log('New content is downloading.')
+    updatefound() {
+      debug('New content is downloading');
     },
-    updated () {
-      console.log('New content is available; please refresh.')
+    updated() {
+      debug('New content is available; please refresh');
     },
-    offline () {
-      console.log('No internet connection found. App is running in offline mode.')
+    offline() {
+      debug('No internet connection found. App is running in offline mode');
     },
-    error (error) {
-      console.error('Error during service worker registration:', error)
+    error(error) {
+      debug('Error during service worker registration:', error);
     }
   })
 }
