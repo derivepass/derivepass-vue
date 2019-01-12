@@ -19,7 +19,7 @@ class ServiceWorker {
       ready() {
         debug('app is being served from cache by a service worker');
       },
-      registered(reg) {
+      registered: (reg) => {
         debug('service worker has been registered');
 
         this.registration = reg;
