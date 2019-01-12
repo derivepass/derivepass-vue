@@ -67,11 +67,12 @@ class ServiceWorker {
     await new Promise((resolve, reject) => {
       const channel = new MessageChannel();
 
-      channel.port1.onmessage = (msg) => {
-        if (msg.type === 'ok') {
+      channel.port1.onmessage = (e) => {
+        const { type, payload } = e.data;
+        if (type === 'ok') {
           resolve();
-        } else if (msg.type === 'error') {
-          reject(new Error(msg.payload));
+        } else if (type === 'error') {
+          reject(new Error(payload));
         }
       };
 
