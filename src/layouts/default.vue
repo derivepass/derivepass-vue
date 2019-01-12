@@ -2,13 +2,17 @@
   <section id="page">
     <b-alert :show="updateAvailable" :variant="updateError ? 'danger': 'info'">
       <span v-if="updateError">
-        Update error: {{ updateError.message || updateError }}
+        <b>Update error:</b>
+        <br/>
+        {{ updateError.message || updateError }}
       </span>
       <span v-else-if="updating">
         Updating...
       </span>
       <span v-else>
-        Update available, installing in {{ updateIn }} seconds...
+        Update available,&nbsp;
+        <a href="#" class="alert-link" @click.prevent="update()">install now</a>
+        or in {{ updateIn }} secs
       </span>
     </b-alert>
 
@@ -34,7 +38,7 @@ import bRow from 'bootstrap-vue/es/components/layout/row';
 
 import NavBar from '../components/nav-bar';
 
-const UPDATE_TIMEOUT = 30;  // 30 seconds
+const UPDATE_TIMEOUT = 60;  // 60 seconds
 
 export default {
   name: 'default-layout',
@@ -83,6 +87,11 @@ export default {
     },
 
     update() {
+      if (this.updateTimer) {
+        clearTimeout(this.updateTimer);
+      }
+      this.updateTimer = null;
+
       this.updating = true;
 
       this.$serviceWorker.update()

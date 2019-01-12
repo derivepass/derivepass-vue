@@ -55,11 +55,11 @@ class ServiceWorker {
   async update() {
     const reg = this.registration;
     if (!reg) {
-      throw new Error('Can\'t update not registered worker');
+      throw new Error('No updates available (no active Service Worker)');
     }
 
     if (!reg.waiting) {
-      throw new Error('No workers waiting');
+      throw new Error('No updates available (no waiting Service Worker)');
     }
 
     const waiting = reg.waiting;
