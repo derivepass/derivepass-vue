@@ -15,7 +15,9 @@
         :to="`/applications/${app.uuid}`"
         :key= "app.uuid">
         <div class="application border rounded p-4 mb-1 align-middle">
-          <b>{{app.domain}}</b>/{{app.login}}
+          <b>{{app.domain}}</b>
+          <br/>
+          {{app.login}}
         </div>
       </router-link>
     </template>
@@ -107,6 +109,7 @@ export default {
   font-size: 1.2rem;
   text-overflow: ellipsis;
   overflow: hidden;
+  white-space:nowrap;
 }
 
 .application:hover {
