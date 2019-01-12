@@ -29,10 +29,10 @@ class ServiceWorker {
         debug('content has been cached for offline use');
       },
       updatefound() {
-        debug('New content is downloading');
+        debug('new content is downloading');
       },
       updated: () => {
-        debug('New content is available; please refresh');
+        debug('new content is available; please refresh');
         const queue = this.updateQueue;
         this.updateQueue = [];
         for (const resolve of queue) {
@@ -40,10 +40,10 @@ class ServiceWorker {
         }
       },
       offline() {
-        debug('No internet connection found. App is running in offline mode');
+        debug('no internet connection found. App is running in offline mode');
       },
       error(error) {
-        debug('Error during service worker registration:', error);
+        debug('error during service worker registration:', error);
       }
     });
   }
