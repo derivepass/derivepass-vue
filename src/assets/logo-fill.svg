@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-   sodipodi:docname="logo-fill.svg">
+   sodipodi:docname="logo-fill.svg"
+   inkscape:export-filename="/Users/findutnyy/Code/indutny/derivepass.vue/public/img/icons/mstile-150x150.png"
+   inkscape:export-xdpi="56.25"
+   inkscape:export-ydpi="56.25">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -26,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="124.60938"
+     inkscape:cx="119.10938"
      inkscape:cy="135.01783"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -90,7 +93,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -99,6 +102,13 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-796.36221)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1"
+       id="rect868"
+       width="256"
+       height="256"
+       x="0"
+       y="796.36218" />
     <path
        style="fill:#191919;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 127.99998,812.36217 a 56.04227,56.042344 0 0 0 -56.042245,56.04232 l 0,56.45279 a 69.88309,69.883182 0 0 0 -13.84124,41.62127 69.88309,69.883182 0 0 0 69.883485,69.88365 69.88309,69.883182 0 0 0 69.88349,-69.88365 69.88309,69.883182 0 0 0 -13.84125,-41.6093 l 0,-56.46476 a 56.04227,56.042344 0 0 0 -56.04224,-56.04232 z m 0,14.01058 a 42.031702,42.031758 0 0 1 42.03168,42.03174 l 0,42.32591 a 69.88309,69.883182 0 0 0 -42.03168,-14.13543 69.88309,69.883182 0 0 0 -42.031685,14.1628 l 0,-42.35328 a 42.031702,42.031758 0 0 1 42.031685,-42.03174 z m -7.00528,91.06877 14.01056,0 0,7.63981 a 42.031712,42.031768 0 0 1 35.0264,41.39722 42.031712,42.031768 0 0 1 -42.03168,42.03175 42.031712,42.031768 0 0 1 -42.031685,-42.03175 42.031712,42.031768 0 0 1 35.026405,-41.43656 l 0,-7.60047 z m 0,21.01587 0,8.23498 a 21.015852,21.01588 0 0 0 -14.01056,19.78618 21.015852,21.01588 0 0 0 21.01584,21.01594 21.015852,21.01588 0 0 0 21.01584,-21.01594 21.015852,21.01588 0 0 0 -14.01056,-19.7896 l 0,-8.23156 -14.01056,0 z"
