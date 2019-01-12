@@ -19,15 +19,15 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 /* Just testing */
 
-addEventListener('message', (e) => {
-  const port = e.ports[0];
-  const { type } = e.data;
+addEventListener('message', (event) => {
+  const port = event.ports[0];
+  const { type } = event.data;
 
   if (type === 'update') {
     const response = self.skipWaiting()
       .then(() => port.postMesage({ type: 'ok', payload: null }))
       .catch((err) => port.postMessage({ type: 'error', payload: err }));
 
-    e.waitUntil(response);
+    event.waitUntil(response);
   }
 });
