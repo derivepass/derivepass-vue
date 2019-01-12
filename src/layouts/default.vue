@@ -87,8 +87,7 @@ export default {
 
       this.$serviceWorker.update()
         .then(() => document.location.reload())
-        .catch((e) => this.updateError = e)
-        .finally(() => this.updating = false);
+        .catch((e) => this.updateError = e);
     },
   }
 };
