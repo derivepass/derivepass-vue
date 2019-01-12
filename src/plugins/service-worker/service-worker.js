@@ -1,8 +1,6 @@
 /* global workbox addEventListener */
 workbox.core.setCacheNameDetails({prefix: "DerivePass"});
 
-workbox.clientsClaim();
-
 workbox.routing.registerRoute(
   'https://cdn.apple-cloudkit.com/ck/2/cloudkit.js',
   workbox.strategies.staleWhileRevalidate(),
@@ -16,8 +14,6 @@ workbox.routing.registerRoute(
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
-
-/* Just testing */
 
 addEventListener('message', (event) => {
   const port = event.ports[0];
