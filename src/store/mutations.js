@@ -39,19 +39,9 @@ export default {
     state.master = payload.master;
     state.cryptoKeys = payload.crypto;
     state.emoji = payload.emoji;
-
-    if (state.logoutTimer) {
-      clearTimeout(state.logoutTimer);
-    }
-    state.logoutTimer = payload.logoutTimer;
   },
 
   resetCryptoKeys(state) {
-    if (state.logoutTimer) {
-      clearTimeout(state.logoutTimer);
-    }
-    state.logoutTimer = null;
-
     state.cryptoKeys = null;
     state.master = '';
     state.emoji = '';

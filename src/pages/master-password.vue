@@ -83,7 +83,7 @@ import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
-const LOGOUT_TIMEOUT = 90000; // 90 seconds
+const LOGOUT_TIMEOUT = 60 * 1000; // 60 seconds
 
 export default {
   name: 'master-password',
@@ -104,10 +104,6 @@ export default {
       computing: false,
       error: null,
     };
-  },
-
-  beforeMount() {
-    this.$store.commit('resetCryptoKeys');
   },
 
   computed: {
@@ -222,11 +218,12 @@ export default {
           master: this.password,
           crypto: keys,
           emoji: emoji,
-          logoutTimer: setTimeout(() => {
-            this.$store.commit('resetCryptoKeys');
-            this.$router.replace('/master');
-          }, LOGOUT_TIMEOUT),
         });
+
+        this.$autoLogout.login(() => {
+          this.$store.commit('resetCryptoKeys');
+          this.$router.replace('/');
+        }, LOGOUT_TIMEOUT);
 
         this.$router.push('/applications');
       }).catch((err) => {

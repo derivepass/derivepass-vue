@@ -21,7 +21,7 @@
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
         <template v-if="$store.getters.showApps">
-          <b-nav-item to="/master">
+          <b-nav-item @click.prevent="$autoLogout.logout()">
             Logout
           </b-nav-item>
         </template>
@@ -53,7 +53,7 @@ export default {
     secureLogo() {
       return this.$store.getters.showApps ? 'secure' : '';
     }
-  }
+  },
 };
 </script>
 

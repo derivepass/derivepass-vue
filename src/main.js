@@ -24,6 +24,7 @@ import LocalStorage from './utils/sync/local-storage';
 
 import DerivePass from './plugins/derivepass';
 import ServiceWorker from './plugins/service-worker';
+import AutoLogout from './plugins/auto-logout';
 
 import testFeatures from './utils/feature-test';
 
@@ -45,8 +46,11 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueClipboard);
+
+// Internal Plugins
 Vue.use(DerivePass);
 Vue.use(ServiceWorker);
+Vue.use(AutoLogout);
 
 const store = new Vuex.Store(storeConfig);
 
