@@ -11,8 +11,10 @@
       </b-input-group-append>
     </b-input-group>
     <template v-for="app in applications">
-      <router-link :to="`/applications/${app.uuid}`" :key="app.uuid">
-        <div class="application border rounded p-2 mb-1 align-middle">
+      <router-link
+        :to="`/applications/${app.uuid}`"
+        :key= "app.uuid">
+        <div class="application border rounded p-4 mb-1 align-middle">
           <b>{{app.domain}}</b>/{{app.login}}
         </div>
       </router-link>
@@ -101,6 +103,10 @@ export default {
 </script>
 
 <style scoped>
+.application {
+  font-size: 1.2rem;
+}
+
 .application:hover {
   background: #eee;
 }
