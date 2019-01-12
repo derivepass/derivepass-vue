@@ -31,7 +31,7 @@ class ServiceWorker {
       updatefound() {
         debug('New content is downloading');
       },
-      updated() {
+      updated: () => {
         debug('New content is available; please refresh');
         const queue = this.updateQueue;
         this.updateQueue = [];
