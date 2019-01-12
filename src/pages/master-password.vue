@@ -106,6 +106,13 @@ export default {
     };
   },
 
+  beforeMount() {
+    // Redirect to applications when logged in
+    if (this.$store.getters.isLoggedIn) {
+      this.$router.replace('/applications');
+    }
+  },
+
   computed: {
     ...mapState({
       hasApps(state) {
