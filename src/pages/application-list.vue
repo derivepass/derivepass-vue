@@ -105,6 +105,8 @@ export default {
 <style scoped>
 .application {
   font-size: 1.2rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .application:hover {
