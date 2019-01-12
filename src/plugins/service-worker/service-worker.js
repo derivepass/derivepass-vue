@@ -24,7 +24,7 @@ addEventListener('message', (event) => {
   if (type === 'update') {
     const response = self.skipWaiting()
       .then(() => port.postMesage({ type: 'ok', payload: null }))
-      .catch((err) => port.postMessage({ type: 'error', payload: err }));
+      .catch((err) => port.postMessage({ type: 'error', payload: err.message }));
 
     event.waitUntil(response);
   }
