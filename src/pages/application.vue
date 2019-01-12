@@ -27,7 +27,7 @@
       <b-button @click="$router.go(-1)" variant="link">Back</b-button>
     </div>
 
-    <computing :active="computing" text="Computing secure password"/>
+    <computing :active="computing" text="Computing secure password..."/>
 
     <b-collapse class="mt-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
