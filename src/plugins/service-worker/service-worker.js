@@ -17,6 +17,8 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
+/* Just testing */
+
 addEventListener('message', (e) => {
   const port = e.ports[0];
   const { type } = e.data;
