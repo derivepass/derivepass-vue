@@ -68,7 +68,7 @@
 
     <computing
       :active="computing"
-      text="Decryption keys are being computed..."/>
+      text="Computing decryption keys..."/>
   </div>
 </template>
 
