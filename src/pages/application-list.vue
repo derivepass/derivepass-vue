@@ -109,7 +109,7 @@ export default {
   font-size: 1.2rem;
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .application:hover {

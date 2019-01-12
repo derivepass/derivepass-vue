@@ -263,7 +263,7 @@ export default {
 .application-name {
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space:nowrap;
+  white-space: nowrap;
   font-size: 1.75rem;
 }
 
