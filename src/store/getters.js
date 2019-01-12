@@ -1,5 +1,5 @@
 export default {
-  showApps(state) {
+  isLoggedIn(state) {
     return state.cryptoKeys && state.emoji;
   }
 };

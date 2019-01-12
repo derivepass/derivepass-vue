@@ -127,7 +127,7 @@ export default {
 
     let app = this.$store.state.applications.find((app) => app.uuid === uuid);
     let isNew;
-    if (app && this.$store.getters.showApps) {
+    if (app && this.$store.getters.isLoggedIn) {
       isNew = false;
       app = decryptApp(app, this.$store.state.cryptoKeys);
     } else {
@@ -165,8 +165,8 @@ export default {
   },
 
   beforeMount() {
-    // Redirect to master password when not ready
-    if (!this.$store.getters.showApps) {
+    // Redirect to master password if not ready
+    if (!this.$store.getters.isLoggedIn) {
       this.$router.replace('/');
     }
   },

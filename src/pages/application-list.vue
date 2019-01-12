@@ -43,7 +43,7 @@ export default {
 
   beforeMount() {
     // Redirect to master password when not ready
-    if (!this.$store.getters.showApps) {
+    if (!this.$store.getters.isLoggedIn) {
       this.$router.replace('/');
     }
   },

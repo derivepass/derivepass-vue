@@ -1,6 +1,6 @@
  <template>
   <b-navbar class="mb-3" toggleable="md">
-    <b-navbar-brand :to="$store.getters.showApps ? '/applications' : '/'">
+    <b-navbar-brand :to="$store.getters.isLoggedIn ? '/applications' : '/'">
       <img
         src="../assets/logo.svg"
         @load="isLogoVisible=true"
@@ -11,8 +11,8 @@
 
     <b-collapse is-nav id="m-main-nav">
       <b-navbar-nav>
-        <template v-if="$store.getters.showApps">
-          <b-nav-item to="/applications" v-if="$store.getters.showApps">
+        <template v-if="$store.getters.isLoggedIn">
+          <b-nav-item to="/applications" v-if="$store.getters.isLoggedIn">
             Applications
           </b-nav-item>
         </template>
@@ -20,7 +20,7 @@
           <b-nav-item to="/master">Master Password</b-nav-item>
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
-        <template v-if="$store.getters.showApps">
+        <template v-if="$store.getters.isLoggedIn">
           <b-nav-item @click.prevent="$autoLogout.logout()">
             Logout
           </b-nav-item>
@@ -51,7 +51,7 @@ export default {
       return this.isLogoVisible ? 'visible' : '';
     },
     secureLogo() {
-      return this.$store.getters.showApps ? 'secure' : '';
+      return this.$store.getters.isLoggedIn ? 'secure' : '';
     }
   },
 };
