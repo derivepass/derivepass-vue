@@ -5,7 +5,7 @@ module.exports = {
     msTileColor: '#3d79de',
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      swSrc: 'src/service-worker.js',
+      swSrc: 'src/plugins/service-worker/service-worker.js',
     },
   },
   chainWebpack: config => {

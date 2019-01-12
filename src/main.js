@@ -23,9 +23,7 @@ import createCloudKit from './utils/cloud-kit-provider';
 import LocalStorage from './utils/sync/local-storage';
 
 import DerivePass from './plugins/derivepass';
-
-// Register Service Worker
-import './registerServiceWorker';
+import ServiceWorker from './plugins/service-worker';
 
 import testFeatures from './utils/feature-test';
 
@@ -48,6 +46,7 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueClipboard);
 Vue.use(DerivePass);
+Vue.use(ServiceWorker);
 
 const store = new Vuex.Store(storeConfig);
 
