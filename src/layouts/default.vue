@@ -10,7 +10,7 @@
         Updating...
       </span>
       <span v-else>
-        Update available,&nbsp;
+        Update available,
         <a href="#" class="alert-link" @click.prevent="update()">install now</a>
         or in {{ updateIn }} secs
       </span>
