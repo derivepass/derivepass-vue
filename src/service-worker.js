@@ -1,3 +1,4 @@
+/* global workbox */
 workbox.core.setCacheNameDetails({prefix: "DerivePass"});
 
 workbox.clientsClaim();
