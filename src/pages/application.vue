@@ -1,37 +1,31 @@
 <template>
   <div>
-    <b-container>
-      <b-row align-h="center">
-        <h1>
-          <template v-if="isNew">New Application</template>
-          <template v-else>Application</template>
-        </h1>
-      </b-row>
-      <b-row align-v="center">
-        <b-col v-if="app.domain || app.login">
-          <b>{{app.domain}}</b>/<i>{{app.login}}</i>
-        </b-col>
-        <b-col>
-          <b-button-group>
-            <b-button
-              v-if="password"
-              variant="primary"
-              @click="copyPassword">
-              {{ copied ? 'Copied' : 'Copy Password' }}
-            </b-button>
-            <b-button
-              v-else
-              variant="primary"
-              :disabled="isEmpty"
-              @click="compute()">
-              Compute Password
-            </b-button>
-            <b-button @click="showDetails = !showDetails">Details</b-button>
-            <b-button @click="$router.go(-1)">Back</b-button>
-          </b-button-group>
-        </b-col>
-      </b-row>
-    </b-container>
+    <template v-if="isNew">
+      <h3>New Application</h3>
+    </template>
+    <template v-else>
+      <div class="mb-2 application-name w-100">
+        <b>{{app.domain}}</b>/{{app.login}}
+      </div>
+    </template>
+
+    <div class="d-flex flex-column flex-lg-row application-buttons">
+      <b-button
+        v-if="password"
+        variant="primary"
+        @click="copyPassword">
+        {{ copied ? 'Copied' : 'Copy Password' }}
+      </b-button>
+      <b-button
+        v-else
+        variant="primary"
+        :disabled="isEmpty"
+        @click="compute()">
+        {{ computing ? 'Computing Password' : 'Compute Password' }}
+      </b-button>
+      <b-button @click="showDetails = !showDetails" variant="link">Edit</b-button>
+      <b-button @click="$router.go(-1)" variant="link">Back</b-button>
+    </div>
 
     <computing :active="computing" text="Computing secure password"/>
 
@@ -106,15 +100,12 @@
 <script>
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
-import bCol from 'bootstrap-vue/es/components/layout/col';
 import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
-import bContainer from 'bootstrap-vue/es/components/layout/container';
 import bForm from 'bootstrap-vue/es/components/form/form';
 import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import bModal from 'bootstrap-vue/es/components/modal/modal';
 import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
-import bRow from 'bootstrap-vue/es/components/layout/row';
 
 import Computing from '../components/computing';
 import { decryptApp, encryptApp } from '../utils/crypto';
@@ -122,7 +113,7 @@ import { decryptApp, encryptApp } from '../utils/crypto';
 export default {
   name: 'application',
   components: {
-    bContainer, bRow, bCol, bCollapse, bModal, bButton, bButtonGroup, bForm,
+    bCollapse, bModal, bButton, bButtonGroup, bForm,
     bFormGroup, bFormInput,
 
     Computing,
@@ -267,3 +258,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.application-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 1.75rem;
+}
+
+.application-buttons button {
+  display: block;
+}
+</style>

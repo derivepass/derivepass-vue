@@ -12,10 +12,9 @@
     </b-input-group>
     <template v-for="app in applications">
       <router-link :to="`/applications/${app.uuid}`" :key="app.uuid">
-        <b-card
-          class="application mb-1"
-          :title="app.domain"
-          :sub-title="app.login"/>
+        <div class="application border rounded p-2 mb-1 align-middle">
+          <b>{{app.domain}}</b>/{{app.login}}
+        </div>
       </router-link>
     </template>
   </div>
@@ -26,7 +25,6 @@ import { mapState } from 'vuex';
 import * as uuidV4 from 'uuid/v4';
 
 import bButton from 'bootstrap-vue/es/components/button/button';
-import bCard from 'bootstrap-vue/es/components/card/card';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append';
@@ -38,7 +36,7 @@ import { decryptApp } from '../utils/crypto';
 export default {
   name: 'application-list',
   components: {
-    bInputGroup, bFormInput, bInputGroupAppend, bButton, bCard,
+    bInputGroup, bFormInput, bInputGroupAppend, bButton,
   },
 
   beforeMount() {
