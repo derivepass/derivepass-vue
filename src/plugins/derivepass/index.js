@@ -1,6 +1,6 @@
 // TODO(indutny): webpack.config.js
 // Blocked by: https://github.com/vuejs/vue-cli/issues/3192
-import Worker from 'worker-loader!./derive.worker.js';
+import Worker from 'worker-loader?{"name":"js/worker.[hash:8].js"}!./derive.worker.js';
 import * as createDebug from 'debug';
 
 import { AES_KEY_SIZE, MAC_KEY_SIZE } from '../../utils/crypto';

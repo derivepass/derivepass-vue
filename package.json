@@ -24,7 +24,6 @@
     "worker-loader": "^2.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-plugin-pwa": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
