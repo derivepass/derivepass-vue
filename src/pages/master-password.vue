@@ -229,7 +229,7 @@ export default {
 
         this.$autoLogout.login(() => {
           this.$store.commit('resetCryptoKeys');
-          this.$router.replace('/');
+          this.$router.replace('/master');
         }, LOGOUT_TIMEOUT);
 
         this.$router.push('/applications', () => {

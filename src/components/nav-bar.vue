@@ -17,7 +17,7 @@
           </b-nav-item>
         </template>
         <template v-else>
-          <b-nav-item to="/">Master Password</b-nav-item>
+          <b-nav-item to="/master">Master Password</b-nav-item>
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
         <template v-if="$store.getters.isLoggedIn">
@@ -48,7 +48,7 @@ export default {
 
   computed: {
     visibleLogo() {
-      return this.isLogoVisible ? 'visible' : '';
+      return this.isLogoVisible ? 'logo-visible' : '';
     },
     secureLogo() {
       return this.$store.getters.isLoggedIn ? 'secure' : '';
@@ -63,7 +63,7 @@ export default {
   height: 2rem;
 }
 
-.logo.visible {
+.logo.logo-visible {
   background: rgba(0,0,0,0.9);
   transition: background 0.8s;
 }

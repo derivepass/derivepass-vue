@@ -12,6 +12,7 @@ const debug = createDebug('derivepass:main');
 import App from './App.vue';
 
 // Pages
+import Home from './pages/home.vue';
 import MasterPassword from './pages/master-password.vue';
 
 // Store
@@ -76,8 +77,8 @@ const localStorage = new LocalStorage();
 localStorage.setStore(store);
 
 const routes = [
-  { path: '/', component: MasterPassword },
-  { path: '/master', redirect: '/' },
+  { path: '/', component: Home },
+  { path: '/master', component: MasterPassword },
   {
     path: '/applications',
     component: () => import('./pages/application-list'),

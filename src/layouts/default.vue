@@ -21,24 +21,12 @@
     <b-container>
       <b-row>
         <b-col/>
-        <b-col md="9" xl="9">
+        <b-col xl="9">
           <slot/>
         </b-col>
         <b-col/>
       </b-row>
     </b-container>
-
-    <footer
-      v-if="$route.path === '/'"
-      class="text-right px-1 fixed-bottom">
-      <small>
-        Copyright {{new Date().getFullYear()}}, Fedor Indutny
-        <br/>
-        <a href="https://github.com/derivepass/derivepass-vue" target="_blank">
-          source code
-        </a>
-      </small>
-    </footer>
   </section>
 </template>
 
@@ -113,9 +101,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-footer {
-  opacity: 0.4;
-}
-</style>
