@@ -43,9 +43,7 @@
       </b-row>
     </b-container>
 
-    <footer
-      v-if="$route.path === '/'"
-      class="text-right px-1">
+    <footer class="text-right px-1">
       <small>
         Copyright {{new Date().getFullYear()}}, Fedor Indutny
         <br/>
