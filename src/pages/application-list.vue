@@ -2,7 +2,7 @@
   <div>
     <b-input-group class="mb-2">
       <b-form-input
-        v-model="filter"
+        v-model="rawFilter"
         placeholder="Filter applications"/>
       <b-input-group-append>
         <b-button variant="primary" class="float-right" @click="addApplication">
@@ -51,12 +51,18 @@ export default {
   },
 
   data() {
-    return { filter: this.$route.query.filter || '' };
+    return {
+      rawFilter: this.$route.query.filter || '',
+    };
   },
 
   computed: {
-    lowFilter() {
-      return this.filter.toLowerCase();
+    filter() {
+      try {
+        return new RegExp(this.rawFilter, 'i');
+      } catch (e) {
+        return /$^/;
+      }
     },
     ...mapState({
       decryptedApps(state) {
@@ -72,12 +78,8 @@ export default {
             return a.index - b.index;
           })
           .filter((app) => {
-            if (this.lowFilter) {
-              return app.domain.toLowerCase().includes(this.lowFilter) ||
-                app.login.toLowerCase().includes(this.lowFilter);
-            } else {
-              return true;
-            }
+            return this.filter.test(app.domain) ||
+              this.filter.test(app.login);
           });
       },
     })
