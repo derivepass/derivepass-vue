@@ -173,16 +173,39 @@ export default {
 
   computed: {
     domainState() {
-      return this.app.domain.length !== 0;
+      return this.invalidDomainFeedback === null;
     },
     invalidDomainFeedback() {
-      return 'Domain can\'t be empty';
+      const domain = this.app.domain;
+      if (domain.length === 0) {
+        return 'Domain can\'t be empty';
+      }
+
+      if (/^(www\.|\w+:\/\/)/.test(domain)) {
+        return 'Domain should not start with `www.`, `http://`, or any other ' +
+          '`schema://`';
+      }
+
+      if (/^\s+|\s+$/.test(domain)) {
+        return 'Domain should not start or end with whitespace';
+      }
+
+      return null;
     },
     loginState() {
-      return this.app.login.length !== 0;
+      return this.invalidLoginFeedback === null;
     },
     invalidLoginFeedback() {
-      return 'Login can\'t be empty';
+      const login = this.app.login;
+      if (login.length === 0) {
+        return 'Login can\'t be empty';
+      }
+
+      if (/^\s+|\s+$/.test(login)) {
+        return 'Login should not start or end with whitespace';
+      }
+
+      return null;
     },
     revisionState() {
       return this.app.revision > 0;
