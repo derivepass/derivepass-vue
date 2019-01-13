@@ -1,6 +1,6 @@
  <template>
   <b-navbar class="mb-3" toggleable="md">
-    <b-navbar-brand :to="$store.getters.isLoggedIn ? '/applications' : '/'">
+    <b-navbar-brand to="/">
       <img
         src="../assets/logo.svg"
         @load="isLogoVisible=true"
