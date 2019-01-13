@@ -3,11 +3,7 @@
     <b-container class="align-items-center">
       <b-row align-v="center" class="mb-3">
         <b-col class="col-6 mx-auto col-md-6 order-md-2">
-          <img
-            class="img-fluid"
-            width="1024"
-            height="1024"
-            src="../assets/logo-fill.svg"/>
+          <fancy-logo class="img-fluid" width="1024" height="1024"/>
         </b-col>
         <b-col class="col-md-6 order-md-1 text-center text-md-left pr-md-5">
           <h1 class="mb-3">DerivePass</h1>
@@ -61,9 +57,11 @@ import bCol from 'bootstrap-vue/es/components/layout/col';
 import bContainer from 'bootstrap-vue/es/components/layout/container';
 import bRow from 'bootstrap-vue/es/components/layout/row';
 
+import FancyLogo from '../components/fancy-logo';
+
 export default {
   name: 'home',
-  components: { bButton, bCol, bContainer, bRow },
+  components: { bButton, bCol, bContainer, bRow, FancyLogo },
 };
 </script>
 
