@@ -16,7 +16,7 @@
             Compute secure passwords without storing them anywhere.
           </p>
 
-          <b-button variant="primary" to="/master">Start</b-button>
+          <b-button variant="primary" size="lg" to="/master">Start</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -29,15 +29,15 @@
 
           <p>
             <b>DerivePass</b> is here to help with this task! Select the
-            <i>Master Password</i> once and use it to generate unlimited number of
-            secure website passwords.
+            <i>Master Password</i> once and use it to generate <b>unlimited</b>
+            number of secure website passwords.
           </p>
 
           <p>
             Unlike traditional password managers,
-            <b>DerivePass</b> never uploads neither the <i>Master Password</i> nor
-            website passwords to the Cloud. The only information that is stored is
-            encrypted website names and logins.
+            <b>DerivePass</b> never uploads neither the <i>Master Password</i>
+            nor website passwords to the Cloud. The only information that is
+            stored is <b>encrypted</b> website names and logins.
           </p>
         </b-col>
       </b-row>
