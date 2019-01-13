@@ -232,10 +232,11 @@ export default {
           this.$router.replace('/');
         }, LOGOUT_TIMEOUT);
 
-        this.$router.push('/applications');
+        this.$router.push('/applications', () => {
+          this.computing = false;
+        });
       }).catch((err) => {
         this.error = err;
-      }).finally(() => {
         this.computing = false;
       });
     },
