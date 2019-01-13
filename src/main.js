@@ -76,8 +76,8 @@ const localStorage = new LocalStorage();
 localStorage.setStore(store);
 
 const routes = [
-  { path: '/', redirect: '/master' },
-  { path: '/master', component: MasterPassword },
+  { path: '/', component: MasterPassword },
+  { path: '/master', redirect: '/' },
   {
     path: '/applications',
     component: () => import('./pages/application-list'),
