@@ -74,7 +74,10 @@
             @input="resetPassword"/>
         </b-form-group>
         <b-button-group class="text-right">
-          <b-button type="submit" variant="primary" :disabled="!hasChanged">
+          <b-button
+            type="submit"
+            variant="primary"
+            :disabled="!hasChanged || !canSubmit">
             {{ saved ? 'Saved' : 'Save' }}
           </b-button>
           <b-button variant="danger" v-b-modal.application-confirm-delete>
@@ -220,6 +223,9 @@ export default {
       return this.app.domain !== this.savedApp.domain ||
         this.app.login !== this.savedApp.login ||
         this.app.revision !== this.savedApp.revision;
+    },
+    canSubmit() {
+      return this.domainState && this.loginState;
     }
   },
 
