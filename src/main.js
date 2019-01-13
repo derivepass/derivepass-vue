@@ -13,7 +13,6 @@ import App from './App.vue';
 
 // Pages
 import Home from './pages/home.vue';
-import MasterPassword from './pages/master-password.vue';
 
 // Store
 import storeConfig from './store/index';
@@ -77,8 +76,9 @@ const localStorage = new LocalStorage();
 localStorage.setStore(store);
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/master', component: MasterPassword },
+  { path: '/', redirect: '/about' },
+  { path: '/about', component: Home },
+  { path: '/master', component: () => import('./pages/master-password') },
   {
     path: '/applications',
     component: () => import('./pages/application-list'),
@@ -88,7 +88,7 @@ const routes = [
     component: () => import('./pages/application'),
   },
   { path: '/settings', component: () => import('./pages/settings') },
-  { path: '*', redirect: '/master' },
+  { path: '*', redirect: '/' },
 ];
 
 const router = new VueRouter({

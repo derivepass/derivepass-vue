@@ -20,6 +20,9 @@
           <b-nav-item to="/master">Master Password</b-nav-item>
         </template>
         <b-nav-item to="/settings">Settings</b-nav-item>
+        <b-nav-item to="/about">
+          About
+        </b-nav-item>
         <template v-if="$store.getters.isLoggedIn">
           <b-nav-item @click.prevent="$autoLogout.logout()">
             Logout
