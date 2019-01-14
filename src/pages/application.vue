@@ -410,12 +410,12 @@ export default {
       }
 
       if (options.required !== undefined &&
-        options.required !== appOptions.required) {
+          options.required !== appOptions.required) {
         return true;
       }
 
       if (options.maxLength !== undefined &&
-        options.maxLength !== appOptions.maxLength) {
+          options.maxLength !== appOptions.maxLength) {
         return true;
       }
 
