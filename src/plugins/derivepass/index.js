@@ -1,21 +1,20 @@
 // TODO(indutny): webpack.config.js
 // Blocked by: https://github.com/vuejs/vue-cli/issues/3192
 import Worker from 'worker-loader?{"name":"js/worker.[hash:8].js"}!./derive.worker.js';
-import * as BN from 'bn.js';
 import * as createDebug from 'debug';
 
 import {
   AES_KEY_SIZE, MAC_KEY_SIZE,
+  LEGACY_PASSWORD_SIZE,
   passwordEntropyBits,
+  computeLegacyPassword,
+  computePassword,
 } from '../../utils/crypto';
 
 const debug = createDebug('derivepass:plugins:derivepass');
 const encoder = new TextEncoder('utf-8');
 
 const SCRYPT_AES_DOMAIN = 'derivepass/aes';
-const PASSWORD_OUT_SIZE = 18;
-const PASSWORD_BASE64 =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.'.split('');
 
 class DeriveWorker {
   constructor() {
@@ -123,55 +122,15 @@ class DerivePass {
   }
 
   async computeLegacyPassword(master, domain) {
-    const raw = await this.scrypt(master, domain, PASSWORD_OUT_SIZE);
+    const raw = await this.scrypt(master, domain, LEGACY_PASSWORD_SIZE);
 
-    let out = '';
-    for (let i = 0; i < raw.length; i += 3) {
-      const a = raw[i];
-      const b = raw[i + 1];
-      const c = raw[i + 2];
-
-      out += PASSWORD_BASE64[a >>> 2];
-      out += PASSWORD_BASE64[((a & 3) << 4) | (b >>> 4)];
-      out += PASSWORD_BASE64[((b & 0x0f) << 2) | (c >>> 6)];
-      out += PASSWORD_BASE64[c & 0x3f];
-    }
-
-    return out;
+    return computeLegacyPassword(raw);
   }
 
   async computePassword(master, domain, options) {
     const bytes = Math.ceil(passwordEntropyBits(options) / 8);
     const raw = await this.scrypt(master, domain, bytes);
-    const num = new BN(Array.from(raw), 'le');
-
-    const required = new Set(options.required);
-
-    let out = '';
-    while (out.length < options.maxLength) {
-      let alphabet;
-
-      // Emitted all required chars, move to allowed
-      if (required.size === 0) {
-        alphabet = options.allowed;
-
-      // Remaining space has to be filled with required chars
-      } else if (required.size === options.maxLength - out.length) {
-        alphabet = options.required;
-
-      // Just emit any chars
-      } else {
-        alphabet = options.union;
-      }
-
-      const ch = alphabet[num.modn(alphabet.length)];
-      num.idivn(alphabet.length);
-
-      required.delete(ch);
-      out += ch;
-    }
-
-    return out;
+    return computePassword(raw, options);
   }
 }
 

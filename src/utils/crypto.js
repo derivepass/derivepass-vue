@@ -1,6 +1,7 @@
 // TODO(indutny): dumb-crypto and wasm
 import { createCipheriv, createDecipheriv } from 'browserify-aes';
 import { sha256, hmac } from 'hash.js';
+import * as BN from 'bn.js';
 import * as createDebug from 'debug';
 
 const debug = createDebug('derivepass:utils:crypto');
@@ -144,6 +145,66 @@ export function encryptApp(app, keys) {
   });
 }
 
+// Password generation
+
+// NOTE: this is upper bound for an entropy, lower bound depends on the size
+// of `required` array.
 export function passwordEntropyBits(options) {
   return Math.ceil(Math.log2(options.union.length) * options.maxLength);
+}
+
+export const LEGACY_PASSWORD_SIZE = 18;
+export const PASSWORD_BASE64 =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.'.split('');
+
+export function computeLegacyPassword(raw) {
+  if (raw.length !== LEGACY_PASSWORD_SIZE) {
+    throw new Error('Invalid raw bytes');
+  }
+
+  let out = '';
+  for (let i = 0; i < raw.length; i += 3) {
+    const a = raw[i];
+    const b = raw[i + 1];
+    const c = raw[i + 2];
+
+    out += PASSWORD_BASE64[a >>> 2];
+    out += PASSWORD_BASE64[((a & 3) << 4) | (b >>> 4)];
+    out += PASSWORD_BASE64[((b & 0x0f) << 2) | (c >>> 6)];
+    out += PASSWORD_BASE64[c & 0x3f];
+  }
+
+  return out;
+}
+
+export function computePassword(raw, options) {
+  const num = new BN(Array.from(raw), 'le');
+
+  const required = new Set(options.required);
+
+  let out = '';
+  while (out.length < options.maxLength) {
+    let alphabet;
+
+    // Emitted all required chars, move to allowed
+    if (required.size === 0) {
+      alphabet = options.allowed;
+
+    // Remaining space has to be filled with required chars
+    } else if (required.size === options.maxLength - out.length) {
+      alphabet = Array.from(required);
+
+    // Just emit any chars
+    } else {
+      alphabet = options.union;
+    }
+
+    const ch = alphabet[num.modn(alphabet.length)];
+    num.idivn(alphabet.length);
+
+    required.delete(ch);
+    out += ch;
+  }
+
+  return out;
 }
