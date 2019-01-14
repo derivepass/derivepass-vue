@@ -26,6 +26,7 @@
     <b-pagination-nav
       v-if="showPagination"
       use-router
+      align="center"
       :link-gen="pageLink"
       :number-of-pages="numberOfPages"
       v-model="currentPage"/>
@@ -52,6 +53,12 @@ export default {
     bInputGroup, bFormInput, bInputGroupAppend, bButton, bPaginationNav,
   },
 
+  data() {
+    return {
+      rawFilter: this.$route.query.filter || '',
+    };
+  },
+
   beforeMount() {
     // Redirect to master password when not ready
     if (!this.$store.getters.isLoggedIn) {
@@ -59,14 +66,11 @@ export default {
     }
   },
 
-  data() {
-    return {
-      rawFilter: this.$route.query.filter || '',
-      currentPage: Math.max(1, parseInt(this.$route.query.page || '1', 10)),
-    };
-  },
-
   computed: {
+    currentPage() {
+      return Math.max(1, parseInt(this.$route.query.page || '1', 10));
+    },
+
     filter() {
       try {
         return new RegExp(this.rawFilter, 'i');
