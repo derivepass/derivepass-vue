@@ -80,24 +80,17 @@ export default {
       }
     },
     showPagination() {
-      return (this.allApps.length > APPS_PER_PAGE) ||
+      return (this.applications.length > APPS_PER_PAGE) ||
         this.currentPage > 1;
     },
     numberOfPages() {
-      return Math.ceil(this.allApps.length / APPS_PER_PAGE);
+      return Math.ceil(this.applications.length / APPS_PER_PAGE);
     },
     ...mapState({
-      allApps(state) {
+      decryptedApps(state) {
         return state.applications.filter((app) => {
           return app.master === state.emoji && !app.removed;
-        });
-      },
-      decryptedApps(state) {
-        const pageApps = this.allApps.slice(
-          (this.currentPage - 1) * APPS_PER_PAGE,
-          this.currentPage * APPS_PER_PAGE);
-
-        return pageApps.map((app) => {
+        }).map((app) => {
           return decryptApp(app, state.cryptoKeys);
         });
       },
@@ -109,7 +102,10 @@ export default {
           .filter((app) => {
             return this.filter.test(app.domain) ||
               this.filter.test(app.login);
-          });
+          })
+          .slice(
+            (this.currentPage - 1) * APPS_PER_PAGE,
+            this.currentPage * APPS_PER_PAGE);
       },
     })
   },
