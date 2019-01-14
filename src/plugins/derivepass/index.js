@@ -1,9 +1,13 @@
 // TODO(indutny): webpack.config.js
 // Blocked by: https://github.com/vuejs/vue-cli/issues/3192
 import Worker from 'worker-loader?{"name":"js/worker.[hash:8].js"}!./derive.worker.js';
+import * as BN from 'bn.js';
 import * as createDebug from 'debug';
 
-import { AES_KEY_SIZE, MAC_KEY_SIZE } from '../../utils/crypto';
+import {
+  AES_KEY_SIZE, MAC_KEY_SIZE,
+  passwordEntropyBits,
+} from '../../utils/crypto';
 
 const debug = createDebug('derivepass:plugins:derivepass');
 const encoder = new TextEncoder('utf-8');
@@ -118,8 +122,7 @@ class DerivePass {
     };
   }
 
-  async computePassword(master, domain) {
-    // TODO(indutny): website requirements
+  async computeLegacyPassword(master, domain) {
     const raw = await this.scrypt(master, domain, PASSWORD_OUT_SIZE);
 
     let out = '';
@@ -132,6 +135,40 @@ class DerivePass {
       out += PASSWORD_BASE64[((a & 3) << 4) | (b >>> 4)];
       out += PASSWORD_BASE64[((b & 0x0f) << 2) | (c >>> 6)];
       out += PASSWORD_BASE64[c & 0x3f];
+    }
+
+    return out;
+  }
+
+  async computePassword(master, domain, options) {
+    const bytes = Math.ceil(passwordEntropyBits(options) / 8);
+    const raw = await this.scrypt(master, domain, bytes);
+    const num = new BN(Array.from(raw), 'le');
+
+    const required = new Set(options.required);
+
+    let out = '';
+    while (out.length < options.maxLength) {
+      let alphabet;
+
+      // Emitted all required chars, move to allowed
+      if (required.size === 0) {
+        alphabet = options.allowed;
+
+      // Remaining space has to be filled with required chars
+      } else if (required.size === options.maxLength - out.length) {
+        alphabet = options.required;
+
+      // Just emit any chars
+      } else {
+        alphabet = options.union;
+      }
+
+      const ch = alphabet[num.modn(alphabet.length)];
+      num.idivn(alphabet.length);
+
+      required.delete(ch);
+      out += ch;
     }
 
     return out;

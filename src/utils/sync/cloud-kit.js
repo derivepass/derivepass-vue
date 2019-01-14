@@ -231,6 +231,7 @@ export default class CloudKit extends Sync {
       domain: fields.domain.value,
       login: fields.login.value,
       revision: fields.revision.value,
+      options: fields.options && fields.options.value,
 
       master: fields.master.value,
       index: fields.index.value,
@@ -258,6 +259,7 @@ export default class CloudKit extends Sync {
         domain: wrap(app.domain),
         login: wrap(app.login),
         revision: wrap(app.revision),
+        options: wrap(app.options),
         master: wrap(app.master),
         index: wrap(app.index),
         removed: wrap(app.removed ? 1 : 0),

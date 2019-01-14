@@ -131,6 +131,7 @@ export function decryptApp(app, keys) {
     domain: decrypt(app.domain, keys),
     login: decrypt(app.login, keys),
     revision: parseInt(decrypt(app.revision, keys), 10) || 1,
+    options: app.options && JSON.parse(decrypt(app.options, keys)),
   });
 }
 
@@ -139,5 +140,10 @@ export function encryptApp(app, keys) {
     domain: encrypt(app.domain, keys),
     login: encrypt(app.login, keys),
     revision: encrypt(app.revision.toString(), keys),
+    options: encrypt(JSON.stringify(app.options), keys),
   });
+}
+
+export function passwordEntropyBits(options) {
+  return Math.ceil(Math.log2(options.union.length) * options.maxLength);
 }

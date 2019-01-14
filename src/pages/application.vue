@@ -19,7 +19,7 @@
       <b-button
         v-else
         variant="primary"
-        :disabled="isEmpty"
+        :disabled="!isValidApp"
         @click="compute()">
         {{ computing ? 'Computing Password' : 'Compute Password' }}
       </b-button>
@@ -29,7 +29,7 @@
 
     <computing :active="computing" text="Computing secure password..."/>
 
-    <b-collapse class="mt-3" id="application-details" v-model="showDetails">
+    <b-collapse class="py-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
         <b-form-group
           label="Domain name"
@@ -73,11 +73,71 @@
             v-model="app.revision"
             @input="resetPassword"/>
         </b-form-group>
+
+        <b-form-group>
+          <b-button
+            v-b-toggle.application-options
+            variant="outline-danger">
+            Extra Options
+          </b-button>
+        </b-form-group>
+
+        <!-- TODO(indutny): validate allowed, required ranges -->
+        <!-- TODO(indutny): low entropy warning -->
+        <b-collapse id="application-options">
+          <p class="text-danger">
+            <i>Most websites do not require editing options below</i>
+          </p>
+
+          <b-form-group
+            label="Allowed characters"
+            label-for="application-allowed-chars"
+            description="Characters that CAN be present in the password"
+            :invalid-feedback="invalidAllowedFeedback"
+            :state="allowedState">
+            <b-form-input
+              required
+              id="application-allowed-chars"
+              v-model="app.options.allowed"
+              :state="allowedState ? null : 'invalid'"
+              @input="resetPassword"/>
+          </b-form-group>
+
+          <b-form-group
+            label="Required characters"
+            label-for="application-required-chars"
+            description="Characters that MUST be present in the password"
+            :invalid-feedback="invalidRequiredFeedback"
+            :state="requiredState">
+            <b-form-input
+              id="application-required-chars"
+              v-model="app.options.required"
+              :state="requiredState ? null : 'invalid'"
+              @input="resetPassword"/>
+          </b-form-group>
+
+          <b-form-group
+            label="Password length"
+            label-for="application-max-length"
+            :invalid-feedback="invalidLengthFeedback"
+            :state="lengthState">
+            <b-form-input
+              required
+              type="number"
+              id="application-max-length"
+              v-model="app.options.maxLength"
+              :state="lengthState ? null : 'invalid'"
+              @input="resetPassword"/>
+          </b-form-group>
+        </b-collapse>
+
+        <!-- buttons -->
+
         <b-button-group class="text-right">
           <b-button
             type="submit"
             variant="primary"
-            :disabled="!hasChanged || !canSubmit">
+            :disabled="!hasChanged || !isValidApp">
             {{ saved ? 'Saved' : 'Save' }}
           </b-button>
           <b-button variant="danger" v-b-modal.application-confirm-delete>
@@ -104,6 +164,7 @@
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
 import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
+import bToggleDirective from 'bootstrap-vue/es/directives/toggle/toggle';
 import bForm from 'bootstrap-vue/es/components/form/form';
 import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -111,7 +172,22 @@ import bModal from 'bootstrap-vue/es/components/modal/modal';
 import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 
 import Computing from '../components/computing';
-import { decryptApp, encryptApp } from '../utils/crypto';
+import { decryptApp, encryptApp, passwordEntropyBits } from '../utils/crypto';
+import { parseAppOptions, flattenRange } from '../utils/common';
+
+const MIN_ENTROPY = 64;
+
+const DEFAULT_OPTIONS = {
+  allowed: 'a-zA-Z0-9_.',
+  required: '',
+  maxLength: 24,
+};
+
+const isSameOptions = (a, b) => {
+  return a.allowed === b.allowed &&
+    a.required === b.required &&
+    a.maxLength === b.maxLength;
+};
 
 export default {
   name: 'application',
@@ -122,17 +198,25 @@ export default {
     Computing,
   },
   directives: {
+    bToggle: bToggleDirective,
     bModal: bModalDirective,
   },
 
   data() {
     const uuid = this.$route.params.uuid;
 
+    const defaultOptions = Object.assign({}, DEFAULT_OPTIONS);
+
     let app = this.$store.state.applications.find((app) => app.uuid === uuid);
     let isNew;
     if (app && this.$store.getters.isLoggedIn) {
       isNew = false;
       app = decryptApp(app, this.$store.state.cryptoKeys);
+
+      // Migrate old records
+      if (!app.options) {
+        app = Object.assign({}, app, { options: defaultOptions });
+      }
     } else {
       isNew = true;
       app = {
@@ -146,6 +230,8 @@ export default {
         index: parseInt(this.$route.query.index, 10) || 0,
         removed: false,
         changedAt: Date.now(),
+
+        options: defaultOptions,
       };
     }
 
@@ -156,8 +242,12 @@ export default {
 
     return {
       app,
-      savedApp: Object.assign({}, app),
+      savedApp: Object.assign({}, app, {
+        options: Object.assign({}, app.options),
+      }),
       isNew,
+
+      // General state
 
       showDetails: isNew,
       copied: false,
@@ -216,30 +306,98 @@ export default {
     invalidRevisionFeedback() {
       return 'Revision must be greater than zero';
     },
-    isEmpty() {
-      return !this.app.domain || !this.app.login;
+    allowedState() {
+      return this.invalidAllowedFeedback === null;
+    },
+    invalidAllowedFeedback() {
+      const allowed = this.app.options.allowed;
+      if (allowed.length === 0) {
+        throw new Error('Can\'t be empty');
+      }
+
+      try {
+        flattenRange(allowed);
+      } catch (e) {
+        return e.message;
+      }
+      return null;
+    },
+    requiredState() {
+      return this.invalidRequiredFeedback === null;
+    },
+    invalidRequiredFeedback() {
+      const required = this.app.options.required;
+      if (required.length === 0) {
+        throw new Error('Can\'t be empty');
+      }
+
+      try {
+        flattenRange(required);
+      } catch (e) {
+        return e.message;
+      }
+      return null;
+    },
+    lengthState() {
+      return this.invalidLengthFeedback === null;
+    },
+    invalidLengthFeedback() {
+      if (this.app.options.maxLength <= 1) {
+        return 'Must be greater than 1';
+      }
+
+      const required = flattenRange(this.app.options.required);
+      if (this.app.options.maxLength < required.length) {
+        return `Minimum length is ${required.length}`;
+      }
+
+      const bits = passwordEntropyBits(parseAppOptions(this.app.options));
+      if (bits < MIN_ENTROPY) {
+        return `Password is not strong enough. ` +
+          `Please increase length, or add more allowed characters`;
+      }
+
+      return null;
+    },
+
+    isValidApp() {
+      return this.domainState && this.loginState && this.revisionState &&
+        this.allowedState && this.requiredState && this.lengthState;
     },
     hasChanged() {
-      return this.app.domain !== this.savedApp.domain ||
-        this.app.login !== this.savedApp.login ||
-        this.app.revision !== this.savedApp.revision;
+      if (this.app.domain !== this.savedApp.domain ||
+          this.app.login !== this.savedApp.login ||
+          this.app.revision !== this.savedApp.revision) {
+        return true;
+      }
+
+      return !isSameOptions(this.app.options, this.savedApp.options);
     },
-    canSubmit() {
-      return this.domainState && this.loginState;
-    }
   },
 
   methods: {
     compute() {
       this.computing = true;
 
+      const app = this.app;
+
       const master = this.$store.state.master;
-      let domain = `${this.app.domain}/${this.app.login}`;
-      if (this.app.revision > 1) {
-        domain += `#${this.app.revision}`;
+      let domain = `${app.domain}/${app.login}`;
+      if (app.revision > 1) {
+        domain += `#${app.revision}`;
       }
 
-      this.$derivepass.computePassword(master, domain).then((password) => {
+      const isLegacy = isSameOptions(app.options, DEFAULT_OPTIONS);
+
+      let promise;
+      if (isLegacy) {
+        promise = this.$derivepass.computeLegacyPassword(master, domain);
+      } else {
+        promise = this.$derivepass.computePassword(master, domain,
+          parseAppOptions(app.options));
+      }
+
+      promise.then((password) => {
         this.password = password;
       }).catch((err) => {
         this.error = err;
