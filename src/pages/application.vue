@@ -312,7 +312,7 @@ export default {
     invalidAllowedFeedback() {
       const allowed = this.app.options.allowed;
       if (allowed.length === 0) {
-        throw new Error('Can\'t be empty');
+        return 'Can\'t be empty';
       }
 
       try {
