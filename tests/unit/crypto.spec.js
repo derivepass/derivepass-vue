@@ -81,7 +81,7 @@ describe('crypto', () => {
   });
 
   it('should compute password', () => {
-    // master: hello, domain: gmail.com/test
+    // master: test, domain: test.com/indutny
     const pass = crypto.computePassword([
       185, 200, 253, 102, 60, 26, 11, 22, 171, 244, 181,
     ], parseAppOptions({
