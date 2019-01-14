@@ -15,7 +15,8 @@
         <router-link
           :to="`/applications/${app.uuid}`"
           :key= "app.uuid">
-          <div class="application border rounded p-4 mb-1 align-middle">
+          <div
+            class="application border rounded px-4 py-2 p-md-4 mb-1 align-middle">
             <b>{{app.domain}}</b>
             <br/>
             {{app.login}}
