@@ -18,13 +18,13 @@
       <b-row>
         <b-col>
           <p>
-            Most websites require a password on Sign Up. Using the
+            Most websites require password on Sign Up. Using the
             same password everywhere is insecure. Using individual secure
             passwords and remembering all of them - impossible!
           </p>
 
           <p>
-            <b>DerivePass</b> is here to help with this task! Select the
+            <b>DerivePass</b> is here to help with the task! Choose the
             <i>Master Password</i> once and use it to generate <b>unlimited</b>
             number of secure website passwords.
           </p>
