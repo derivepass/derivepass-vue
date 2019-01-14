@@ -80,11 +80,11 @@ export default {
       }
     },
     showPagination() {
-      return (this.applications.length > APPS_PER_PAGE) ||
+      return (this.allApplications.length > APPS_PER_PAGE) ||
         this.currentPage > 1;
     },
     numberOfPages() {
-      return Math.ceil(this.applications.length / APPS_PER_PAGE);
+      return Math.ceil(this.allApplications.length / APPS_PER_PAGE);
     },
     ...mapState({
       decryptedApps(state) {
@@ -94,7 +94,7 @@ export default {
           return decryptApp(app, state.cryptoKeys);
         });
       },
-      applications() {
+      allApplications() {
         return this.decryptedApps
           .sort((a, b) => {
             return a.index - b.index;
@@ -103,7 +103,9 @@ export default {
             return this.filter.test(app.domain) ||
               this.filter.test(app.login);
           })
-          .slice(
+      },
+      applications() {
+        return this.allApplications.slice(
             (this.currentPage - 1) * APPS_PER_PAGE,
             this.currentPage * APPS_PER_PAGE);
       },
