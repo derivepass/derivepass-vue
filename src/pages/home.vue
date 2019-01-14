@@ -18,7 +18,7 @@
       <b-row>
         <b-col>
           <p>
-            Most websites online require a password on Sign Up. Using the
+            Most websites require a password on Sign Up. Using the
             same password everywhere is insecure. Using individual secure
             passwords and remembering all of them - impossible!
           </p>
