@@ -115,6 +115,12 @@ export default class CloudKit extends Sync {
     const records = apps.map((app) => this.appToRecord(app));
 
     const res = await this.db.saveRecords(records);
+
+    // Update tag and modification dates
+    for (const record of (res.records || [])) {
+      this.receiveRecord(record);
+    }
+
     if (!res.hasErrors) {
       debug('successfully sent apps');
       return;
