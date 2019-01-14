@@ -43,8 +43,16 @@
             id="application-domain"
             v-model="app.domain"
             placeholder="gmail.com"
-            @input="resetPassword"/>
+            @input="onChange"/>
         </b-form-group>
+
+        <b-alert :show="hasPreset" variant="warning" dismissible>
+          <p>
+            <b>Recommended</b> configuration is available for this domain.
+          </p>
+          <b-button variant="warning" @click.prevent="usePreset">Use</b-button>
+        </b-alert>
+
         <b-form-group
           label="Login"
           label-for="application-login"
@@ -57,7 +65,7 @@
             id="application-login"
             v-model="app.login"
             placeholder="my@email.com"
-            @input="resetPassword"/>
+            @input="onChange"/>
         </b-form-group>
         <b-form-group
           label="Revision"
@@ -71,7 +79,7 @@
             type="number"
             id="application-revision"
             v-model="app.revision"
-            @input="resetPassword"/>
+            @input="onChange"/>
         </b-form-group>
 
         <b-form-group>
@@ -82,8 +90,6 @@
           </b-button>
         </b-form-group>
 
-        <!-- TODO(indutny): validate allowed, required ranges -->
-        <!-- TODO(indutny): low entropy warning -->
         <b-collapse id="application-options">
           <p class="text-danger">
             <i>Most websites do not require editing options below</i>
@@ -100,7 +106,7 @@
               id="application-allowed-chars"
               v-model="app.options.allowed"
               :state="allowedState ? null : 'invalid'"
-              @input="resetPassword"/>
+              @input="onChange"/>
           </b-form-group>
 
           <b-form-group
@@ -113,7 +119,7 @@
               id="application-required-chars"
               v-model="app.options.required"
               :state="requiredState ? null : 'invalid'"
-              @input="resetPassword"/>
+              @input="onChange"/>
           </b-form-group>
 
           <b-form-group
@@ -127,7 +133,7 @@
               id="application-max-length"
               v-model="app.options.maxLength"
               :state="lengthState ? null : 'invalid'"
-              @input="resetPassword"/>
+              @input="onChange"/>
           </b-form-group>
         </b-collapse>
 
@@ -161,6 +167,7 @@
 </template>
 
 <script>
+import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
 import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
@@ -174,6 +181,7 @@ import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 import Computing from '../components/computing';
 import { decryptApp, encryptApp, passwordEntropyBits } from '../utils/crypto';
 import { parseAppOptions, flattenRange } from '../utils/common';
+import PRESETS from '../presets';
 
 const MIN_ENTROPY = 64;
 
@@ -193,7 +201,7 @@ export default {
   name: 'application',
   components: {
     bCollapse, bModal, bButton, bButtonGroup, bForm,
-    bFormGroup, bFormInput,
+    bFormGroup, bFormInput, bAlert,
 
     Computing,
   },
@@ -254,6 +262,7 @@ export default {
       saved: false,
       computing: false,
       password: '',
+      presetDomain: null,
     };
   },
 
@@ -377,9 +386,55 @@ export default {
 
       return !isSameOptions(this.app.options, this.savedApp.options);
     },
+
+    hasPreset() {
+      if (!PRESETS.has(this.app.domain)) {
+        return false;
+      }
+
+      const preset = PRESETS.get(this.app.domain);
+      if (preset.domain !== this.app.domain) {
+        return true;
+      }
+
+      const options = preset.options;
+      const appOptions = this.app.options;
+      if (options.allowed !== undefined &&
+          options.allowed !== appOptions.allowed) {
+        return true;
+      }
+
+      if (options.required !== undefined &&
+        options.required !== appOptions.required) {
+        return true;
+      }
+
+      if (options.maxLength !== undefined &&
+        options.maxLength !== appOptions.maxLength) {
+        return true;
+      }
+
+      return false;
+    },
   },
 
   methods: {
+    usePreset() {
+      if (!PRESETS.has(this.app.domain)) {
+        return;
+      }
+
+      const preset = PRESETS.get(this.app.domain);
+      this.app.domain = preset.domain;
+      this.presetDomain = preset.domain;
+
+      const options = preset.options;
+      const appOptions = this.app.options;
+      appOptions.allowed = options.allowed || DEFAULT_OPTIONS.allowed;
+      appOptions.required = options.required || DEFAULT_OPTIONS.required;
+      appOptions.maxLength = options.maxLength || DEFAULT_OPTIONS.maxLength;
+    },
+
     compute() {
       this.computing = true;
 
@@ -409,10 +464,15 @@ export default {
         this.computing = false;
       });
     },
-    resetPassword() {
+    onChange() {
+      // Reset password
       this.password = '';
       this.copied = false;
       this.saved = false;
+
+      if (this.presetDomain && this.app.domain !== this.presetDomain) {
+        this.app.options = Object.assign({}, this.savedApp.options);
+      }
     },
     copyPassword() {
       if (this.copied) {
