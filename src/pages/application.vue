@@ -347,7 +347,15 @@ export default {
         return `Minimum length is ${required.length}`;
       }
 
-      const bits = passwordEntropyBits(parseAppOptions(this.app.options));
+      let parsedOptions;
+      try {
+        parsedOptions = parseAppOptions(this.app.options);
+      } catch (e) {
+        // Invalid ranges
+        return null;
+      }
+
+      const bits = passwordEntropyBits(parsedOptions);
       if (bits < MIN_ENTROPY) {
         return `Password is not strong enough. ` +
           `Please increase length, or add more allowed characters`;

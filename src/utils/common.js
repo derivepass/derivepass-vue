@@ -30,12 +30,12 @@ export function flattenRange(str) {
   });
 
   // Report invalid ranges
-  str.replace(/[^\\]-|-\W|^-\w?/, (invalid) => {
-    throw new Error(`Invalid range "${invalid}"`);
+  str.replace(/[^\\]-|[^\\]-\W|^-\W|^-\w?/, (invalid) => {
+    throw new Error(`Unterminated range "${invalid}"`);
   });
 
-  // Unescape `\-`
-  str = str.replace(/\\-/g, '-');
+  // Unescape `\x` => `x`
+  str = str.replace(/\\(.)/g, '$1');
 
   return Array.from(new Set(str.split(''))).sort();
 }

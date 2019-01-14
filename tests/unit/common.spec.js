@@ -5,8 +5,8 @@ import * as common from '../../src/utils/common';
 describe('common', () => {
   it('should flatten valid range', () => {
     assert.deepStrictEqual(
-      common.flattenRange('0-3\\-A'),
-      [ '-', '0', '1', '2', '3', 'A' ],
+      common.flattenRange('0-3\\-\\x\\\\A'),
+      [ '-', '0', '1', '2', '3', 'A', '\\', 'x' ],
     );
   });
 
