@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 
 import bButton from 'bootstrap-vue/es/components/button/button';
@@ -211,7 +212,7 @@ export default {
         if (!this.hasApps) {
           // No known apps, needs confirmation
           this.isConfirming = true;
-          setImmediate(() => this.$refs.confirmRef.focus());
+          Vue.nextTick(() => this.$refs.confirmRef.focus());
           return;
         }
 
@@ -248,7 +249,7 @@ export default {
       this.confirmChanged = false;
       this.isConfirming = false;
 
-      setImmediate(() => this.$refs.passwordRef.focus());
+      Vue.nextTick(() => this.$refs.passwordRef.focus());
     },
   }
 };
