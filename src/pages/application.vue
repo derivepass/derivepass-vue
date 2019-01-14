@@ -327,10 +327,6 @@ export default {
     },
     invalidRequiredFeedback() {
       const required = this.app.options.required;
-      if (required.length === 0) {
-        throw new Error('Can\'t be empty');
-      }
-
       try {
         flattenRange(required);
       } catch (e) {
