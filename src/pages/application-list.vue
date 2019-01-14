@@ -10,17 +10,25 @@
         </b-button>
       </b-input-group-append>
     </b-input-group>
-    <template v-for="app in applications">
-      <router-link
-        :to="`/applications/${app.uuid}`"
-        :key= "app.uuid">
-        <div class="application border rounded p-4 mb-1 align-middle">
-          <b>{{app.domain}}</b>
-          <br/>
-          {{app.login}}
-        </div>
-      </router-link>
-    </template>
+    <section class="applications">
+      <template v-for="app in applications">
+        <router-link
+          :to="`/applications/${app.uuid}`"
+          :key= "app.uuid">
+          <div class="application border rounded p-4 mb-1 align-middle">
+            <b>{{app.domain}}</b>
+            <br/>
+            {{app.login}}
+          </div>
+        </router-link>
+      </template>
+    </section>
+    <b-pagination-nav
+      v-if="showPagination"
+      use-router
+      :link-gen="pageLink"
+      :number-of-pages="numberOfPages"
+      v-model="currentPage"/>
   </div>
 </template>
 
@@ -32,15 +40,16 @@ import bButton from 'bootstrap-vue/es/components/button/button';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append';
+import bPaginationNav from 'bootstrap-vue/es/components/pagination-nav/pagination-nav';
 
 import { decryptApp } from '../utils/crypto';
 
-// TODO(indutny): re-order apps
+const APPS_PER_PAGE = 10;
 
 export default {
   name: 'application-list',
   components: {
-    bInputGroup, bFormInput, bInputGroupAppend, bButton,
+    bInputGroup, bFormInput, bInputGroupAppend, bButton, bPaginationNav,
   },
 
   beforeMount() {
@@ -53,6 +62,7 @@ export default {
   data() {
     return {
       rawFilter: this.$route.query.filter || '',
+      currentPage: Math.max(1, parseInt(this.$route.query.page || '1', 10)),
     };
   },
 
@@ -64,11 +74,25 @@ export default {
         return /$^/;
       }
     },
+    showPagination() {
+      return (this.allApps.length > APPS_PER_PAGE) ||
+        this.currentPage > 1;
+    },
+    numberOfPages() {
+      return Math.ceil(this.allApps.length / APPS_PER_PAGE);
+    },
     ...mapState({
-      decryptedApps(state) {
+      allApps(state) {
         return state.applications.filter((app) => {
           return app.master === state.emoji && !app.removed;
-        }).map((app) => {
+        });
+      },
+      decryptedApps(state) {
+        const pageApps = this.allApps.slice(
+          (this.currentPage - 1) * APPS_PER_PAGE,
+          this.currentPage * APPS_PER_PAGE);
+
+        return pageApps.map((app) => {
           return decryptApp(app, state.cryptoKeys);
         });
       },
@@ -86,10 +110,13 @@ export default {
   },
 
   watch: {
-    filter(newValue) {
+    rawFilter(newValue) {
       this.$router.replace({
         path: '/applications',
-        query: { filter: newValue },
+        query: {
+          filter: newValue,
+          page: this.currentPage === 1 ? undefined : this.currentPage,
+        },
       });
     }
   },
@@ -101,6 +128,13 @@ export default {
         path: `/applications/${uuidV4()}`,
         query: { index },
       });
+    },
+
+    pageLink(num) {
+      const query = Object.assign({}, this.$route.query, {
+        page: num,
+      })
+      return { path: '/applications', query };
     },
   }
 };
