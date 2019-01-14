@@ -402,20 +402,18 @@ export default {
         return true;
       }
 
-      const options = preset.options;
+      const options = Object.assign({}, DEFAULT_OPTIONS, preset.options);
+
       const appOptions = this.app.options;
-      if (options.allowed !== undefined &&
-          options.allowed !== appOptions.allowed) {
+      if (options.allowed !== appOptions.allowed) {
         return true;
       }
 
-      if (options.required !== undefined &&
-          options.required !== appOptions.required) {
+      if (options.required !== appOptions.required) {
         return true;
       }
 
-      if (options.maxLength !== undefined &&
-          options.maxLength !== appOptions.maxLength) {
+      if (options.maxLength !== appOptions.maxLength) {
         return true;
       }
 
@@ -433,11 +431,12 @@ export default {
       this.app.domain = preset.domain;
       this.presetDomain = preset.domain;
 
-      const options = preset.options;
+      const options = Object.assign({}, DEFAULT_OPTIONS, preset.options);
+
       const appOptions = this.app.options;
-      appOptions.allowed = options.allowed || DEFAULT_OPTIONS.allowed;
-      appOptions.required = options.required || DEFAULT_OPTIONS.required;
-      appOptions.maxLength = options.maxLength || DEFAULT_OPTIONS.maxLength;
+      appOptions.allowed = options.allowed;
+      appOptions.required = options.required;
+      appOptions.maxLength = options.maxLength;
     },
 
     compute() {
