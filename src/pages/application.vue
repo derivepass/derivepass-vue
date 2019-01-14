@@ -151,6 +151,9 @@
             :disabled="!hasChanged || !isValidApp">
             {{ saved ? 'Saved' : 'Save' }}
           </b-button>
+          <b-button @click.prevent="onReset()">
+            Reset
+          </b-button>
           <b-button variant="danger" v-b-modal.application-confirm-delete>
             Delete
           </b-button>
@@ -185,16 +188,12 @@ import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 
 import Computing from '../components/computing';
 import { decryptApp, encryptApp, passwordEntropyBits } from '../utils/crypto';
-import { parseAppOptions, flattenRange } from '../utils/common';
+import {
+  parseAppOptions, flattenRange, DEFAULT_APP_OPTIONS,
+} from '../utils/common';
 import PRESETS from '../presets';
 
 const MIN_ENTROPY = 64;
-
-const DEFAULT_OPTIONS = {
-  allowed: 'a-zA-Z0-9_.',
-  required: '',
-  maxLength: 24,
-};
 
 const isSameOptions = (a, b) => {
   return a.allowed === b.allowed &&
@@ -218,7 +217,7 @@ export default {
   data() {
     const uuid = this.$route.params.uuid;
 
-    const defaultOptions = Object.assign({}, DEFAULT_OPTIONS);
+    const defaultOptions = Object.assign({}, DEFAULT_APP_OPTIONS);
 
     let app = this.$store.state.applications.find((app) => app.uuid === uuid);
     let isNew;
@@ -402,9 +401,9 @@ export default {
         return true;
       }
 
-      const options = Object.assign({}, DEFAULT_OPTIONS, preset.options);
-
+      const options = preset.options;
       const appOptions = this.app.options;
+
       if (options.allowed !== appOptions.allowed) {
         return true;
       }
@@ -431,9 +430,9 @@ export default {
       this.app.domain = preset.domain;
       this.presetDomain = preset.domain;
 
-      const options = Object.assign({}, DEFAULT_OPTIONS, preset.options);
-
+      const options = preset.options;
       const appOptions = this.app.options;
+
       appOptions.allowed = options.allowed;
       appOptions.required = options.required;
       appOptions.maxLength = options.maxLength;
@@ -450,7 +449,7 @@ export default {
         domain += `#${app.revision}`;
       }
 
-      const isLegacy = isSameOptions(app.options, DEFAULT_OPTIONS);
+      const isLegacy = isSameOptions(app.options, DEFAULT_APP_OPTIONS);
 
       let promise;
       if (isLegacy) {
@@ -499,6 +498,11 @@ export default {
       Object.assign(this.savedApp, this.app);
       this.saved = true;
       setTimeout(() => this.saved = false, 2500);
+    },
+    onReset() {
+      Object.assign(this.app, Object.assign({}, this.savedApp, {
+        options: Object.assign({}, this.savedApp.options),
+      }));
     },
     onDelete() {
       const app = Object.assign(

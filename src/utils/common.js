@@ -1,6 +1,12 @@
 export const ENV =
   process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
+export const DEFAULT_APP_OPTIONS = {
+  allowed: 'a-zA-Z0-9_.',
+  required: '',
+  maxLength: 24,
+};
+
 export function flattenRange(str) {
   if (/\s/.test(str)) {
     throw new Error('Can\'t contain whitespace');

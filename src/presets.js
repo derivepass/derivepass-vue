@@ -1,3 +1,5 @@
+import { DEFAULT_APP_OPTIONS } from './utils/common';
+
 const RAW = {
   'google.com': {
     alias: [ 'accounts.google.com', 'gmail.com', 'youtube.com' ],
@@ -45,7 +47,7 @@ Object.keys(RAW).forEach((domain) => {
     PRESETS.set(alias, {
       domain,
 
-      options: Object.assign({}, entry.options || {}),
+      options: Object.assign({}, DEFAULT_APP_OPTIONS, entry.options || {}),
     });
   }
 });
