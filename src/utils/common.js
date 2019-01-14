@@ -6,16 +6,18 @@ export function flattenRange(str) {
     throw new Error('Can\'t contain whitespace');
   }
 
-  const chars = str.replace(/(\w)-(\w)/g, (range, from, to) => {
-    if (from.length !== 1) {
+  // a-zA-Z
+  str = str.replace(/(\w)-(\w)/g, (range, from, to) => {
+    const fromCode = from.charCodeAt(0);
+    const toCode = to.charCodeAt(0);
+
+    if (from.length !== 1 || fromCode > 0xff) {
       throw new Error(`Invalid starting character in range "${range}"`);
     }
-    if (to.length !== 1) {
+    if (to.length !== 1 || toCode > 0xff) {
       throw new Error(`Invalid ending character in range "${range}"`);
     }
 
-    const fromCode = from.charCodeAt(0);
-    const toCode = to.charCodeAt(0);
     if (fromCode > toCode) {
       throw new Error(`Invalid range "${range}"`);
     }
@@ -27,7 +29,15 @@ export function flattenRange(str) {
     return res;
   });
 
-  return Array.from(new Set(chars.split(''))).sort();
+  // Report invalid ranges
+  str.replace(/[^\\]-|-\W|^-\w?/, (invalid) => {
+    throw new Error(`Invalid range "${invalid}"`);
+  });
+
+  // Unescape `\-`
+  str = str.replace(/\\-/g, '-');
+
+  return Array.from(new Set(str.split(''))).sort();
 }
 
 export function parseAppOptions(options) {
