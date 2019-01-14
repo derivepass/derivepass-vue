@@ -50,6 +50,11 @@
           <p>
             <b>Recommended</b> configuration is available for this domain.
           </p>
+          <p class="text-danger" v-if="!isNew">
+            Changing configuration for an existing app will change computed
+            computed password. Consider computing and copying current password
+            <b>before</b> using making a change.
+          </p>
           <b-button variant="warning" @click.prevent="usePreset">Use</b-button>
         </b-alert>
 
