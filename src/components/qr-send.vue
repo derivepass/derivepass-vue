@@ -1,5 +1,5 @@
 <template>
-  <img class="img-fluid" width="256" height="256" :src="encode(codes[index])"/>
+  <img class="img-fluid" width="1024" height="1024" :src="encode(codes[index])"/>
 </template>
 
 <script>
@@ -7,7 +7,8 @@ import { mapState } from 'vuex';
 import * as qrImage from 'qr-image';
 
 const INIT_INTERVAL = 750;
-const UPDATE_INTERVAL = 250;
+const INIT_EVERY = 10;
+const UPDATE_INTERVAL = 500;
 
 export default {
   name: 'qr-send',
@@ -35,18 +36,23 @@ export default {
         return [];
       }
 
-      return [
-        [
-          'init',
-          {
-            init: INIT_INTERVAL,
-            update: UPDATE_INTERVAL,
-            count: this.applications.length,
-          },
-        ],
-      ].concat(this.applications.map((app) => {
-        return [ 'app', app ];
-      }));
+      const init = [
+        'init',
+        {
+          init: INIT_INTERVAL,
+          update: UPDATE_INTERVAL,
+          count: this.applications.length,
+        },
+      ];
+
+      const list = this.applications.map((app) => [ 'app', app ]);
+      for (let i = list.length - 1; i >= 0; i--) {
+        if (i % INIT_EVERY === 0) {
+          list.splice(i, 0, init);
+        }
+      }
+
+      return list;
     },
   },
 

@@ -7,6 +7,7 @@
       Synchronization complete
     </b-alert>
     <b-progress
+      :show-progress="total > 0"
       v-if="!complete"
       :value="received.length"
       :max="total"
