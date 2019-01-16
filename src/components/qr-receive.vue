@@ -24,10 +24,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import jsQR from 'jsqr';
+
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bProgress from 'bootstrap-vue/es/components/progress/progress';
-
-import jsQR from 'jsqr';
 
 const UPDATE_INTERVAL = 100;
 
@@ -77,7 +78,10 @@ export default {
         video.srcObject = stream;
         video.play();
         this.ready = true;
-        video.scrollIntoView(true);
+
+        Vue.nextTick(() => {
+          video.scrollIntoView(true);
+        });
       }).catch((e) => {
         this.error = e.message;
       });
