@@ -10,7 +10,7 @@
     <div class="text-center mb-1">{{text}}</div>
     <b-progress
       :value="progress"
-      variant="info"
+      variant="primary"
       animated/>
   </b-modal>
 </template>
