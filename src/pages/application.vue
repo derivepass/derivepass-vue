@@ -9,7 +9,7 @@
       </div>
     </template>
 
-    <div class="d-flex flex-column flex-lg-row application-buttons">
+    <div class="d-flex flex-column flex-md-row application-buttons">
       <b-button
         v-if="password"
         variant="primary"
