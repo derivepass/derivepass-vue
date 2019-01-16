@@ -77,6 +77,7 @@ export default {
         video.srcObject = stream;
         video.play();
         this.ready = true;
+        video.scrollIntoView(true);
       }).catch((e) => {
         this.error = e.message;
       });
