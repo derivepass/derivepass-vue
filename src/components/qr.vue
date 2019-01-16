@@ -1,5 +1,10 @@
 <template>
   <b-card title="QR Sync">
+    <p class="card-text">
+      Sync data directly between two devices, by displaying QR codes on one,
+      and scanning them on another.
+    </p>
+
     <b-button-group>
       <b-button variant="outline-primary" @click="send = !send">
         {{ send ? 'Stop Sending' : 'Send' }}
