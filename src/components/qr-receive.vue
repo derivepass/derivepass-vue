@@ -39,7 +39,7 @@ export default {
       lastData: null,
 
       received: [],
-      total: 1,
+      total: 0,
     };
   },
 
@@ -51,6 +51,7 @@ export default {
 
   methods: {
     activate() {
+      this.total = 0;
       this.complete = false;
 
       // Not mounted yet
