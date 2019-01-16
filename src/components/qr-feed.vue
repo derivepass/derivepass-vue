@@ -1,5 +1,5 @@
 <template>
-  <b-card title="QR Sync">
+  <b-card title="QR One-Way Sync">
     <p class="card-text">
       Sync data directly between two devices by displaying QR codes on one,
       and scanning them on another.
@@ -34,7 +34,7 @@ import Send from './qr-send';
 import Receive from './qr-receive';
 
 export default {
-  name: 'qr',
+  name: 'qr-feed',
   components: {
     bButton, bButtonGroup, bCard, bCollapse,
     Send, Receive,
