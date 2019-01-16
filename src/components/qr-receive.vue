@@ -12,6 +12,7 @@
       :value="received.length"
       :max="total"
       variant="info"
+      class="mb-2"
       animated/>
     <video v-show="active" class="w-100" ref="videoRef" playsinline/>
     <canvas style="display:none" ref="canvasRef"/>
