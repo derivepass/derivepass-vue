@@ -84,7 +84,7 @@ import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
-const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
+const LOGOUT_TIMEOUT = 3 * 3 * 1000; // 3 minutes of total inactivity
 
 export default {
   name: 'master-password',
@@ -230,7 +230,14 @@ export default {
 
         this.$autoLogout.login(() => {
           this.$store.commit('resetCryptoKeys');
-          this.$router.replace('/master');
+
+          const needRedirect = this.$route.matched.some((route) => {
+            return route.meta.requiresAuth;
+          });
+
+          if (needRedirect) {
+            this.$router.push('/');
+          }
         }, LOGOUT_TIMEOUT);
 
         this.$router.push('/applications', () => {

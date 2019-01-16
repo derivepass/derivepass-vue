@@ -8,10 +8,12 @@ export default [
   {
     path: '/applications',
     component: () => import('./pages/application-list'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/applications/:uuid',
     component: () => import('./pages/application'),
+    meta: { requiresAuth: true },
   },
   { path: '/settings', component: () => import('./pages/settings') },
   { path: '*', redirect: '/' },

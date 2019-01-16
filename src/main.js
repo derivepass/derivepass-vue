@@ -36,6 +36,18 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next();
+    } else {
+      next({ path: '/master' });
+    }
+  } else {
+    next();
+  }
+});
+
 plugins.installStoreDependent(Vue, { store });
 
 new Vue({

@@ -60,13 +60,6 @@ export default {
     };
   },
 
-  beforeMount() {
-    // Redirect to master password when not ready
-    if (!this.$store.getters.isLoggedIn) {
-      this.$router.replace('/');
-    }
-  },
-
   computed: {
     currentPage() {
       return Math.max(1, parseInt(this.$route.query.page || '1', 10));

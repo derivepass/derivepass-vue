@@ -151,8 +151,6 @@ export default {
       const canvas = this.$refs.canvasRef;
       const video = this.$refs.videoRef;
 
-      this.$autoLogout.reset();
-
       const width = video.videoWidth;
       const height = video.videoHeight;
       if (width === 0 || height === 0) {

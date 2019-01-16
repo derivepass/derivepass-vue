@@ -76,8 +76,6 @@ export default {
     activate() {
       const schedule = () => {
         return setTimeout(() => {
-          this.$autoLogout.reset();
-
           this.index++;
           if (this.index === this.codes.length) {
             this.index = 0;

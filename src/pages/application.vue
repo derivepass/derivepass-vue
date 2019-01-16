@@ -275,13 +275,6 @@ export default {
     };
   },
 
-  beforeMount() {
-    // Redirect to master password if not ready
-    if (!this.$store.getters.isLoggedIn) {
-      this.$router.replace('/');
-    }
-  },
-
   computed: {
     domainState() {
       return this.invalidDomainFeedback === null;
