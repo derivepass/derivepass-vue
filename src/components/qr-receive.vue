@@ -111,7 +111,9 @@ export default {
         throw new Error('Video recording is not supported by browser');
       }
 
-      return await navigator.mediaDevices.getUserMedia({ video: {} });
+      return await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
     },
 
     update() {
