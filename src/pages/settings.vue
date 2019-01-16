@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
-    <qr-duplex class="mb-2"/>
     <cloud-kit class="mb-2"/>
+    <qr-duplex class="mb-2"/>
     <qr-feed/>
   </div>
 </template>
