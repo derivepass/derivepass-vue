@@ -42,7 +42,7 @@
             :state="domainState ? null : 'invalid'"
             id="application-domain"
             v-model="app.domain"
-            placeholder="gmail.com"
+            placeholder="google.com"
             @input="onChange"/>
         </b-form-group>
 
