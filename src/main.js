@@ -43,6 +43,12 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ path: '/master' });
     }
+  } else if (to.matched.some((route) => route.meta.noAuth)) {
+    if (store.getters.isLoggedIn) {
+      next({ path: '/applications' });
+    } else {
+      next();
+    }
   } else {
     next();
   }

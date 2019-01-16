@@ -84,7 +84,7 @@ import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
-const LOGOUT_TIMEOUT = 3 * 3 * 1000; // 3 minutes of total inactivity
+const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
 
 export default {
   name: 'master-password',
@@ -105,13 +105,6 @@ export default {
       computing: false,
       error: null,
     };
-  },
-
-  beforeMount() {
-    // Redirect to applications when logged in
-    if (this.$store.getters.isLoggedIn) {
-      this.$router.replace('/applications');
-    }
   },
 
   computed: {

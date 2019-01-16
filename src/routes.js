@@ -4,7 +4,11 @@ import Home from './pages/home.vue';
 export default [
   { path: '/', redirect: '/about' },
   { path: '/about', component: Home },
-  { path: '/master', component: () => import('./pages/master-password') },
+  {
+    path: '/master',
+    component: () => import('./pages/master-password'),
+    meta: { noAuth: true },
+  },
   {
     path: '/applications',
     component: () => import('./pages/application-list'),
