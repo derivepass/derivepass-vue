@@ -84,7 +84,7 @@ import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 import Computing from '../components/computing';
 import emojiHash from '../utils/emoji-hash';
 
-const LOGOUT_TIMEOUT = 60 * 1000; // 60 seconds
+const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
 
 export default {
   name: 'master-password',
