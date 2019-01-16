@@ -34,7 +34,7 @@
         <b-form-group
           label="Domain name"
           label-for="application-domain"
-          description="Examples: gmail.com, fb.com, etc"
+          description="Examples: google.com, fb.com, etc"
           :invalid-feedback="invalidDomainFeedback"
           :state="domainState">
           <b-form-input
@@ -291,6 +291,10 @@ export default {
       if (/^(www\.|\w+:\/\/)/.test(domain)) {
         return 'Domain should not start with `www.`, `http://`, or any other ' +
           '`schema://`';
+      }
+
+      if (/[A-Z]/.test(domain)) {
+        return 'Domain should be lower-case';
       }
 
       if (/^\s+|\s+$/.test(domain)) {
