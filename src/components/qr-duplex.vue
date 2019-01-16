@@ -1,25 +1,11 @@
 <template>
   <b-card title="QR Two-Way Sync">
-    <p class="card-text">
-      Sync data directly between two devices by pointing their screens and
-      camers to each other.
-    </p>
-
     <b-alert :show="!!error" variant="warning" dismissible>
       {{ error }}
     </b-alert>
     <b-alert :show="complete" variant="success">
       Synchronization complete
     </b-alert>
-
-    <div>
-      <b-button
-        variant="outline-primary"
-        class="mb-3"
-        @click="running ? stop() : start()">
-        {{ running ? 'Stop' : 'Start' }}
-      </b-button>
-    </div>
 
     <div v-if="running && !ready" class="text-info">Initializing video...</div>
 
@@ -34,7 +20,7 @@
 
     <b-container v-show="ready && !complete" class="align-items-center mt-3">
       <b-row align-v="center">
-        <b-col class="col-12 mx-auto col-md-6">
+        <b-col class="col-8 mx-auto">
           <img
             ref="imageRef"
             class="img-fluid"
@@ -42,7 +28,7 @@
             height="1024"
             :src="code"/>
         </b-col>
-        <b-col class="col-12 mx-auto col-md-6">
+        <b-col class="col-4 mx-auto">
           <video
             class="img-fluid"
             ref="videoRef"
@@ -51,11 +37,26 @@
       </b-row>
     </b-container>
 
+    <p class="card-text">
+      Sync data directly between two devices by pointing their screens and
+      camers to each other.
+    </p>
+
+    <div>
+      <b-button
+        variant="outline-primary"
+        class="mb-3"
+        @click="running ? stop() : start()">
+        {{ running ? 'Stop' : 'Start' }}
+      </b-button>
+    </div>
+
     <canvas style="display:none" ref="canvasRef"/>
   </b-card>
 </template>
 
 <script>
+import Vue from 'vue';
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bCard from 'bootstrap-vue/es/components/card/card';
@@ -198,8 +199,12 @@ export default {
         return;
       }
 
-      this.ready = true;
-      this.$refs.imageRef.scrollIntoView(true);
+      if (!this.ready) {
+        Vue.nextTick(() => {
+          this.$refs.imageRef.scrollIntoView(true);
+        });
+        this.ready = true;
+      }
 
       const context = canvas.getContext("2d");
 
