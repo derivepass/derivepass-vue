@@ -20,7 +20,7 @@
 
     <b-container v-show="ready && !complete" class="align-items-center mt-3">
       <b-row align-v="center">
-        <b-col class="col-4 mx-auto">
+        <b-col class="col-8 mx-auto">
           <img
             ref="imageRef"
             class="img-fluid"

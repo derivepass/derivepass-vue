@@ -54,26 +54,24 @@ export default class QRIO {
       return;
     }
 
-    if (!code || !code.binaryData) {
+    if (!code || !code.data) {
       // No QR code
       return;
     }
 
     // Skip duplicates
-    if (this.lastData && isEqual(code.binaryData, this.lastData)) {
+    if (isEqual(code.data, this.lastData)) {
       return;
     }
-    this.lastData = code.binaryData;
-    debug('raw', code.binaryData);
+    this.lastData = code.data;
 
     let packet;
     try {
-      const raw = pako.inflate(code.binaryData, { to: 'string' });
+      const raw = pako.inflate(code.data, { to: 'string' });
       packet = JSON.parse(raw);
     } catch (e) {
       throw new Error('Malformed packet');
     }
-    debug('packet', packet);
 
     if (packet[1] === 'data') {
       const seq = packet[2];
