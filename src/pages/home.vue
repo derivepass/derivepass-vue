@@ -1,10 +1,22 @@
 <i18n>
 {
   "en": {
-    "lead": "Compute secure passwords without storing them anywhere."
+    "lead": "Compute secure passwords without storing them anywhere.",
+    "start": "Start",
+    "description": [
+      "Most websites require password on Sign Up. Using the same password everywhere is insecure. Using individual secure passwords and remembering all of them - impossible!",
+      "<b>DerivePass</b> is here to help with the task! Choose the <i>Master Password</i> once and use it to generate <b>unlimited</b> number of secure website passwords.",
+      "Unlike traditional password managers, <b>DerivePass</b> never uploads neither the <i>Master Password</i> nor website passwords to the Cloud. The only information that is stored is <b>encrypted</b> website names and logins."
+    ]
   },
   "ru": {
-    "lead": "Генерируйте надежные пароли, не сохраняя их копий."
+    "lead": "Генерируйте надежные пароли, не сохраняя их копий.",
+    "start": "Начать",
+    "description": [
+      "Большинство веб-сайтов требуют пароль во время регистрации. Использование одинакового пароля для всех сайтов - небезопасно. Использование разных надежных паролей и запоминание их всех - невозможно!",
+      "<b>DerivePass</b> готов помочь в решении этой задачи! Выберите <i>Мастер Пароль</i> один раз и используйте его для создания <b>бесконечного</b> числа надежных паролей для веб-сайтов.",
+      "В отличии от традиционных менеджеров паролей, <b>DerivePass</b> не загружает в облако ни <i>Мастер Пароль</i>, ни пароли от веб-сайтов. Единственная сохраняемая информация - это <b>зашифрованные</b> названия веб-сайтов и имена пользователей."
+    ]
   }
 }
 </i18n>
@@ -23,29 +35,16 @@
             {{ $t('lead') }}
           </p>
 
-          <b-button variant="primary" size="lg" to="/master">Start</b-button>
+          <b-button variant="primary" size="lg" to="/master">
+            {{ $t('start') }}
+          </b-button>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <p>
-            Most websites require password on Sign Up. Using the
-            same password everywhere is insecure. Using individual secure
-            passwords and remembering all of them - impossible!
-          </p>
-
-          <p>
-            <b>DerivePass</b> is here to help with the task! Choose the
-            <i>Master Password</i> once and use it to generate <b>unlimited</b>
-            number of secure website passwords.
-          </p>
-
-          <p>
-            Unlike traditional password managers,
-            <b>DerivePass</b> never uploads neither the <i>Master Password</i>
-            nor website passwords to the Cloud. The only information that is
-            stored is <b>encrypted</b> website names and logins.
-          </p>
+          <p v-html="$t('description[0]')"/>
+          <p v-html="$t('description[1]')"/>
+          <p v-html="$t('description[2]')"/>
         </b-col>
       </b-row>
     </b-container>
