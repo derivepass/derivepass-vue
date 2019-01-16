@@ -53,7 +53,7 @@
           {{ $t('about') }}
         </b-nav-item>
         <template v-if="$store.getters.isLoggedIn">
-          <b-nav-item @click.prevent="$autoLogout.logout()">
+          <b-nav-item @click.prevent="logout">
             {{ $t('logout') }}
           </b-nav-item>
         </template>
@@ -106,6 +106,13 @@ export default {
       return this.$store.getters.isLoggedIn ? 'secure' : '';
     }
   },
+
+  methods: {
+    logout() {
+      this.$autoLogout.logout();
+      this.$router.push('/');
+    }
+  }
 };
 </script>
 
