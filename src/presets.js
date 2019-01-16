@@ -35,6 +35,12 @@ const RAW = {
       maxLength: 20,
     },
   },
+
+  'nic.ru': {
+    options: {
+      allowed: 'a-zA-Z0-9',
+    }
+  },
 }
 
 const PRESETS = new Map();
