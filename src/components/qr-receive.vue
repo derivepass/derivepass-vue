@@ -51,6 +51,8 @@ export default {
 
   methods: {
     activate() {
+      this.complete = false;
+
       // Not mounted yet
       if (!this.$refs.videoRef) {
         return;
