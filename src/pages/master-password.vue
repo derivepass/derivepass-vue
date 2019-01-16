@@ -1,3 +1,60 @@
+<i18n>
+{
+  "en": {
+    "master": {
+      "description": "Used for decrypting storage and computing passwords",
+      "label": {
+        "new": "Choose your Master Password",
+        "existing": "Enter your Master Password"
+      },
+      "feedback": {
+        "not-empty": "Master Password can't be empty"
+      }
+    },
+    "confirm": {
+      "label": "Confirm your Master Password",
+      "feedback": {
+        "almost": "Just a few more characters...",
+        "no-match": "Password and confirmation should match"
+      }
+    },
+    "submit": {
+      "start": "Start",
+      "decrypt": "Decrypt",
+      "next": "Next"
+    },
+    "reset": "Reset",
+    "computing": "Computing decryption keys..."
+  },
+  "ru": {
+    "master": {
+      "description": "Используется для расшифровки хранилища и генерации паролей",
+      "label": {
+        "new": "Выберите ваш Мастер Пароль",
+        "existing": "Введите ваш Мастер Пароль"
+      },
+      "feedback": {
+        "not-empty": "Мастер Пароль не может быть пустым"
+      }
+    },
+    "confirm": {
+      "label": "Подтвердите ваш Мастер Пароль",
+      "feedback": {
+        "almost": "Еще немного символов...",
+        "no-match": "Пароль и подтверждение должны быть одинаковыми"
+      }
+    },
+    "submit": {
+      "start": "Начать",
+      "decrypt": "Расшифровать",
+      "next": "Далее"
+    },
+    "reset": "Сброс",
+    "computing": "Генерируем криптографические ключи..."
+  }
+}
+</i18n>
+
 <template>
   <div>
     <b-form
@@ -14,7 +71,7 @@
           v-if="!isConfirming"
           :label="masterLabel"
           label-for="master-input"
-          description="Used for decrypting storage and computing passwords"
+          :description="$t('master.description')"
           :invalid-feedback="invalidPasswordFeedback"
           :state="passwordState">
           <b-form-input
@@ -37,7 +94,7 @@
         </b-form-group>
         <b-form-group
           v-if="isConfirming"
-          label="Confirm your Master Password"
+          :label="$t('confirm.label')"
           label-for="master-confirmation"
           :invalid-feedback="invalidConfirmFeedback"
           :state="confirmState">
@@ -63,12 +120,12 @@
         class="ml-2"
         v-if="isConfirming"
         type="reset"
-        variant="danger">Reset</b-button>
+        variant="danger">{{ $t('reset') }}</b-button>
     </b-form>
 
     <computing
       :active="computing"
-      text="Computing decryption keys..."/>
+      :text="$t('computing')"/>
   </div>
 </template>
 
@@ -137,7 +194,7 @@ export default {
     },
     invalidPasswordFeedback() {
       if (this.password.length === 0) {
-        return 'Master Password can\'t be empty';
+        return this.$t('master.feedback.not-empty');
       } else {
         return '';
       }
@@ -152,9 +209,9 @@ export default {
     invalidConfirmFeedback() {
       if (this.confirmPassword.length !== 0 &&
           this.password.startsWith(this.confirmPassword)) {
-        return 'Just a few more characters...';
+        return this.$t('confirm.feedback.almost');
       } else if (this.confirmPassword !== this.password) {
-        return 'Password and confirmation should match';
+        return this.$t('confirm.feedback.no-match');
       } else {
         return '';
       }
@@ -162,20 +219,20 @@ export default {
 
     masterLabel() {
       return this.newUser ?
-        'Choose your Master Password' :
-        'Enter your Master Password';
+        this.$t('master.label.new') :
+        this.$t('master.label.existing');
     },
 
     submitText() {
       if (this.isConfirming) {
-        return 'Start';
+        return this.$t('submit.start');
       }
 
       if (this.hasApps) {
-        return 'Decrypt';
+        return this.$t('submit.decrypt');
       }
 
-      return 'Next';
+      return this.$t('submit.next');
     },
 
     canSubmit() {
