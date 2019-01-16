@@ -202,6 +202,12 @@ const isSameOptions = (a, b) => {
     a.maxLength === b.maxLength;
 };
 
+const cloneApp = (app, into) => {
+  return Object.assign(into || {}, app, {
+    options: Object.assign({}, app.options),
+  });
+};
+
 export default {
   name: 'application',
   components: {
@@ -255,9 +261,7 @@ export default {
 
     return {
       app,
-      savedApp: Object.assign({}, app, {
-        options: Object.assign({}, app.options),
-      }),
+      savedApp: cloneApp(app),
       isNew,
 
       // General state
@@ -500,14 +504,12 @@ export default {
         });
       this.$store.commit('receiveApp', app);
 
-      Object.assign(this.savedApp, this.app);
+      cloneApp(this.app, this.savedApp);
       this.saved = true;
       setTimeout(() => this.saved = false, 2500);
     },
     onReset() {
-      Object.assign(this.app, Object.assign({}, this.savedApp, {
-        options: Object.assign({}, this.savedApp.options),
-      }));
+      cloneApp(this.savedApp, this.app);
     },
     onDelete() {
       const app = Object.assign(
