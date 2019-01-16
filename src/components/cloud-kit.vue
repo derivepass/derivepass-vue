@@ -1,13 +1,36 @@
+<i18n>
+{
+  "en": {
+    "title": "iCloud Sync",
+    "connecting": "Connecting to iCloud...",
+    "failed": "Failed to connect to iCloud!",
+    "details": "Details",
+    "dismiss": "Dismiss",
+    "disable": "Disable",
+    "enable": "Enable"
+  },
+  "ru": {
+    "title": "Синхронизация с iCloud",
+    "connecting": "Подключение к iCloud...",
+    "failed": "Не удалось соединиться с iCloud!",
+    "details": "Подробности",
+    "dismiss": "Скрыть",
+    "disable": "Отключить",
+    "enable": "Включить"
+  }
+}
+</i18n>
+
 <template>
-  <b-card title="iCloud Sync">
+  <b-card :title="$t('title')">
     <template v-if="loading">
-      <b-alert show variant="info">Connecting to iCloud APIs...</b-alert>
+      <b-alert show variant="info">{{ $t('connecting') }}</b-alert>
     </template>
     <template v-else-if="error">
       <b-alert show variant="danger">
-        <p>Failed to connect to iCloud APIs!</p>
-        <p>Details: <i>{{error.message || err}}</i></p>
-        <b-button @click="error = undefined">Dismiss</b-button>
+        <p>{{ $t('failed') }}</p>
+        <p>{{ $t('details') }}: <i>{{error.message || err}}</i></p>
+        <b-button @click="error = undefined">{{ $t('dismiss') }}</b-button>
       </b-alert>
     </template>
     <template v-else>
@@ -15,13 +38,13 @@
         @click="signOut"
         variant="outline-warning"
         v-if="isAuthenticated">
-        Disable
+        {{ $t('disable') }}
       </b-button>
       <b-button
         @click="signIn"
         variant="outline-primary"
         v-else>
-        Enable
+        {{ $t('enable') }}
       </b-button>
     </template>
   </b-card>

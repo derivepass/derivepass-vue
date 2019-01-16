@@ -1,3 +1,14 @@
+<i18n>
+{
+  "en": {
+    "lead": "Compute secure passwords without storing them anywhere."
+  },
+  "ru": {
+    "lead": "Генерируйте надежные пароли, не сохраняя их копий."
+  }
+}
+</i18n>
+
 <template>
   <div>
     <b-container class="align-items-center">
@@ -9,7 +20,7 @@
           <h1 class="mb-3">DerivePass</h1>
 
           <p class="lead">
-            Compute secure passwords without storing them anywhere.
+            {{ $t('lead') }}
           </p>
 
           <b-button variant="primary" size="lg" to="/master">Start</b-button>

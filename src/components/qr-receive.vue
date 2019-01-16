@@ -1,10 +1,27 @@
+<i18n>
+{
+  "en": {
+    "error": "Error",
+    "complete": "Synchronization complete",
+    "init-video": "Initializing video...",
+    "not-supported": "Video recording is not supported by the browser"
+  },
+  "ru": {
+    "error": "Ошибка",
+    "complete": "Синхронизация завершена",
+    "init-video": "Инициализируем видео...",
+    "not-supported": "Видео запись не поддерживается браузером"
+  }
+}
+</i18n>
+
 <template>
   <div>
     <b-alert :show="!!error" variant="warning" dismissible>
-      {{ error }}
+      {{ $t('error') }}: {{ error }}
     </b-alert>
     <b-alert :show="complete" variant="success">
-      Synchronization complete
+      {{ $t('complete') }}
     </b-alert>
     <b-progress
       :show-progress="total > 0"
@@ -14,7 +31,7 @@
       variant="primary"
       class="mb-2"
       animated/>
-    <div v-if="!ready" class="text-info">Initializing video...</div>
+    <div v-if="!ready" class="text-info">{{ $t('init-video') }}</div>
     <video
       v-show="active && ready && !complete"
       class="w-100"
@@ -122,7 +139,7 @@ export default {
 
     async getStream() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('Video recording is not supported by browser');
+        throw new Error(this.$t('not-supported'));
       }
 
       return await navigator.mediaDevices.getUserMedia({

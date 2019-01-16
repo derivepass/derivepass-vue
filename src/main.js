@@ -11,6 +11,7 @@ import App from './App.vue';
 import storeConfig from './store/index';
 
 import testFeatures from './utils/feature-test';
+import i18n from './i18n'
 
 const missingFeatures = testFeatures();
 if (missingFeatures) {
@@ -40,5 +41,6 @@ plugins.installStoreDependent(Vue, { store });
 new Vue({
   store,
   router,
-  render: (h) => h(App),
+  i18n,
+  render: (h) => h(App)
 }).$mount('#app');

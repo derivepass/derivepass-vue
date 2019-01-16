@@ -1,8 +1,20 @@
+<i18n>
+{
+  "en": {
+    "qr": "QR code"
+  },
+  "ru": {
+    "qr": "QR код"
+  }
+}
+</i18n>
+
 <template>
   <img
     class="img-fluid"
     width="512"
     height="512"
+    :alt="$t('qr')"
     :src="encode(codes[index])"/>
 </template>
 

@@ -8,4 +8,13 @@ module.exports = {
       swSrc: 'src/plugins/service-worker/service-worker.js',
     },
   },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: true
+    }
+  }
 }
