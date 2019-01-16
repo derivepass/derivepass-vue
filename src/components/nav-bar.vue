@@ -57,16 +57,18 @@
             {{ $t('logout') }}
           </b-nav-item>
         </template>
-        <b-nav-item>
-          <select v-model="$root.$i18n.locale">
-            <option
-              v-for="(lang, i) in langs"
-              :key="`Lang${i}`"
-              :value="lang">
-              {{ lang }}
-            </option>
-          </select>
-        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown :text="$root.$i18n.locale" right>
+          <b-dropdown-item
+            href="#"
+            v-for="(lang, i) in langs"
+            @click.prevent="$root.$i18n.locale = lang"
+            :key="`lang-${i}`"
+            :value="lang">
+            {{ lang }}
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -74,7 +76,9 @@
 
 <script>
 import bCollapse from 'bootstrap-vue/es/components/collapse/collapse';
+import bDropdownItem from 'bootstrap-vue/es/components/dropdown/dropdown-item';
 import bNavItem from 'bootstrap-vue/es/components/nav/nav-item';
+import bNavItemDropdown from 'bootstrap-vue/es/components/nav/nav-item-dropdown';
 import bNavbar from 'bootstrap-vue/es/components/navbar/navbar';
 import bNavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
 import bNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
@@ -84,6 +88,7 @@ export default {
   name: 'nav-bar',
   components: {
     bNavbar, bNavbarBrand, bNavbarToggle, bNavbarNav, bNavItem, bCollapse,
+    bNavItemDropdown, bDropdownItem,
   },
 
   data() {
