@@ -107,6 +107,10 @@ export default {
     },
 
     async getStream() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Video recording is not supported by browser');
+      }
+
       return await navigator.mediaDevices.getUserMedia({ video: {} });
     },
 
