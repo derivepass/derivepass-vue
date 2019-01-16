@@ -15,7 +15,7 @@
       class="mb-2"
       animated/>
     <video
-      v-show="active && !complete"
+      v-show="active && ready && !complete"
       class="w-100"
       ref="videoRef"
       playsinline/>
@@ -40,6 +40,7 @@ export default {
     return {
       stream: null,
       error: null,
+      ready: false,
       complete: false,
       timer: null,
       lastData: null,
@@ -59,6 +60,7 @@ export default {
     activate() {
       this.total = 0;
       this.complete = false;
+      this.ready = false;
 
       // Not mounted yet
       if (!this.$refs.videoRef) {
@@ -74,6 +76,7 @@ export default {
 
         video.srcObject = stream;
         video.play();
+        this.ready = true;
       }).catch((e) => {
         this.error = e.message;
       });
