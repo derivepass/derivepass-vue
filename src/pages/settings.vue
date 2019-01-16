@@ -1,20 +1,17 @@
 <template>
-  <b-card title="iCloud Sync">
-    <cloud-kit/>
-  </b-card>
+  <div class="text-center">
+    <cloud-kit class="mb-2"/>
+    <qr/>
+  </div>
 </template>
 
 <script>
-import bCard from 'bootstrap-vue/es/components/card/card';
-
 import CloudKit from '../components/cloud-kit.vue';
+import Qr from '../components/qr.vue';
 
 export default {
   name: 'settings',
-  components: {
-    bCard,
-    CloudKit,
-  },
+  components: { CloudKit, Qr },
 };
 </script>
 

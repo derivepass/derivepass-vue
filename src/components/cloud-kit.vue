@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-card title="iCloud Sync">
     <template v-if="loading">
       <b-alert show variant="info">Connecting to iCloud APIs...</b-alert>
     </template>
@@ -11,20 +11,31 @@
       </b-alert>
     </template>
     <template v-else>
-      <b-button @click="signOut" v-if="isAuthenticated">Disable</b-button>
-      <b-button @click="signIn" v-else>Enable</b-button>
+      <b-button
+        @click="signOut"
+        variant="outline-warning"
+        v-if="isAuthenticated">
+        Disable
+      </b-button>
+      <b-button
+        @click="signIn"
+        variant="outline-primary"
+        v-else>
+        Enable
+      </b-button>
     </template>
-  </div>
+  </b-card>
 </template>
 
 <script>
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
+import bCard from 'bootstrap-vue/es/components/card/card';
 
 export default {
   name: 'cloud-kit',
 
-  components: { bAlert, bButton },
+  components: { bAlert, bButton, bCard },
 
   data() {
     return { loading: true, error: null, isAuthenticated: false };
