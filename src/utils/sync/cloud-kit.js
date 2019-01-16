@@ -14,8 +14,9 @@ export default class CloudKit extends Sync {
     super();
 
     this.ready = false;
-    this.initPromise = new Promise((resolve) => {
+    this.initPromise = new Promise((resolve, reject) => {
       this.initResolve = resolve;
+      this.initReject = reject;
     });
 
     this.container = null;
@@ -40,7 +41,10 @@ export default class CloudKit extends Sync {
     this.container = provider.container;
     this.db = provider.db;
 
-    this.initResolve();
+    debug('setting up authentication');
+    this.user = this.container.setUpAuth()
+      .then(this.initResolve)
+      .catch(this.initReject);
   }
 
   async init() {
@@ -49,9 +53,6 @@ export default class CloudKit extends Sync {
       return;
     }
     this.ready = true;
-
-    debug('setting up authentication');
-    this.user = await this.container.setUpAuth();
 
     // Async auth loop
     this.authLoop();
