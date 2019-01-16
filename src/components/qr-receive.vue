@@ -14,6 +14,7 @@
       variant="primary"
       class="mb-2"
       animated/>
+    <div v-if="!ready" class="text-info">Initializing video...</div>
     <video
       v-show="active && ready && !complete"
       class="w-100"
@@ -24,7 +25,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import jsQR from 'jsqr';
 
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
@@ -57,6 +57,10 @@ export default {
     }
   },
 
+  destroyed() {
+    this.deactivate();
+  },
+
   methods: {
     activate() {
       this.total = 0;
@@ -77,11 +81,6 @@ export default {
 
         video.srcObject = stream;
         video.play();
-        this.ready = true;
-
-        Vue.nextTick(() => {
-          video.scrollIntoView(true);
-        });
       }).catch((e) => {
         this.error = e.message;
       });
@@ -143,6 +142,8 @@ export default {
         // Not ready
         return;
       }
+
+      this.ready = true;
 
       const context = canvas.getContext("2d");
 

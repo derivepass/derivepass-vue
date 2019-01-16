@@ -1,5 +1,9 @@
 <template>
-  <img class="img-fluid" width="1024" height="1024" :src="encode(codes[index])"/>
+  <img
+    class="img-fluid"
+    width="1024"
+    height="1024"
+    :src="encode(codes[index])"/>
 </template>
 
 <script>
