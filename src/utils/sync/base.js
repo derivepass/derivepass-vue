@@ -1,3 +1,7 @@
+import * as createDebug from 'debug';
+
+const debug = createDebug('derivepass:utils:sync:base');
+
 const COALESCE_DELAY = 50;
 
 export default class Sync {
@@ -22,12 +26,14 @@ export default class Sync {
 
       if (this.received.has(payload.uuid)) {
         const existing = this.received.get(payload.uuid);
-
         // Avoid spurious changes
         if (existing.changedAt >= payload.changedAt) {
           return;
         }
       }
+
+      debug('received app with uuid %j changedAt %j', payload.uuid,
+        payload.changedAt);
 
       this.received.set(payload.uuid, payload);
       this.buffer.add(payload.uuid);
@@ -47,8 +53,7 @@ export default class Sync {
 
   receiveApp(app) {
     this.received.set(app.uuid, Object.assign({}, app));
-
-    this.store.commit('receiveApp', app);
+    this.store.dispatch('receiveApp', app);
   }
 
   sendApps() {

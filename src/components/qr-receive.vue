@@ -198,7 +198,7 @@ export default {
         if (!this.received.includes(payload.uuid)) {
           this.received.push(payload.uuid);
 
-          this.$store.commit('receiveApp', payload);
+          this.$store.dispatch('receiveApp', payload);
         }
       } else {
         throw new Error(`Invalid type: "${type}"`);

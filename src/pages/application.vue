@@ -677,7 +677,7 @@ export default {
         {
           changedAt: Date.now(),
         });
-      this.$store.commit('receiveApp', app);
+      this.$store.dispatch('receiveApp', app);
 
       cloneApp(this.app, this.savedApp);
       this.saved = true;
@@ -693,7 +693,7 @@ export default {
           removed: true,
           changedAt: Date.now(),
         });
-      this.$store.commit('receiveApp', app);
+      this.$store.dispatch('receiveApp', app);
       this.$router.go(-1);
     }
   }
