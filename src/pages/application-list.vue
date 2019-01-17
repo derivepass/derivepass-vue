@@ -1,12 +1,25 @@
+<i18n>
+{
+  "en": {
+    "filter": "Filter applications",
+    "add": "Add application"
+  },
+  "ru": {
+    "filter": "Поиск приложений",
+    "add": "Добавить приложение"
+  }
+}
+</i18n>
+
 <template>
   <div>
     <b-input-group class="mb-2">
       <b-form-input
         v-model="rawFilter"
-        placeholder="Filter applications"/>
+        :placeholder="$t('filter')"/>
       <b-input-group-append>
         <b-button variant="primary" class="float-right" @click="addApplication">
-          Add application
+          {{ $t('add') }}
         </b-button>
       </b-input-group-append>
     </b-input-group>

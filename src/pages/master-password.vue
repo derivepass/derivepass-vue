@@ -8,7 +8,7 @@
         "existing": "Enter your Master Password"
       },
       "feedback": {
-        "not-empty": "Master Password can't be empty"
+        "empty": "Master Password can't be empty"
       }
     },
     "confirm": {
@@ -34,7 +34,7 @@
         "existing": "Введите ваш Мастер Пароль"
       },
       "feedback": {
-        "not-empty": "Мастер Пароль не может быть пустым"
+        "empty": "Мастер Пароль не может быть пустым"
       }
     },
     "confirm": {
@@ -194,7 +194,7 @@ export default {
     },
     invalidPasswordFeedback() {
       if (this.password.length === 0) {
-        return this.$t('master.feedback.not-empty');
+        return this.$t('master.feedback.empty');
       } else {
         return '';
       }
@@ -284,6 +284,8 @@ export default {
           const needRedirect = this.$route.matched.some((route) => {
             return route.meta.requiresAuth;
           });
+
+          // TODO(indutny): Place an alert
 
           if (needRedirect) {
             this.$router.push('/');

@@ -1,7 +1,188 @@
+<i18n>
+{
+  "en": {
+    "title": {
+      "new": "New Application"
+    },
+    "copy": {
+      "ready": "Copy Password",
+      "complete": "Copied"
+    },
+    "compute": {
+      "idle": "Compute Password",
+      "running": "Computing Password"
+    },
+    "computing": "Computing secure password...",
+    "edit": "Edit",
+    "back": "Back",
+
+    "domain": {
+      "label": "Domain name",
+      "description": "Examples: google.com, fb.com, etc",
+      "placeholder": "google.com",
+      "feedback": {
+        "empty": "Domain can't be empty",
+        "www": "Domain should not start with `www.`, `http://`, or any other `schema://`",
+        "upper-case": "Domain should be lower-case",
+        "whitespace": "Domain should not start or end with whitespace"
+      }
+    },
+
+    "preset": {
+      "title": "<b>Recommended</b> configuration is available for this domain.",
+      "danger": "<b>Warning</b>: Changing configuration for an existing app will change computed password. Consider computing and copying current password before making a change.",
+      "use": "Use"
+    },
+
+    "login": {
+      "label": "Login",
+      "description": "Examples: my_user_name, derivepass82",
+      "placeholder": "my@email.com",
+      "feedback": {
+        "empty": "Login can't be empty",
+        "whitespace": "Login should not start or end with whitespace"
+      }
+    },
+
+    "revision": {
+      "label": "Revision",
+      "description": "Increment this by one to change password",
+      "feedback": {
+        "non-positive": "Revision must be greater than zero"
+      }
+    },
+
+    "extra": {
+      "button": "Extra Options",
+      "danger": "Most websites do not require editing options below",
+      "allowed": {
+        "label": "Allowed characters",
+        "description": "Characters that CAN be present in the password",
+        "feedback": {
+          "empty": "Can't be empty"
+        }
+      },
+      "required": {
+        "label": "Required characters",
+        "description": "Characters that MUST be present in the password"
+      },
+      "max-len": {
+        "label": "Password length",
+        "feedback": {
+          "less-than-one": "Must be greater than 1",
+          "less-than-required": "Minimum length is {len}",
+          "entropy": "Password is not strong enough. Please increase length, or add more allowed characters"
+        }
+      },
+      "save": {
+        "ready": "Save",
+        "complete": "Saved"
+      },
+      "reset": "Reset",
+      "delete": {
+        "button": "Delete",
+        "title": "Confirm Deletion",
+        "confirm": "Delete",
+        "pre": "This action will irreversibly delete:",
+        "post": "...from the application list."
+      }
+    }
+  },
+  "ru": {
+    "title": {
+      "new": "Новое Приложение"
+    },
+    "copy": {
+      "ready": "Скопировать Пароль",
+      "complete": "Скопирован"
+    },
+    "compute": {
+      "idle": "Сгенерировать Пароль",
+      "running": "Генерируем Пароль"
+    },
+    "computing": "Генерируем надежный пароль...",
+    "edit": "Редактировать",
+    "back": "Назад",
+
+    "domain": {
+      "label": "Домен",
+      "description": "Примеры: google.com, fb.com, etc",
+      "placeholder": "google.com",
+      "feedback": {
+        "empty": "Домен не может быть пустым",
+        "www": "Домен не должен начинаться на `www.`, `http://`, или какой-либо другой `протокол://`",
+        "upper-case": "Домен не может содержать заглавные буквы",
+        "whitespace": "Домен не должен начинаться или заканчиваться пробелом"
+      }
+    },
+
+    "preset": {
+      "title": "Для этого веб-сайта доступна <b>рекомендованная</b> конфигурация.",
+      "danger": "<b>Опасность</b>: Смена конфигурации для существующего приложения изменит генерируемый пароль. Сгенерируйте и скопируйте пароль перед внесением изменений.",
+      "use": "Использовать"
+    },
+
+    "login": {
+      "label": "Имя пользователя",
+      "description": "Примеры: my_user_name, derivepass82",
+      "placeholder": "my@email.com",
+      "feedback": {
+        "empty": "Имя пользователя не может быть пустым",
+        "whitespace": "Имя пользователя не должно начинаться или заканчиваться пробелом"
+      }
+    },
+
+    "revision": {
+      "label": "Ревизия",
+      "description": "Добавьте единицу, если необходима смена пароля",
+      "feedback": {
+        "non-positive": "Ревизия должна быть больше нуля"
+      }
+    },
+
+    "extra": {
+      "button": "Дополнительные Настройки",
+      "danger": "Большинство веб-сайтов не трубуют изменения настроек ниже",
+      "allowed": {
+        "label": "Разрешенные символы",
+        "description": "Символы, которые МОГУТ присутствовать в пароле",
+        "feedback": {
+          "empty": "Поле не может быть пустым"
+        }
+      },
+      "required": {
+        "label": "Необходимые символы",
+        "description": "Символы, которые ДОЛЖНЫ присутствовать в пароле"
+      },
+      "max-len": {
+        "label": "Длина пароля",
+        "feedback": {
+          "less-than-one": "Длина должна быть больше 1",
+          "less-than-required": "Минимальная длина: {len}",
+          "entropy": "Пароль недостаточно сложный. Пожалуйста, увеличьте длину или добавьте больше разрешенных символов"
+        }
+      },
+      "save": {
+        "ready": "Сохранить",
+        "complete": "Сохранено"
+      },
+      "reset": "Сброс",
+      "delete": {
+        "button": "Удалить",
+        "title": "Подтвердить Удаление",
+        "confirm": "Удалить",
+        "pre": "Это действие необратимо удалит:",
+        "post": "...из списка приложений."
+      }
+    }
+  }
+}
+</i18n>
+
 <template>
   <div>
     <template v-if="isNew">
-      <h3>New Application</h3>
+      <h3>{{ $t('title.new') }}</h3>
     </template>
     <template v-else>
       <div class="mb-2 application-name w-100">
@@ -14,27 +195,31 @@
         v-if="password"
         variant="primary"
         @click="copyPassword">
-        {{ copied ? 'Copied' : 'Copy Password' }}
+        {{ copied ? $t('copy.complete') : $t('copy.ready') }}
       </b-button>
       <b-button
         v-else
         variant="primary"
         :disabled="!isValidApp"
         @click="compute()">
-        {{ computing ? 'Computing Password' : 'Compute Password' }}
+        {{ computing ? $t('compute.running') : $t('compute.idle') }}
       </b-button>
-      <b-button @click="showDetails = !showDetails" variant="link">Edit</b-button>
-      <b-button @click="$router.go(-1)" variant="link">Back</b-button>
+      <b-button @click="showDetails = !showDetails" variant="link">
+        {{ $t('edit') }}
+      </b-button>
+      <b-button @click="$router.go(-1)" variant="link">
+        {{ $t('back') }}
+      </b-button>
     </div>
 
-    <computing :active="computing" text="Computing secure password..."/>
+    <computing :active="computing" :text="$t('computing')"/>
 
     <b-collapse class="py-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
         <b-form-group
-          label="Domain name"
+          :label="$t('domain.label')"
           label-for="application-domain"
-          description="Examples: google.com, fb.com, etc"
+          :description="$t('domain.description')"
           :invalid-feedback="invalidDomainFeedback"
           :state="domainState">
           <b-form-input
@@ -42,27 +227,23 @@
             :state="domainState ? null : 'invalid'"
             id="application-domain"
             v-model="app.domain"
-            placeholder="google.com"
+            :placeholder="$t('domain.placeholder')"
             @input="onChange"/>
         </b-form-group>
 
         <b-alert :show="hasPreset" variant="warning" dismissible>
-          <p>
-            <b>Recommended</b> configuration is available for this domain.
-          </p>
-          <p class="text-danger" v-if="!isNew">
-            <b>Warning</b>:
-            Changing configuration for an existing app will change
-            computed password. Consider computing and copying current password
-            before making a change.
-          </p>
-          <b-button variant="warning" @click.prevent="usePreset">Use</b-button>
+          <p v-html="$t('preset.title')"/>
+
+          <p class="text-danger" v-if="!isNew" v-html="$t('preset.danger')"/>
+          <b-button variant="warning" @click.prevent="usePreset">
+            {{ $t('preset.use') }}
+          </b-button>
         </b-alert>
 
         <b-form-group
-          label="Login"
+          :label="$t('login.label')"
           label-for="application-login"
-          description="Examples: my_user_name, derivepass82"
+          :description="$t('login.description')"
           :invalid-feedback="invalidLoginFeedback"
           :state="loginState">
           <b-form-input
@@ -70,13 +251,14 @@
             :state="loginState ? null : 'invalid'"
             id="application-login"
             v-model="app.login"
-            placeholder="my@email.com"
+            :placeholder="$t('login.placeholder')"
             @input="onChange"/>
         </b-form-group>
+
         <b-form-group
-          label="Revision"
+          :label="$t('revision.label')"
           label-for="application-revision"
-          description="Increment this by one to change password"
+          :description="$t('revision.description')"
           :invalid-feedback="invalidRevisionFeedback"
           :state="revisionState">
           <b-form-input
@@ -92,19 +274,19 @@
           <b-button
             v-b-toggle.application-options
             variant="outline-danger">
-            Extra Options
+            {{ $t('extra.button') }}
           </b-button>
         </b-form-group>
 
         <b-collapse id="application-options">
           <p class="text-danger">
-            <i>Most websites do not require editing options below</i>
+            <i>{{ $t('extra.danger') }}</i>
           </p>
 
           <b-form-group
-            label="Allowed characters"
+            :label="$t('extra.allowed.label')"
             label-for="application-allowed-chars"
-            description="Characters that CAN be present in the password"
+            :description="$t('extra.allowed.description')"
             :invalid-feedback="invalidAllowedFeedback"
             :state="allowedState">
             <b-form-input
@@ -116,9 +298,9 @@
           </b-form-group>
 
           <b-form-group
-            label="Required characters"
+            :label="$t('extra.required.label')"
             label-for="application-required-chars"
-            description="Characters that MUST be present in the password"
+            :description="$t('extra.required.description')"
             :invalid-feedback="invalidRequiredFeedback"
             :state="requiredState">
             <b-form-input
@@ -129,7 +311,7 @@
           </b-form-group>
 
           <b-form-group
-            label="Password length"
+            :label="$t('extra.max-len.label')"
             label-for="application-max-length"
             :invalid-feedback="invalidLengthFeedback"
             :state="lengthState">
@@ -150,13 +332,13 @@
             type="submit"
             variant="primary"
             :disabled="!hasChanged || !isValidApp">
-            {{ saved ? 'Saved' : 'Save' }}
+            {{ saved ? $t('extra.save.complete') : $t('extra.save.ready') }}
           </b-button>
           <b-button @click.prevent="onReset()">
-            Reset
+            {{ $t('extra.reset') }}
           </b-button>
           <b-button variant="danger" v-b-modal.application-confirm-delete>
-            Delete
+            {{ $t('extra.delete.button') }}
           </b-button>
         </b-button-group>
       </b-form>
@@ -164,13 +346,13 @@
 
     <b-modal
       id="application-confirm-delete"
-      title="Confirm Deletion"
+      :title="$t('extra.delete.title')"
       ok-variant="danger"
-      ok-title="Delete"
+      :ok-title="$t('extra.delete.confirm')"
       @ok="onDelete">
-      <p>This action will irreversibly delete:</p>
+      <p>{{ $t('extra.delete.pre') }}</p>
       <p><b>{{app.domain}}</b>/<i>{{app.login}}</i></p>
-      <p>...from the application list.</p>
+      <p>{{ $t('extra.delete.post') }}</p>
     </b-modal>
   </div>
 </template>
@@ -282,20 +464,19 @@ export default {
     invalidDomainFeedback() {
       const domain = this.app.domain;
       if (domain.length === 0) {
-        return 'Domain can\'t be empty';
+        return this.$t('domain.feedback.empty');
       }
 
       if (/^(www\.|\w+:\/\/)/.test(domain)) {
-        return 'Domain should not start with `www.`, `http://`, or any other ' +
-          '`schema://`';
+        return this.$t('domain.feedback.www');
       }
 
       if (/[A-Z]/.test(domain)) {
-        return 'Domain should be lower-case';
+        return this.$t('domain.feedback.upper-case');
       }
 
       if (/^\s+|\s+$/.test(domain)) {
-        return 'Domain should not start or end with whitespace';
+        return this.$t('domain.feedback.whitespace');
       }
 
       return null;
@@ -306,11 +487,11 @@ export default {
     invalidLoginFeedback() {
       const login = this.app.login;
       if (login.length === 0) {
-        return 'Login can\'t be empty';
+        return this.$t('login.feedback.empty');
       }
 
       if (/^\s+|\s+$/.test(login)) {
-        return 'Login should not start or end with whitespace';
+        return this.$t('login.feedback.whitespace');
       }
 
       return null;
@@ -319,7 +500,7 @@ export default {
       return this.app.revision > 0;
     },
     invalidRevisionFeedback() {
-      return 'Revision must be greater than zero';
+      return this.$t('revision.feedback.non-positive');
     },
     allowedState() {
       return this.invalidAllowedFeedback === null;
@@ -327,9 +508,10 @@ export default {
     invalidAllowedFeedback() {
       const allowed = this.app.options.allowed;
       if (allowed.length === 0) {
-        return 'Can\'t be empty';
+        return this.$t('extra.allowed.feedback.empty');
       }
 
+      // TODO(indutny): localize errors
       try {
         flattenRange(allowed);
       } catch (e) {
@@ -341,6 +523,7 @@ export default {
       return this.invalidRequiredFeedback === null;
     },
     invalidRequiredFeedback() {
+      // TODO(indutny): localize errors
       const required = this.app.options.required;
       try {
         flattenRange(required);
@@ -354,12 +537,14 @@ export default {
     },
     invalidLengthFeedback() {
       if (this.app.options.maxLength <= 1) {
-        return 'Must be greater than 1';
+        return this.$t('extra.max-len.feedback.less-than-one');
       }
 
       const required = flattenRange(this.app.options.required);
       if (this.app.options.maxLength < required.length) {
-        return `Minimum length is ${required.length}`;
+        return this.$t('extra.max-len.feedback.less-than-required', {
+          len: required.length,
+        });
       }
 
       let parsedOptions;
@@ -372,8 +557,7 @@ export default {
 
       const bits = passwordEntropyBits(parsedOptions);
       if (bits < MIN_ENTROPY) {
-        return `Password is not strong enough. ` +
-          `Please increase length, or add more allowed characters`;
+        return this.$t('extra.max-len.feedback.entropy');
       }
 
       return null;
