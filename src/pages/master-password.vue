@@ -62,7 +62,7 @@
       @reset.prevent="onReset"
       autocomplete="off">
       <b-form-group>
-        <div class="emoji-hash text-center">
+        <div :class="emojiClass">
           {{emoji}}
         </div>
       </b-form-group>
@@ -178,6 +178,11 @@ export default {
 
     emoji() {
       return emojiHash(this.password);
+    },
+
+    emojiClass() {
+      return 'emoji-hash text-center ' +
+        (this.isConfirming ? 'emoji-hash-gray' : '');
     },
 
     emojiConfirm() {
@@ -318,5 +323,10 @@ export default {
 .emoji-hash {
   font-size: 48px;
   font-family: Apple Color Emoji;
+  transition: filter 0.25s;
+}
+
+.emoji-hash-gray {
+  filter: grayscale(25%) blur(1px);
 }
 </style>
