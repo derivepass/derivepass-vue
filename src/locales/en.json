@@ -1,0 +1,7 @@
+{
+  "error.flatten.whitespace": "Can't contain whitespace",
+  "error.flatten.invalid-start": "Invalid starting character in range \"{range}\"",
+  "error.flatten.invalid-end": "Invalid ending character in range \"{range}\"",
+  "error.flatten.invalid": "Invalid range \"{range}\"",
+  "error.flatten.unterminated": "Unterminated range \"{range}\""
+}

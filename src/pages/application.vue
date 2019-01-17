@@ -511,11 +511,10 @@ export default {
         return this.$t('extra.allowed.feedback.empty');
       }
 
-      // TODO(indutny): localize errors
       try {
         flattenRange(allowed);
       } catch (e) {
-        return e.message;
+        return e.tag ? this.$root.$t(e.tag, e.extra) : e.message;
       }
       return null;
     },
@@ -523,12 +522,11 @@ export default {
       return this.invalidRequiredFeedback === null;
     },
     invalidRequiredFeedback() {
-      // TODO(indutny): localize errors
       const required = this.app.options.required;
       try {
         flattenRange(required);
       } catch (e) {
-        return e.message;
+        return e.tag ? this.$root.$t(e.tag, e.extra) : e.message;
       }
       return null;
     },

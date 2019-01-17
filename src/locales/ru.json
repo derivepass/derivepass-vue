@@ -1,0 +1,7 @@
+{
+  "error.flatten.whitespace": "Не может содержать пробелы",
+  "error.flatten.invalid-start": "Неверный начальный символ диапазона \"{range}\"",
+  "error.flatten.invalid-end": "Неверный конечный символ диапазона \"{range}\"",
+  "error.flatten.invalid": "Неверный диапазон \"{range}\"",
+  "error.flatten.unterminated": "Незаконченный диапазон \"{range}\""
+}

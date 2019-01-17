@@ -7,9 +7,19 @@ export const DEFAULT_APP_OPTIONS = {
   maxLength: 24,
 };
 
+export class LocaleError extends Error {
+  constructor(message, tag, extra = {}) {
+    super(message);
+
+    this.tag = tag;
+    this.extra = extra;
+  }
+}
+
 export function flattenRange(str) {
   if (/\s/.test(str)) {
-    throw new Error('Can\'t contain whitespace');
+    throw new Error(new LocaleError('Can\'t contain whitespace',
+      'error.flatten.whitespace'));
   }
 
   // a-zA-Z
@@ -18,14 +28,17 @@ export function flattenRange(str) {
     const toCode = to.charCodeAt(0);
 
     if (from.length !== 1 || fromCode > 0xff) {
-      throw new Error(`Invalid starting character in range "${range}"`);
+      throw new LocaleError(`Invalid starting character in range "${range}"`,
+        'error.flatten.invalid-start', { range });
     }
     if (to.length !== 1 || toCode > 0xff) {
-      throw new Error(`Invalid ending character in range "${range}"`);
+      throw new LocaleError(`Invalid ending character in range "${range}"`,
+        'error.flatten.invalid-end', { range });
     }
 
     if (fromCode > toCode) {
-      throw new Error(`Invalid range "${range}"`);
+      throw new LocaleError(`Invalid range "${range}"`, 'error.flatten.invalid',
+        { range });
     }
 
     let res = '';
@@ -37,7 +50,8 @@ export function flattenRange(str) {
 
   // Report invalid ranges
   str.replace(/[^\\]-|[^\\]-\W|^-\W|^-\w?/, (invalid) => {
-    throw new Error(`Unterminated range "${invalid}"`);
+    throw new LocaleError(`Unterminated range "${invalid}"`,
+      'error.flatten.unterminated', { range: invalid });
   });
 
   // Unescape `\x` => `x`
