@@ -26,7 +26,6 @@ const INIT_INTERVAL = 750;
 const INIT_EVERY = 15;
 const UPDATE_INTERVAL = 500;
 
-const QR_SIZE_LIMIT = 2000;  // 2953 is the limit, but there are extra chars
 const REMOVED_BULK_SIZE = 20;
 
 export default {
@@ -67,28 +66,7 @@ export default {
       const normal = this.applications.filter((app) => !app.removed);
       const removed = this.applications.filter((app) => app.removed);
 
-      const list = [];
-
-      for (let i = 0; i < normal.length; i++) {
-        const bulk = [];
-        let bulkSize = 0;
-
-        for (; i < normal.length; i++) {
-          const app = normal[i];
-
-          // TODO(indutny): do not stringify twice
-          const appSize = JSON.stringify(app).length;
-          if (bulkSize + appSize > QR_SIZE_LIMIT) {
-            i--;
-            break;
-          }
-
-          bulkSize += appSize;
-          bulk.push(app);
-        }
-
-        list.push([ 'apps', bulk ]);
-      }
+      const list = normal.map((app) => [ 'app', app ]);
 
       for (let i = 0; i < removed.length; i += REMOVED_BULK_SIZE) {
         const slice = removed.slice(i, i + REMOVED_BULK_SIZE).map((app) => {
