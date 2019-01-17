@@ -50,7 +50,7 @@ import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bProgress from 'bootstrap-vue/es/components/progress/progress';
 import bProgressBar from 'bootstrap-vue/es/components/progress/progress-bar';
 
-const UPDATE_INTERVAL = 100;
+const UPDATE_INTERVAL = 250;
 
 export default {
   name: 'qr-receive',
