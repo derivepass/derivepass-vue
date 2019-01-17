@@ -26,6 +26,8 @@ const INIT_INTERVAL = 750;
 const INIT_EVERY = 10;
 const UPDATE_INTERVAL = 500;
 
+const REMOVED_BULK_SIZE = 20;
+
 export default {
   name: 'qr-send',
 
@@ -61,7 +63,18 @@ export default {
         },
       ];
 
-      const list = this.applications.map((app) => [ 'app', app ]);
+      const normal = this.applications.filter((app) => !app.removed);
+      const removed = this.applications.filter((app) => app.removed);
+
+      const list = normal.map((app) => [ 'app', app ]);
+
+      for (let i = 0; i < removed.length; i += REMOVED_BULK_SIZE) {
+        const slice = removed.slice(i, i + REMOVED_BULK_SIZE).map((app) => {
+          return { uuid: app.uuid, changedAt: app.changedAt };
+        });
+        list.push([ 'remove', slice ]);
+      }
+
       for (let i = list.length - 1; i >= 0; i--) {
         if (i % INIT_EVERY === 0) {
           list.splice(i, 0, init);

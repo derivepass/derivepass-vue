@@ -200,8 +200,22 @@ export default {
 
           this.$store.dispatch('receiveApp', payload);
         }
+      } else if (type === 'remove') {
+        for (const app of payload) {
+          this.received.push(app.uuid);
+          this.$store.dispatch('receiveApp', {
+            uuid: app.uuid,
+            changedAt: app.changedAt,
+            removed: true,
+
+            // Let `store/actions.js` scrub it
+            domain: 'scrub me',
+            login: 'scrub me',
+          });
+        }
       } else {
-        throw new Error(`Invalid type: "${type}"`);
+        // Ignore unknown messages for future uses
+        return;
       }
 
       if (this.total !== 0 && this.total === this.received.length) {
