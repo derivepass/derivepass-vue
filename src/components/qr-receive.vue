@@ -227,7 +227,7 @@ export default {
         }
       } else if (type === 'apps') {
         for (const app of payload) {
-          if (this.received.includes(payload.uuid)) {
+          if (this.received.includes(app.uuid)) {
             continue;
           }
           this.received.push(app.uuid);
@@ -235,7 +235,7 @@ export default {
         }
       } else if (type === 'remove') {
         for (const app of payload) {
-          if (this.received.includes(payload.uuid)) {
+          if (this.received.includes(app.uuid)) {
             continue;
           }
 
