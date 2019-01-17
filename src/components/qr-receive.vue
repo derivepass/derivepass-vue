@@ -30,7 +30,7 @@
       class="mb-2"
       animated>
       <b-progress-bar
-        :label="`${received.length} / ${total}`"
+        :label="`${received.length} / ${total || '...'}`"
         :value="received.length"/>
     </b-progress>
     <div v-if="!ready" class="text-info">{{ $t('init-video') }}</div>

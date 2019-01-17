@@ -23,7 +23,7 @@ import { mapState } from 'vuex';
 import * as qrImage from 'qr-image';
 
 const INIT_INTERVAL = 750;
-const INIT_EVERY = 10;
+const INIT_EVERY = 15;
 const UPDATE_INTERVAL = 500;
 
 const REMOVED_BULK_SIZE = 20;
