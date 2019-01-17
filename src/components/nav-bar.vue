@@ -58,15 +58,16 @@
           </b-nav-item>
         </template>
       </b-navbar-nav>
+
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown :text="$root.$i18n.locale" right>
           <b-dropdown-item
             href="#"
             v-for="(lang, i) in langs"
-            @click.prevent="$root.$i18n.locale = lang"
+            @click.prevent="changeLocale(lang.latin)"
             :key="`lang-${i}`"
-            :value="lang">
-            {{ lang }}
+            :value="lang.latin">
+            {{ lang.native }}
           </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -94,7 +95,10 @@ export default {
   data() {
     return {
       isLogoVisible: false,
-      langs: [ 'en', 'ru' ],
+      langs: [
+        { latin: 'en', native: 'English' },
+        { latin: 'ru', native: 'Русский' }
+      ],
     };
   },
 
@@ -108,6 +112,17 @@ export default {
   },
 
   methods: {
+    changeLocale(locale) {
+      this.$root.$i18n.locale = locale;
+
+      // Persist locale
+      try {
+        window.localStorage.setItem('locale', locale);
+      } catch (e) {
+        // Ignore
+      }
+    },
+
     logout() {
       this.$autoLogout.logout();
       this.$router.push('/');
