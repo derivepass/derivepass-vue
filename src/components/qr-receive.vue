@@ -45,6 +45,7 @@
 
 <script>
 import jsQR from 'jsqr';
+import * as pako from 'pako';
 
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bProgress from 'bootstrap-vue/es/components/progress/progress';
@@ -170,28 +171,48 @@ export default {
       canvas.height = height;
 
       context.drawImage(video, 0, 0, width, height);
-      const data = context.getImageData(0, 0, width, height);
+      const imageData = context.getImageData(0, 0, width, height);
 
       let code;
       try {
-        code = jsQR(data.data, width, height);
+        code = jsQR(imageData.data, width, height);
       } catch (e) {
         // Malformed data
         return;
       }
 
-      if (!code || !code.data) {
+      if (!code) {
         // No code
         return;
       }
 
-      // Skip duplicates
-      if (code.data === this.lastData) {
+      let data;
+      if (code.data) {
+        data = code.data;
+
+        // Skip duplicates
+        if (data === this.lastData) {
+          return;
+        }
+      } else if (code.binaryData) {
+        data = code.binaryData;
+
+        // Skip duplicates
+        if (Array.isArray(this.lastData) &&
+            data.length === this.lastData.length &&
+            data.every((value, i) => value === this.lastData[i])) {
+          return;
+        }
+
+        data = pako.inflate(data, { to: 'string' });
+      } else {
+        // No data
         return;
       }
-      this.lastData = code.data;
 
-      const [ type, payload ] = JSON.parse(code.data);
+      this.lastData = data;
+
+      const [ type, payload ] = JSON.parse(data);
 
       this.handleMessage(type, payload);
     },
@@ -203,6 +224,11 @@ export default {
           this.received.push(payload.uuid);
 
           this.$store.dispatch('receiveApp', payload);
+        }
+      } else if (type === 'apps') {
+        for (const app of payload) {
+          this.received.push(app.uuid);
+          this.$store.dispatch('receiveApp', app);
         }
       } else if (type === 'remove') {
         for (const app of payload) {

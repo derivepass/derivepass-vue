@@ -21,11 +21,13 @@
 <script>
 import { mapState } from 'vuex';
 import * as qrImage from 'qr-image';
+import * as pako from 'pako';
 
 const INIT_INTERVAL = 750;
 const INIT_EVERY = 15;
 const UPDATE_INTERVAL = 500;
 
+const QR_SIZE_LIMIT = 4000;  // We're using compression, it is an ad hoc limit
 const REMOVED_BULK_SIZE = 20;
 
 export default {
@@ -66,7 +68,28 @@ export default {
       const normal = this.applications.filter((app) => !app.removed);
       const removed = this.applications.filter((app) => app.removed);
 
-      const list = normal.map((app) => [ 'app', app ]);
+      const list = [];
+
+      for (let i = 0; i < normal.length; i++) {
+        const bulk = [];
+        let bulkSize = 0;
+
+        for (; i < normal.length; i++) {
+          const app = normal[i];
+
+          // TODO(indutny): do not stringify twice
+          const appSize = JSON.stringify(app).length;
+          if (bulkSize + appSize > QR_SIZE_LIMIT) {
+            i--;
+            break;
+          }
+
+          bulkSize += appSize;
+          bulk.push(app);
+        }
+
+        list.push([ 'apps', bulk ]);
+      }
 
       for (let i = 0; i < removed.length; i += REMOVED_BULK_SIZE) {
         const slice = removed.slice(i, i + REMOVED_BULK_SIZE).map((app) => {
@@ -113,7 +136,8 @@ export default {
       }
 
       const json = JSON.stringify(data);
-      return 'data:image/svg+xml;utf8,' + qrImage.imageSync(json, {
+      const compressed = Array.from(pako.deflate(json));
+      return 'data:image/svg+xml;utf8,' + qrImage.imageSync(compressed, {
         type: 'svg',
       });
     }
