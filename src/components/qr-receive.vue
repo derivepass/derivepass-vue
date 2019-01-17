@@ -45,7 +45,6 @@
 
 <script>
 import jsQR from 'jsqr';
-import * as pako from 'pako';
 
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bProgress from 'bootstrap-vue/es/components/progress/progress';
@@ -195,16 +194,8 @@ export default {
           return;
         }
       } else if (code.binaryData) {
-        data = code.binaryData;
-
-        // Skip duplicates
-        if (Array.isArray(this.lastData) &&
-            data.length === this.lastData.length &&
-            data.every((value, i) => value === this.lastData[i])) {
-          return;
-        }
-
-        data = pako.inflate(data, { to: 'string' });
+        // Not supported
+        return;
       } else {
         // No data
         return;

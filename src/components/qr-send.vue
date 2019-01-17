@@ -21,13 +21,12 @@
 <script>
 import { mapState } from 'vuex';
 import * as qrImage from 'qr-image';
-import * as pako from 'pako';
 
 const INIT_INTERVAL = 750;
 const INIT_EVERY = 15;
 const UPDATE_INTERVAL = 500;
 
-const QR_SIZE_LIMIT = 4000;  // We're using compression, it is an ad hoc limit
+const QR_SIZE_LIMIT = 2000;  // 2953 is the limit, but there are extra chars
 const REMOVED_BULK_SIZE = 20;
 
 export default {
@@ -136,8 +135,7 @@ export default {
       }
 
       const json = JSON.stringify(data);
-      const compressed = Array.from(pako.deflate(json));
-      return 'data:image/svg+xml;utf8,' + qrImage.imageSync(compressed, {
+      return 'data:image/svg+xml;utf8,' + qrImage.imageSync(json, {
         type: 'svg',
       });
     }
