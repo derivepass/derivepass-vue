@@ -24,13 +24,15 @@
       {{ $t('complete') }}
     </b-alert>
     <b-progress
-      :show-value="total > 0"
       v-if="!complete"
-      :value="received.length"
       :max="total"
       variant="primary"
       class="mb-2"
-      animated/>
+      animated>
+      <b-progress-bar
+        :label="`${received.length} / ${total}`"
+        :value="received.length"/>
+    </b-progress>
     <div v-if="!ready" class="text-info">{{ $t('init-video') }}</div>
     <video
       v-show="active && ready && !complete"
@@ -46,13 +48,14 @@ import jsQR from 'jsqr';
 
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bProgress from 'bootstrap-vue/es/components/progress/progress';
+import bProgressBar from 'bootstrap-vue/es/components/progress/progress-bar';
 
 const UPDATE_INTERVAL = 100;
 
 export default {
   name: 'qr-receive',
   props: { active: { type: Boolean, required: true } },
-  components: { bAlert, bProgress },
+  components: { bAlert, bProgress, bProgressBar },
 
   data() {
     return {
@@ -80,6 +83,7 @@ export default {
 
   methods: {
     activate() {
+      this.received = [];
       this.total = 0;
       this.complete = false;
       this.ready = false;
