@@ -64,7 +64,7 @@ export default {
       ready: false,
       complete: false,
       timer: null,
-      lastData: null,
+      pastData: new Set(),
 
       received: [],
       total: 0,
@@ -138,7 +138,7 @@ export default {
       });
 
       this.stream = null;
-      this.lastData = null;
+      this.pastData = new Set();
     },
 
     async getStream() {
@@ -190,7 +190,7 @@ export default {
         data = code.data;
 
         // Skip duplicates
-        if (data === this.lastData) {
+        if (this.pastData.has(data)) {
           return;
         }
       } else if (code.binaryData) {
@@ -201,7 +201,7 @@ export default {
         return;
       }
 
-      this.lastData = data;
+      this.pastData.add(data);
 
       const [ type, payload ] = JSON.parse(data);
 
