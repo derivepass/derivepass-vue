@@ -1,18 +1,51 @@
+<i18n>
+{
+  "en": {
+    "update": {
+      "error": "Update error:",
+      "running": "Updating...",
+      "available": {
+        "description": "Update available",
+        "install": "install now",
+        "or": "or in",
+        "second": "sec | secs"
+      }
+    }
+  },
+  "ru": {
+    "update": {
+      "error": "Ошибка обновления:",
+      "running": "Обновляем...",
+      "available": {
+        "description": "Доступно обновление",
+        "install": "установить сейчас",
+        "or": "или через",
+        "second": "сек | сек"
+      }
+    }
+  }
+}
+</i18n>
+
 <template>
   <section id="page">
     <b-alert :show="updateAvailable" :variant="updateError ? 'danger': 'info'">
       <span v-if="updateError">
-        <b>Update error:</b>
+        <b>{{ $t('update.error') }}</b>
         <br/>
         {{ updateError.message || updateError }}
       </span>
       <span v-else-if="updating">
-        Updating...
+        {{ $t('update.running') }}
       </span>
       <span v-else>
-        Update available,
-        <a href="#" class="alert-link" @click.prevent="update()">install now</a>
-        or in {{ updateIn }} secs
+        {{ $t('update.available.description') }},
+        <a href="#" class="alert-link" @click.prevent="update()">
+          {{ $t('update.available.install') }}
+        </a>
+        {{ $t('update.available.or') }}
+        {{ updateIn }}
+        {{ $tc('update.available.second', updateIn) }}
       </span>
     </b-alert>
 
