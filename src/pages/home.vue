@@ -7,7 +7,8 @@
       "Most websites require password on Sign Up. Using the same password everywhere is insecure. Using individual secure passwords and remembering all of them - impossible!",
       "<b>DerivePass</b> is here to help with the task! Choose the <i>Master Password</i> once and use it to generate <b>unlimited</b> number of secure website passwords.",
       "Unlike traditional password managers, <b>DerivePass</b> never uploads neither the <i>Master Password</i> nor website passwords to the Cloud. The only information that is stored is <b>encrypted</b> website names and logins."
-    ]
+    ],
+    "source": "source code"
   },
   "ru": {
     "lead": "Генерируйте надежные пароли, не сохраняя их копий.",
@@ -16,7 +17,8 @@
       "Большинство веб-сайтов требуют пароль во время регистрации. Использование одинакового пароля для всех сайтов - небезопасно. Использование разных надежных паролей и запоминание их всех - невозможно!",
       "<b>DerivePass</b> готов помочь в решении этой задачи! Выберите <i>Мастер Пароль</i> один раз и используйте его для создания <b>бесконечного</b> числа надежных паролей для веб-сайтов.",
       "В отличии от традиционных менеджеров паролей, <b>DerivePass</b> не загружает в облако ни <i>Мастер Пароль</i>, ни пароли от веб-сайтов. Единственная сохраняемая информация - это <b>зашифрованные</b> названия веб-сайтов и имена пользователей."
-    ]
+    ],
+    "source": "исходный код"
   }
 }
 </i18n>
@@ -54,7 +56,7 @@
         Copyright {{new Date().getFullYear()}}, Fedor Indutny
         <br/>
         <a href="https://github.com/derivepass/derivepass-vue" target="_blank">
-          source code
+          {{ $t('source') }}
         </a>
       </small>
     </footer>
