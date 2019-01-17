@@ -227,11 +227,18 @@ export default {
         }
       } else if (type === 'apps') {
         for (const app of payload) {
+          if (this.received.includes(payload.uuid)) {
+            continue;
+          }
           this.received.push(app.uuid);
           this.$store.dispatch('receiveApp', app);
         }
       } else if (type === 'remove') {
         for (const app of payload) {
+          if (this.received.includes(payload.uuid)) {
+            continue;
+          }
+
           this.received.push(app.uuid);
           this.$store.dispatch('receiveApp', {
             uuid: app.uuid,
