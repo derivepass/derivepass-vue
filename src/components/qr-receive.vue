@@ -24,7 +24,7 @@
       {{ $t('complete') }}
     </b-alert>
     <b-progress
-      :show-progress="total > 0"
+      :show-value="total > 0"
       v-if="!complete"
       :value="received.length"
       :max="total"
