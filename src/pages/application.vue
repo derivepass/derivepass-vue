@@ -22,6 +22,7 @@
       "placeholder": "google.com",
       "feedback": {
         "empty": "Domain can't be empty",
+        "reserved": "Sorry, this domain name is reserved for internal use",
         "www": "Domain should not start with `www.`, `http://`, or any other `schema://`",
         "upper-case": "Domain should be lower-case",
         "whitespace": "Domain should not start or end with whitespace"
@@ -110,6 +111,7 @@
       "placeholder": "google.com",
       "feedback": {
         "empty": "Домен не может быть пустым",
+        "reserved": "Извините, но это доменное имя зарезервировано для внутреннего использования",
         "www": "Домен не должен начинаться на `www.`, `http://`, или какой-либо другой `протокол://`",
         "upper-case": "Домен не может содержать заглавные буквы",
         "whitespace": "Домен не должен начинаться или заканчиваться пробелом"
@@ -465,6 +467,10 @@ export default {
       const domain = this.app.domain;
       if (domain.length === 0) {
         return this.$t('domain.feedback.empty');
+      }
+
+      if (domain === 'derivepass') {
+        return this.$t('domain.feedback.reserved');
       }
 
       if (/^(www\.|\w+:\/\/)/.test(domain)) {
