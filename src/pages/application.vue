@@ -46,7 +46,7 @@
 
     "revision": {
       "label": "Revision",
-      "description": "Increment this by one to change password",
+      "description": "Increment this by one to change the password",
       "feedback": {
         "non-positive": "Revision must be greater than zero"
       }
