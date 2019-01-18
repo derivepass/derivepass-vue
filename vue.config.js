@@ -5,6 +5,7 @@ module.exports = {
     msTileColor: '#3d79de',
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
+      importWorkboxFrom: 'local',
       swSrc: 'src/plugins/service-worker/service-worker.js',
     },
   },
