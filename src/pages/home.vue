@@ -74,8 +74,8 @@ uu<i18n>
       </b-row>
       <b-row>
         <b-col>
-          <h3>{{ $t('security.title') }}</h3>
-          <h6><i>({{ $t('security.subtitle') }})</i></h6>
+          <h3 class="mb-2">{{ $t('security.title') }}</h3>
+          <h6 class="mb-3"><i>({{ $t('security.subtitle') }})</i></h6>
 
           <p v-html="$t('security.description[0]', { scrypt })"/>
           <p v-html="$t('security.description[1]', { scrypt })"/>
