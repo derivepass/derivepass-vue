@@ -135,11 +135,13 @@ export default {
 .logo {
   width: 2rem;
   height: 2rem;
+  visibility: hidden;
 }
 
 .logo.logo-visible {
   background: rgba(0,0,0,0.9);
   transition: background 0.8s;
+  visibility: visible;
 }
 
 .logo.secure {
