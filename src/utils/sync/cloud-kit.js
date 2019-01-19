@@ -42,20 +42,25 @@ export default class CloudKit extends Sync {
     this.db = provider.db;
 
     debug('setting up authentication');
-    this.user = this.container.setUpAuth()
-      .then(this.initResolve)
+    this.container.setUpAuth()
+      .then((user) => {
+        this.user = user;
+        this.ready = true;
+
+        this.initResolve();
+
+        // Async auth loop
+        this.authLoop();
+      })
       .catch(this.initReject);
   }
 
   async init() {
-    await this.initPromise;
     if (this.ready) {
       return;
     }
-    this.ready = true;
 
-    // Async auth loop
-    this.authLoop();
+    await this.initPromise;
   }
 
   get isAuthenticated() {
