@@ -7,15 +7,15 @@ const debug = createDebug('derivepass:sync:local-storage');
 const PREFIX = `derivepass/${ENV}`;
 
 export default class LocalStorage extends Sync {
-  constructor() {
-    super();
+  constructor(store) {
+    super(store);
 
     this.db = window.localStorage;
+
+    this.start();
   }
 
-  setStore(storage) {
-    super.setStore(storage);
-
+  start() {
     if (!this.db) {
       return;
     }
@@ -38,6 +38,8 @@ export default class LocalStorage extends Sync {
       this.receiveApp(app);
     }
     debug('emitting initial db.len=%d', count);
+
+    this.subscribe();
   }
 
   async sendApps(uuids) {

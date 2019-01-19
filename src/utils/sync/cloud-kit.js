@@ -1,5 +1,6 @@
 import Sync from './base';
 import * as createDebug from 'debug';
+import createCloudKit from '../cloud-kit-provider';
 
 const debug = createDebug('derivepass:sync:cloud-kit');
 
@@ -10,14 +11,10 @@ const RETRY_DELAY = 1500;
 const SYNC_EVERY = 60 * 60 * 1000; // 1 hour
 
 export default class CloudKit extends Sync {
-  constructor() {
-    super();
+  constructor(store) {
+    super(store);
 
-    this.ready = false;
-    this.initPromise = new Promise((resolve, reject) => {
-      this.initResolve = resolve;
-      this.initReject = reject;
-    });
+    this.initPromise = null;
 
     this.container = null;
     this.db = null;
@@ -31,36 +28,34 @@ export default class CloudKit extends Sync {
       signIn: document.getElementById('apple-sign-in-button'),
       signOut: document.getElementById('apple-sign-out-button'),
     };
+
+    // Automatically initialize when enabled
+    if (localStorage.getItem('derivepass/config/enable-icloud')) {
+      this.init();
+    }
   }
 
-  setProvider(provider) {
-    if (this.container) {
-      throw new Error('Already has a provider');
+  async init() {
+    if (!this.initPromise) {
+      this.initPromise = this.initOnce();
     }
+    return await this.initPromise;
+  }
+
+  async initOnce() {
+    debug('loading CloudKit provider');
+    const provider = await createCloudKit();
 
     this.container = provider.container;
     this.db = provider.db;
 
     debug('setting up authentication');
-    this.container.setUpAuth()
-      .then((user) => {
-        this.user = user;
-        this.ready = true;
+    this.user = await this.container.setUpAuth();
 
-        this.initResolve();
+    debug('CloudKit fully operational');
 
-        // Async auth loop
-        this.authLoop();
-      })
-      .catch(this.initReject);
-  }
-
-  async init() {
-    if (this.ready) {
-      return;
-    }
-
-    await this.initPromise;
+    // Async auth loop
+    this.authLoop();
   }
 
   get isAuthenticated() {
@@ -68,6 +63,8 @@ export default class CloudKit extends Sync {
   }
 
   async signIn() {
+    localStorage.setItem('derivepass/config/enable-icloud', true);
+
     // XXX(indutny): Terrible hacks
     if (this.buttons.signIn.children.length === 0) {
       throw new Error('CloudKit initialization error');
@@ -88,6 +85,8 @@ export default class CloudKit extends Sync {
   }
 
   async signOut() {
+    localStorage.setItem('derivepass/config/enable-icloud', false);
+
     // XXX(indutny): Terrible hacks
     if (this.buttons.signOut.children.length === 0) {
       throw new Error('CloudKit initialization error');
@@ -151,21 +150,23 @@ export default class CloudKit extends Sync {
     for (;;) {
       try {
         if (this.user) {
-          this.sync();
-        } else {
-          this.pauseSync();
-        }
+          debug('auth loop: logged in, syncing');
+          await this.sync();
 
-        if (this.user) {
+          debug('auth loop: subscribing');
+          this.subscribe();
+
           debug('auth loop: awaiting sign out');
           await this.container.whenUserSignsOut();
           this.user = null;
         } else {
+          this.pauseSync();
+
+          debug('auth loop: unsubscribing');
+          this.unsubscribe();
+
           debug('auth loop: awaiting sign in');
           this.user = await this.container.whenUserSignsIn();
-
-          debug('auth loop: user signed in, forcing update');
-          this.sendApps(this.store.state.applications.map((app) => app.uuid));
         }
       } catch (e) {
         debug('auth loop: got error %j, retrying in %d ms', e, RETRY_DELAY);

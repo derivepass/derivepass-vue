@@ -5,50 +5,39 @@ const debug = createDebug('derivepass:utils:sync:base');
 const COALESCE_DELAY = 50;
 
 export default class Sync {
-  constructor() {
-    this.store = null;
+  constructor(store) {
+    this.store = store;
+
+    this.state = 'init';
 
     this.received = new Map();
     this.buffer = new Set();
     this.bufferTimer = null;
   }
 
-  setStore(store) {
-    if (this.store) {
-      throw new Error('Can\'t assign store twice');
-    }
-
-    this.store = store;
-    this.store.subscribe(({ type, payload }) => {
-      if (type !== 'receiveApp') {
-        return;
-      }
-
-      if (this.received.has(payload.uuid)) {
-        const existing = this.received.get(payload.uuid);
-        // Avoid spurious changes
-        if (existing.changedAt >= payload.changedAt) {
+  subscribe() {
+    if (this.state === 'init') {
+      this.store.subscribe(({ type, payload }) => {
+        if (type !== 'receiveApp') {
           return;
         }
-      }
 
-      debug('received app with uuid %j changedAt %j', payload.uuid,
-        payload.changedAt);
+        if (this.state === 'subscribed') {
+          this.onAppChange(payload);
+        }
+      });
+    }
 
-      this.received.set(payload.uuid, payload);
-      this.buffer.add(payload.uuid);
+    this.state = 'subscribed';
 
-      if (this.bufferTimer) {
-        clearTimeout(this.bufferTimer);
-      }
-      this.bufferTimer = setTimeout(() => {
-        const uuids = Array.from(this.buffer);
-        this.buffer.clear();
-        this.bufferTimer = null;
+    // Feed all past app changes
+    for (const app of this.store.state.applications) {
+      this.onAppChange(app);
+    }
+  }
 
-        this.sendApps(uuids);
-      }, COALESCE_DELAY);
-    });
+  unsubscribe() {
+    this.state = 'unsubscribed';
   }
 
   receiveApp(app) {
@@ -68,4 +57,33 @@ export default class Sync {
       });
     });
   }
+
+  // Internal
+
+  onAppChange(app) {
+    if (this.received.has(app.uuid)) {
+      const existing = this.received.get(app.uuid);
+      // Avoid spurious changes
+      if (existing.changedAt >= app.changedAt) {
+        return;
+      }
+    }
+
+    debug('received app with uuid %j changedAt %j', app.uuid, app.changedAt);
+
+    this.received.set(app.uuid, app);
+    this.buffer.add(app.uuid);
+
+    if (this.bufferTimer) {
+      return;
+    }
+    this.bufferTimer = setTimeout(() => {
+      const uuids = Array.from(this.buffer);
+      this.buffer.clear();
+      this.bufferTimer = null;
+
+      this.sendApps(uuids);
+    }, COALESCE_DELAY);
+  }
+
 }
