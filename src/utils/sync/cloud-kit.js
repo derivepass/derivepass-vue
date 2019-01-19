@@ -6,6 +6,7 @@ const debug = createDebug('derivepass:sync:cloud-kit');
 
 const UI_RETRY_DELAY = 500;
 const RETRY_DELAY = 1500;
+const ENABLE_KEY = 'derivepass/config/enable-icloud';
 
 // TODO(indutny): make this configurable
 const SYNC_EVERY = 60 * 60 * 1000; // 1 hour
@@ -30,15 +31,33 @@ export default class CloudKit extends Sync {
     };
 
     // Automatically initialize when enabled
-    if (localStorage.getItem('derivepass/config/enable-icloud')) {
+    if (this.isEnabled) {
       this.init();
     }
   }
 
+  get isEnabled() {
+    return localStorage.getItem(ENABLE_KEY) === 'true';
+  }
+
+  enable() {
+    localStorage.setItem(ENABLE_KEY, true);
+  }
+
+  disable() {
+    localStorage.setItem(ENABLE_KEY, false);
+  }
+
   async init() {
+    // Do not load scripts until enabled
+    if (!this.isEnabled) {
+      return;
+    }
+
     if (!this.initPromise) {
       this.initPromise = this.initOnce();
     }
+
     return await this.initPromise;
   }
 
@@ -63,7 +82,8 @@ export default class CloudKit extends Sync {
   }
 
   async signIn() {
-    localStorage.setItem('derivepass/config/enable-icloud', true);
+    this.enable();
+    await this.init();
 
     // XXX(indutny): Terrible hacks
     if (this.buttons.signIn.children.length === 0) {
@@ -85,7 +105,7 @@ export default class CloudKit extends Sync {
   }
 
   async signOut() {
-    localStorage.setItem('derivepass/config/enable-icloud', false);
+    this.disable();
 
     // XXX(indutny): Terrible hacks
     if (this.buttons.signOut.children.length === 0) {
