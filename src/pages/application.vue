@@ -36,12 +36,12 @@
     },
 
     "login": {
-      "label": "Login",
+      "label": "Username",
       "description": "Examples: my_user_name, derivepass82",
       "placeholder": "my@email.com",
       "feedback": {
-        "empty": "Login can't be empty",
-        "whitespace": "Login should not start or end with whitespace"
+        "empty": "Username can't be empty",
+        "whitespace": "Username should not start or end with whitespace"
       }
     },
 
