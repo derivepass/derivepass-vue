@@ -85,6 +85,11 @@ export default class CloudKit extends Sync {
     this.enable();
     await this.init();
 
+    if (this.user) {
+      debug('already logged in, what a miracle');
+      return;
+    }
+
     // XXX(indutny): Terrible hacks
     if (this.buttons.signIn.children.length === 0) {
       throw new Error('CloudKit initialization error');
