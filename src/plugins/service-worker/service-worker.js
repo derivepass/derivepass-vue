@@ -1,5 +1,5 @@
 /* global workbox addEventListener */
-workbox.core.setCacheNameDetails({prefix: "DerivePass"});
+workbox.core.setCacheNameDetails({ prefix: 'DerivePass' });
 
 workbox.routing.registerRoute(
   'https://cdn.apple-cloudkit.com/ck/2/cloudkit.js',
