@@ -27,6 +27,12 @@ const RAW = {
     },
   },
 
+  'easyjet.com': {
+    options: {
+      maxLength: 20,
+    },
+  },
+
   // NOTE: >= 3 repeating characters are disallowed
   'nintendo.com': {
     alias: [ 'accounts.nintendo.com' ],
