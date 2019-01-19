@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "now-build": "npm run build",
+    "now-build": "npm run build && cp -rf dist/precache-manifest*.js dist/precache-manifest.common.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

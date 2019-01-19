@@ -9,6 +9,7 @@
     {"src": "^/js/(.*)", "dest": "/js/$1"},
     {"src": "^/css/(.*)", "dest": "/css/$1"},
     {"src": "^/img/(.*)", "dest": "/img/$1"},
+    {"src": "^/precache-manifest.*\\.js", "dest": "/precache-manifest.common.js"},
     {"src": "^/(.*\\.(?:js|txt|json|png))", "dest": "/$1"},
     {"src": ".*", "dest": "/index.html"}
   ]
