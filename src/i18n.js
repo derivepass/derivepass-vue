@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import * as createDebug from 'debug';
 
+import { LOCALE_KEY } from './utils/common';
+
 const debug = createDebug('derivepass:i18n');
 
 Vue.use(VueI18n)
@@ -11,7 +13,7 @@ let locale = 'en';
 // Guess locale
 try {
   let guess;
-  if (!window.localStorage.getItem('locale')) {
+  if (!localStorage.getItem(LOCALE_KEY)) {
     guess = navigator.language.split('-')[0];
   }
   if (guess) {
@@ -24,7 +26,7 @@ try {
 }
 
 try {
-  locale = window.localStorage.getItem('locale') || locale;
+  locale = localStorage.getItem(LOCALE_KEY) || locale;
 
   debug('retrieved locale %j', locale);
 } catch (e) {

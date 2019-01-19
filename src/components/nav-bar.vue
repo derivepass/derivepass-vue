@@ -85,6 +85,8 @@ import bNavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
 import bNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
 import bNavbarToggle from 'bootstrap-vue/es/components/navbar/navbar-toggle';
 
+import { LOCALE_KEY } from '../utils/common';
+
 export default {
   name: 'nav-bar',
   components: {
@@ -117,7 +119,7 @@ export default {
 
       // Persist locale
       try {
-        window.localStorage.setItem('locale', locale);
+        localStorage.setItem(LOCALE_KEY, locale);
       } catch (e) {
         // Ignore
       }
