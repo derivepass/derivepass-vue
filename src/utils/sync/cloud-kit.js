@@ -40,12 +40,19 @@ export default class CloudKit extends Sync {
     return localStorage.getItem(ENABLE_KEY) === 'true';
   }
 
-  enable() {
+  async enable() {
     localStorage.setItem(ENABLE_KEY, true);
+
+    // Load scripts if needed
+    await this.init();
   }
 
-  disable() {
+  async disable() {
     localStorage.setItem(ENABLE_KEY, false);
+
+    if (this.user) {
+      await this.signOut();
+    }
   }
 
   async init() {

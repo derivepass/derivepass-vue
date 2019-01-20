@@ -40,13 +40,13 @@
     <template v-else>
       <div>
         <b-button
-          @click="enable"
+          @click="load(enable())"
           variant="outline-primary"
           v-if="!isEnabled">
           {{ $t('enable') }}
         </b-button>
         <b-button
-          @click="disable"
+          @click="load(disable())"
           variant="outline-warning"
           v-else>
           {{ $t('disable') }}
@@ -55,13 +55,13 @@
 
       <div v-if="isEnabled" class="mt-3">
         <b-button
-          @click="signIn"
+          @click="load(signIn())"
           variant="primary"
           v-if="!isAuthenticated">
           {{ $t('sign-in') }}
         </b-button>
         <b-button
-          @click="signOut"
+          @click="load(signOut())"
           variant="warning"
           v-else>
           {{ $t('sign-out') }}
@@ -106,12 +106,10 @@ export default {
       this.isAuthenticated = this.$cloudKit.isAuthenticated;
     },
 
-    async enable() {
+    async load(promise) {
       this.loading = true;
       try {
-        this.$cloudKit.enable();
-        await this.$cloudKit.init();
-        this.isEnabled = true;
+        await promise;
       } catch (e) {
         this.error = e;
         return;
@@ -120,35 +118,25 @@ export default {
       }
     },
 
-    disable() {
-      this.$cloudKit.disable();
+    async enable() {
+      await this.$cloudKit.enable();
+      this.isEnabled = true;
+    },
+
+    async disable() {
+      await this.$cloudKit.disable();
       this.isEnabled = false;
+      this.isAuthenticated = false;
     },
 
     async signIn() {
-      this.loading = true;
-      try {
-        await this.$cloudKit.signIn();
-        this.isAuthenticated = true;
-      } catch (e) {
-        this.error = e;
-        return;
-      } finally {
-        this.loading = false;
-      }
+      await this.$cloudKit.signIn();
+      this.isAuthenticated = true;
     },
 
     async signOut() {
-      this.loading = true;
-      try {
-        await this.$cloudKit.signOut();
-        this.isAuthenticated = false;
-      } catch (e) {
-        this.error = e;
-        return;
-      } finally {
-        this.loading = false;
-      }
+      await this.$cloudKit.signOut();
+      this.isAuthenticated = false;
     }
   },
 };
