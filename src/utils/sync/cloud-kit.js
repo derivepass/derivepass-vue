@@ -109,8 +109,6 @@ export default class CloudKit extends Sync {
   }
 
   async signOut() {
-    this.disable();
-
     // XXX(indutny): Terrible hacks
     if (this.buttons.signOut.children.length === 0) {
       throw new Error('CloudKit initialization error');

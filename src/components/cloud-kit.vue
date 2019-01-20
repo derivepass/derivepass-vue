@@ -8,7 +8,8 @@
     "dismiss": "Dismiss",
     "enable": "Enable",
     "disable": "Disable",
-    "sign-in": "Sign In"
+    "sign-in": "Sign In",
+    "sign-out": "Sign Out"
   },
   "ru": {
     "title": "Синхронизация с iCloud",
@@ -18,7 +19,8 @@
     "dismiss": "Скрыть",
     "enable": "Включить",
     "disable": "Отключить",
-    "sign-in": "Авторизовать"
+    "sign-in": "Авторизовать",
+    "sign-out": "Деавторизовать"
   }
 }
 </i18n>
@@ -36,24 +38,35 @@
       </b-alert>
     </template>
     <template v-else>
-      <b-button
-        @click="enable"
-        variant="outline-primary"
-        v-if="!isEnabled">
-        {{ $t('enable') }}
-      </b-button>
-      <b-button
-        @click="signIn"
-        variant="outline-primary"
-        v-else-if="!isAuthenticated">
-        {{ $t('sign-in') }}
-      </b-button>
-      <b-button
-        @click="signOut"
-        variant="outline-warning"
-        v-else>
-        {{ $t('disable') }}
-      </b-button>
+      <div>
+        <b-button
+          @click="enable"
+          variant="outline-primary"
+          v-if="!isEnabled">
+          {{ $t('enable') }}
+        </b-button>
+        <b-button
+          @click="disable"
+          variant="outline-warning"
+          v-else>
+          {{ $t('disable') }}
+        </b-button>
+      </div>
+
+      <div v-if="isEnabled" class="mt-3">
+        <b-button
+          @click="signIn"
+          variant="primary"
+          v-if="!isAuthenticated">
+          {{ $t('sign-in') }}
+        </b-button>
+        <b-button
+          @click="signOut"
+          variant="warning"
+          v-else>
+          {{ $t('sign-out') }}
+        </b-button>
+      </div>
     </template>
   </b-card>
 </template>
@@ -105,6 +118,11 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    disable() {
+      this.$cloudKit.disable();
+      this.isEnabled = false;
     },
 
     async signIn() {
