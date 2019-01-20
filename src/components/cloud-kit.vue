@@ -6,8 +6,9 @@
     "failed": "Failed to connect to iCloud!",
     "details": "Details",
     "dismiss": "Dismiss",
+    "enable": "Enable",
     "disable": "Disable",
-    "enable": "Enable"
+    "sign-in": "Sign In"
   },
   "ru": {
     "title": "Синхронизация с iCloud",
@@ -15,8 +16,9 @@
     "failed": "Не удалось соединиться с iCloud!",
     "details": "Подробности",
     "dismiss": "Скрыть",
+    "enable": "Включить",
     "disable": "Отключить",
-    "enable": "Включить"
+    "sign-in": "Авторизовать"
   }
 }
 </i18n>
@@ -35,16 +37,22 @@
     </template>
     <template v-else>
       <b-button
-        @click="signOut"
-        variant="outline-warning"
-        v-if="isAuthenticated">
-        {{ $t('disable') }}
+        @click="enable"
+        variant="outline-primary"
+        v-if="!isEnabled">
+        {{ $t('enable') }}
       </b-button>
       <b-button
         @click="signIn"
         variant="outline-primary"
+        v-else-if="!isAuthenticated">
+        {{ $t('sign-in') }}
+      </b-button>
+      <b-button
+        @click="signOut"
+        variant="outline-warning"
         v-else>
-        {{ $t('enable') }}
+        {{ $t('disable') }}
       </b-button>
     </template>
   </b-card>
@@ -61,7 +69,12 @@ export default {
   components: { bAlert, bButton, bCard },
 
   data() {
-    return { loading: true, error: null, isAuthenticated: false };
+    return {
+      loading: true,
+      error: null,
+      isAuthenticated: false,
+      isEnabled: this.$cloudKit.isEnabled,
+    };
   },
 
   async created() {
@@ -78,6 +91,20 @@ export default {
     async asyncInit() {
       await this.$cloudKit.init();
       this.isAuthenticated = this.$cloudKit.isAuthenticated;
+    },
+
+    async enable() {
+      this.loading = true;
+      try {
+        this.$cloudKit.enable();
+        await this.$cloudKit.init();
+        this.isEnabled = true;
+      } catch (e) {
+        this.error = e;
+        return;
+      } finally {
+        this.loading = false;
+      }
     },
 
     async signIn() {

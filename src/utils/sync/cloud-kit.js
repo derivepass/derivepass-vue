@@ -82,7 +82,6 @@ export default class CloudKit extends Sync {
   }
 
   async signIn() {
-    this.enable();
     await this.init();
 
     if (this.user) {
