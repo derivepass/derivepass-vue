@@ -2,7 +2,13 @@
 {
   "en": {
     "title": "iCloud Sync",
-    "connecting": "Connecting to iCloud...",
+    "loading": {
+      "init": "Connecting to iCloud...",
+      "enable": "Enabling iCloud Synchronization...",
+      "disable": "Disabling iCloud Synchronization...",
+      "sign-in": "Signing into iCloud...",
+      "sign-out": "Signing out of iCloud..."
+    },
     "failed": "Failed to connect to iCloud!",
     "details": "Details",
     "dismiss": "Dismiss",
@@ -13,7 +19,13 @@
   },
   "ru": {
     "title": "Синхронизация с iCloud",
-    "connecting": "Подключение к iCloud...",
+    "loading": {
+      "init": "Подключение к iCloud...",
+      "enable": "Включение синхронизации с iCloud...",
+      "disable": "Отключение синхронизации с iCloud...",
+      "sign-in": "Авторизация iCloud...",
+      "sign-out": "Выход из iCloud..."
+    },
     "failed": "Не удалось соединиться с iCloud!",
     "details": "Подробности",
     "dismiss": "Скрыть",
@@ -28,7 +40,7 @@
 <template>
   <b-card :title="$t('title')">
     <template v-if="loading">
-      <b-alert show variant="info">{{ $t('connecting') }}</b-alert>
+      <b-alert show variant="info">{{ $t('loading.' + this.loading) }}</b-alert>
     </template>
     <template v-else-if="error">
       <b-alert show variant="danger">
@@ -43,13 +55,13 @@
     <template v-else>
       <div>
         <b-button
-          @click="load(enable())"
+          @click="load(enable(), 'enable')"
           variant="outline-primary"
           v-if="!isEnabled">
           {{ $t('enable') }}
         </b-button>
         <b-button
-          @click="load(disable())"
+          @click="load(disable(), 'disable')"
           variant="outline-warning"
           v-else>
           {{ $t('disable') }}
@@ -58,13 +70,13 @@
 
       <div v-if="isEnabled" class="mt-3">
         <b-button
-          @click="load(signIn())"
+          @click="load(signIn(), 'sign-in')"
           variant="primary"
           v-if="!isAuthenticated">
           {{ $t('sign-in') }}
         </b-button>
         <b-button
-          @click="load(signOut())"
+          @click="load(signOut(), 'sign-out')"
           variant="warning"
           v-else>
           {{ $t('sign-out') }}
@@ -86,7 +98,7 @@ export default {
 
   data() {
     return {
-      loading: true,
+      loading: 'init',
       error: null,
       isAuthenticated: false,
       isEnabled: this.$cloudKit.isEnabled,
@@ -109,8 +121,8 @@ export default {
       this.isAuthenticated = this.$cloudKit.isAuthenticated;
     },
 
-    async load(promise) {
-      this.loading = true;
+    async load(promise, tag) {
+      this.loading = tag;
       try {
         await promise;
       } catch (e) {
