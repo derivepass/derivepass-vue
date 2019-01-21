@@ -74,10 +74,12 @@ export default class CloudKit extends Sync {
 
   async signIn() {
     await this.db.signIn();
+    this.setUser(await this.db.getUser());
   }
 
   async signOut() {
     await this.db.signOut();
+    this.setUser(null);
   }
 
   // Override
