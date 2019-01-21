@@ -1,11 +1,9 @@
 import Sync from './base';
 import * as createDebug from 'debug';
-import createCloudKit from '../cloud-kit-provider';
+import CloudKitAPI from '../cloud-kit-api';
 
 const debug = createDebug('derivepass:sync:cloud-kit');
 
-const UI_RETRY_DELAY = 500;
-const RETRY_DELAY = 1500;
 const ENABLE_KEY = 'derivepass/config/enable-icloud';
 
 // TODO(indutny): make this configurable
@@ -18,17 +16,12 @@ export default class CloudKit extends Sync {
     this.initPromise = null;
 
     this.container = null;
-    this.db = null;
+    this.db = new CloudKitAPI();
     this.user = null;
     this.syncTimer = null;
 
     // Map from app uuid to recordChangeTag
     this.changeTags = new Map();
-
-    this.buttons = {
-      signIn: document.getElementById('apple-sign-in-button'),
-      signOut: document.getElementById('apple-sign-out-button'),
-    };
 
     // Automatically initialize when enabled
     if (this.isEnabled) {
@@ -69,19 +62,10 @@ export default class CloudKit extends Sync {
   }
 
   async initOnce() {
-    debug('loading CloudKit provider');
-    const provider = await createCloudKit();
-
-    this.container = provider.container;
-    this.db = provider.db;
-
     debug('setting up authentication');
-    this.user = await this.container.setUpAuth();
+    this.setUser(await this.db.getUser());
 
     debug('CloudKit fully operational');
-
-    // Async auth loop
-    this.authLoop();
   }
 
   get isAuthenticated() {
@@ -89,50 +73,11 @@ export default class CloudKit extends Sync {
   }
 
   async signIn() {
-    await this.init();
-
-    if (this.user) {
-      debug('already logged in, what a miracle');
-      return;
-    }
-
-    // XXX(indutny): Terrible hacks
-    if (this.buttons.signIn.children.length === 0) {
-      throw new Error('CloudKit initialization error');
-    }
-
-    const button = this.buttons.signIn.children[0];
-    if (button.style.display === 'none') {
-      debug('signIn button invisible, retrying after delay');
-      await new Promise((resolve) => setTimeout(resolve, UI_RETRY_DELAY));
-      return await this.signIn();
-    }
-
-    debug('signIn clicked');
-    await Promise.all([
-      this.container.whenUserSignsIn(),
-      button.click(),
-    ]);
+    await this.db.signIn();
   }
 
   async signOut() {
-    // XXX(indutny): Terrible hacks
-    if (this.buttons.signOut.children.length === 0) {
-      throw new Error('CloudKit initialization error');
-    }
-
-    const button = this.buttons.signOut.children[0];
-    if (button.style.display === 'none') {
-      debug('signOut button invisible, retrying after delay');
-      await new Promise((resolve) => setTimeout(resolve, UI_RETRY_DELAY));
-      return await this.signIn();
-    }
-
-    debug('signOut clicked');
-    await Promise.all([
-      this.container.whenUserSignsOut(),
-      button.click(),
-    ]);
+    await this.db.signOut();
   }
 
   // Override
@@ -174,44 +119,23 @@ export default class CloudKit extends Sync {
 
   // Internal
 
-  async authLoop() {
-    debug('starting auth loop');
-    for (;;) {
-      try {
-        if (this.user) {
-          debug('auth loop: logged in, syncing');
-          await this.sync();
-
-          debug('auth loop: subscribing');
-          this.subscribe();
-
-          debug('auth loop: awaiting sign out');
-          await this.container.whenUserSignsOut();
-          this.user = null;
-        } else {
-          this.pauseSync();
-
-          debug('auth loop: unsubscribing');
-          this.unsubscribe();
-
-          debug('auth loop: awaiting sign in');
-          this.user = await this.container.whenUserSignsIn();
-        }
-      } catch (e) {
-        debug('auth loop: got error %j, retrying in %d ms', e, RETRY_DELAY);
-        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-
-        // Reload `.user` property
-        await this.reloadUser();
-      }
+  async setUser(user) {
+    if (this.user === user) {
+      return;
     }
-  }
 
-  async reloadUser() {
-    try {
-      this.user = await this.container.fetchCurrentUserIdentity();
-    } catch (e) {
-      this.user = null;
+    this.user = user;
+    if (this.user) {
+      debug('logged in, syncing');
+      await this.sync();
+
+      debug('subscribing');
+      this.subscribe();
+    } else {
+      this.pauseSync();
+
+      debug('unsubscribing');
+      this.unsubscribe();
     }
   }
 
@@ -226,7 +150,7 @@ export default class CloudKit extends Sync {
 
       do {
         debug('sync: query with marker %j', marker);
-        const res = await this.db.performQuery({
+        const res = await this.db.fetchRecords({
           recordType: 'EncryptedApplication',
           continuationMarker: marker,
         });

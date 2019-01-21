@@ -1,11 +1,6 @@
 /* global workbox addEventListener */
 workbox.core.setCacheNameDetails({ prefix: 'DerivePass' });
 
-workbox.routing.registerRoute(
-  'https://cdn.apple-cloudkit.com/ck/2/cloudkit.js',
-  workbox.strategies.staleWhileRevalidate(),
-);
-
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
  * requests for URLs in the manifest.

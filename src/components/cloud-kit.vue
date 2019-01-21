@@ -33,7 +33,10 @@
     <template v-else-if="error">
       <b-alert show variant="danger">
         <p>{{ $t('failed') }}</p>
-        <p>{{ $t('details') }}: <i>{{error.message || err}}</i></p>
+        <p>
+          {{ $t('details') }}:
+          <i>{{ error.tag ? $t(error.tag, error.extra) : error.message }}</i>
+        </p>
         <b-button @click="error = undefined">{{ $t('dismiss') }}</b-button>
       </b-alert>
     </template>

@@ -3,5 +3,10 @@
   "error.flatten.invalid-start": "Invalid starting character in range \"{range}\"",
   "error.flatten.invalid-end": "Invalid ending character in range \"{range}\"",
   "error.flatten.invalid": "Invalid range \"{range}\"",
-  "error.flatten.unterminated": "Unterminated range \"{range}\""
+  "error.flatten.unterminated": "Unterminated range \"{range}\"",
+
+  "error.cloud-kit.auth-failure": "Authentication failure",
+  "error.cloud-kit.premature-close": "Sign-in window was prematurely closed",
+  "error.cloud-kit.no-auth-url": "No authorization URL in response",
+  "error.cloud-kit.popup-blocked": "Pop-up blocked, please try again"
 }

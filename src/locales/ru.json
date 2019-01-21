@@ -3,5 +3,10 @@
   "error.flatten.invalid-start": "Неверный начальный символ диапазона \"{range}\"",
   "error.flatten.invalid-end": "Неверный конечный символ диапазона \"{range}\"",
   "error.flatten.invalid": "Неверный диапазон \"{range}\"",
-  "error.flatten.unterminated": "Незаконченный диапазон \"{range}\""
+  "error.flatten.unterminated": "Незаконченный диапазон \"{range}\"",
+
+  "error.cloud-kit.auth-failure": "Ошибка аутентификации",
+  "error.cloud-kit.premature-close": "Окно аутентификации было закрыто до завершения операции",
+  "error.cloud-kit.no-auth-url": "Отсутсвует URL авторизации в ответе сервера",
+  "error.cloud-kit.popup-blocked": "Окно заблокиравоно. Пожалуйста, попробуйте повторить действие позже"
 }
