@@ -68,7 +68,7 @@ export default class CloudKitAPI {
 
     const child = window.open(this.authURL,
       'derivepass.iCloud.Auth',
-      'width=400,height=500');
+      'width=500,height=500');
     if (!child) {
       throw new LocaleError('Pop-up blocked, please try again',
         'error.cloud-kit.popup-blocked');
