@@ -24,6 +24,7 @@
       "next": "Next"
     },
     "reset": "Reset",
+    "dismiss": "Dismiss",
     "computing": "Computing decryption keys..."
   },
   "ru": {
@@ -50,6 +51,7 @@
       "next": "Далее"
     },
     "reset": "Сброс",
+    "dismiss": "Скрыть",
     "computing": "Генерируем криптографические ключи..."
   }
 }
@@ -57,6 +59,11 @@
 
 <template>
   <div>
+    <b-alert v-if="error" show dismissable variant="danger">
+      {{ error.tag ? $t(error.tag, error.extra) : error.message }}
+      <b-button @click="error = undefined">{{ $t('dismiss') }}</b-button>
+    </b-alert>
+
     <b-form
       @submit.prevent="onSubmit"
       @reset.prevent="onReset"
@@ -133,6 +140,7 @@
 import Vue from 'vue';
 import { mapState } from 'vuex';
 
+import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bForm from 'bootstrap-vue/es/components/form/form';
 import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
@@ -146,7 +154,7 @@ const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
 export default {
   name: 'master-password',
   components: {
-    bButton, bForm, bFormGroup, bFormInput,
+    bAlert, bButton, bForm, bFormGroup, bFormInput,
     Computing,
   },
 
@@ -276,21 +284,19 @@ export default {
 
       this.computing = true;
 
-      this.$derivepass.computeKeys(this.password).then((keys) => {
-        this.$store.commit('setCryptoKeys', {
+      this.$store.state.derivepass.computeKeys(this.password).then((keys) => {
+        return this.$store.dispatch('setCryptoKeys', {
           master: this.password,
           crypto: keys,
           emoji: emoji,
         });
-
+      }).then(() => {
         this.$autoLogout.login(() => {
           this.$store.commit('resetCryptoKeys');
 
           const needRedirect = this.$route.matched.some((route) => {
             return route.meta.requiresAuth;
           });
-
-          // TODO(indutny): Place an alert
 
           if (needRedirect) {
             this.$router.push('/');

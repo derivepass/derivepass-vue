@@ -12,7 +12,10 @@
       "idle": "Compute Password",
       "running": "Computing Password"
     },
-    "computing": "Computing secure password...",
+    "computing": {
+      "password": "Computing secure password...",
+      "app": "Encrypting application..."
+    },
     "edit": "Edit",
     "back": "Back",
 
@@ -101,7 +104,10 @@
       "idle": "Сгенерировать Пароль",
       "running": "Генерируем Пароль"
     },
-    "computing": "Генерируем надежный пароль...",
+    "computing": {
+      "password": "Генерируем надежный пароль...",
+      "app": "Зашифровываем приложение..."
+    },
     "edit": "Редактировать",
     "back": "Назад",
 
@@ -204,7 +210,7 @@
         variant="primary"
         :disabled="!isValidApp"
         @click="compute()">
-        {{ computing ? $t('compute.running') : $t('compute.idle') }}
+        {{ computing === 'password' ? $t('compute.running') : $t('compute.idle') }}
       </b-button>
       <b-button @click="showDetails = !showDetails" variant="link">
         {{ $t('edit') }}
@@ -214,7 +220,9 @@
       </b-button>
     </div>
 
-    <computing :active="computing" :text="$t('computing')"/>
+    <computing
+      :active="!!computing"
+      :text="computing ? $t('computing.' + computing) : ''"/>
 
     <b-collapse class="py-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
@@ -372,7 +380,7 @@ import bModal from 'bootstrap-vue/es/components/modal/modal';
 import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 
 import Computing from '../components/computing';
-import { decryptApp, encryptApp, passwordEntropyBits } from '../utils/crypto';
+import { passwordEntropyBits } from '../utils/crypto';
 import {
   parseAppOptions, flattenRange, DEFAULT_APP_OPTIONS,
 } from '../utils/common';
@@ -410,11 +418,17 @@ export default {
 
     const defaultOptions = Object.assign({}, DEFAULT_APP_OPTIONS);
 
-    let app = this.$store.state.applications.find((app) => app.uuid === uuid);
+    let app = this.$store.state.decryptedApps.find((app) => app.uuid === uuid);
+
+    // Nothing we can do to restore the app
+    if (app && app.removed) {
+      this.$router.replace('/');
+      return;
+    }
+
     let isNew;
     if (app && this.$store.getters.isLoggedIn) {
       isNew = false;
-      app = decryptApp(app, this.$store.state.cryptoKeys);
 
       // Migrate old records
       if (!app.options) {
@@ -438,11 +452,6 @@ export default {
       };
     }
 
-    // Nothing we can do to restore the app
-    if (app.removed) {
-      this.$router.replace('/');
-    }
-
     return {
       app,
       savedApp: cloneApp(app),
@@ -454,6 +463,7 @@ export default {
       copied: false,
       saved: false,
       computing: false,
+      error: null,
       password: '',
       presetDomain: null,
     };
@@ -629,7 +639,7 @@ export default {
     },
 
     compute() {
-      this.computing = true;
+      this.computing = 'password';
 
       const app = this.app;
 
@@ -641,17 +651,20 @@ export default {
 
       const isLegacy = isSameOptions(app.options, DEFAULT_APP_OPTIONS);
 
+      const derivepass = this.$store.state.derivepass;
+
       let promise;
       if (isLegacy) {
-        promise = this.$derivepass.computeLegacyPassword(master, domain);
+        promise = derivepass.computeLegacyPassword(master, domain);
       } else {
-        promise = this.$derivepass.computePassword(master, domain,
+        promise = derivepass.computePassword(master, domain,
           parseAppOptions(app.options));
       }
 
       promise.then((password) => {
         this.password = password;
       }).catch((err) => {
+        // TODO(indutny): display this
         this.error = err;
       }).finally(() => {
         this.computing = false;
@@ -678,29 +691,39 @@ export default {
       this.$copyText(this.password);
     },
     onSave() {
-      const app = Object.assign(
-        encryptApp(this.app, this.$store.state.cryptoKeys),
-        {
-          changedAt: Date.now(),
-        });
-      this.$store.dispatch('receiveApp', app);
+      const app = Object.assign(this.app, { changedAt: Date.now() });
 
-      cloneApp(this.app, this.savedApp);
-      this.saved = true;
-      setTimeout(() => this.saved = false, 2500);
+      this.computing = 'app';
+      this.$store.dispatch('receiveDecryptedApp', app).then(() => {
+        this.saved = true;
+        setTimeout(() => this.saved = false, 2500);
+
+        cloneApp(this.app, this.savedApp);
+      }).catch((err) => {
+        // TODO(indutny): display this
+        this.error = err;
+      }).finally(() => {
+        this.computing = false;
+      });
     },
     onReset() {
       cloneApp(this.savedApp, this.app);
     },
     onDelete() {
-      const app = Object.assign(
-        encryptApp(this.app, this.$store.state.cryptoKeys),
-        {
-          removed: true,
-          changedAt: Date.now(),
-        });
-      this.$store.dispatch('receiveApp', app);
-      this.$router.go(-1);
+      const app = Object.assign(this.app, {
+        removed: true,
+        changedAt: Date.now(),
+      });
+
+      this.computing = 'app';
+      this.$store.dispatch('receiveDecryptedApp', app).then(() => {
+        this.$router.go(-1);
+      }).catch((err) => {
+        // TODO(indutny): display this
+        this.error = err;
+      }).finally(() => {
+        this.computing = false;
+      });
     }
   }
 };

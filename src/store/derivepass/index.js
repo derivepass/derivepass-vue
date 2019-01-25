@@ -4,7 +4,8 @@ import Worker from 'worker-loader?{"name":"js/worker.[hash:8].js"}!./derive.work
 import * as createDebug from 'debug';
 
 import {
-  AES_KEY_SIZE, MAC_KEY_SIZE,
+  AES_KEY_SIZE, MAC_KEY_SIZE, IV_SIZE,
+  toHex, fromHex,
   LEGACY_PASSWORD_SIZE,
   passwordEntropyBits,
   computeLegacyPassword,
@@ -13,8 +14,10 @@ import {
 
 const debug = createDebug('derivepass:plugins:derivepass');
 const encoder = new TextEncoder('utf-8');
+const decoder = new TextDecoder('utf-8');
 
 const SCRYPT_AES_DOMAIN = 'derivepass/aes';
+const MAX_WORKERS = 8;
 
 class DeriveWorker {
   constructor() {
@@ -76,39 +79,112 @@ class DeriveWorker {
   }
 }
 
-class DerivePass {
+export default class DerivePass {
   constructor() {
     this.workers = {
       idle: [],
       active: new Set(),
+      queue: [],
+      count: 0,
     };
   }
 
   async getWorker() {
     let worker;
-    if (this.workers.idle.length === 0) {
-      worker = new DeriveWorker();
-      await worker.init();
-    } else {
+    if (this.workers.idle.length !== 0) {
+      debug('using idle worker');
       worker = this.workers.idle.shift();
+    } else if (this.workers.count >= MAX_WORKERS) {
+      debug('waiting for next idle worker');
+      worker = await new Promise((resolve) => {
+        this.workers.queue.push(resolve);
+      });
+    } else {
+      debug('spawning new worker');
+      worker = new DeriveWorker();
+      this.workers.count++;
+      await worker.init();
     }
+    this.workers.active.add(worker);
     return worker;
+  }
+
+  reclaimWorker(worker) {
+    debug('reclaiming worker');
+    this.workers.active.delete(worker);
+    if (this.workers.queue.length !== 0) {
+      this.workers.queue.shift()(worker);
+    } else {
+      this.workers.idle.push(worker);
+    }
   }
 
   async scrypt(master, domain, outSize) {
     const worker = await this.getWorker();
-    this.workers.active.add(worker);
 
     master = encoder.encode(master);
     domain = encoder.encode(domain);
 
     try {
-      return  await worker.send('derivepass', { master, domain, outSize });
+      return await worker.send('derivepass', { master, domain, outSize });
     } finally {
-      // Reclaim worker
-      this.workers.active.delete(worker);
-      this.workers.idle.push(worker);
+      this.reclaimWorker(worker);
     }
+  }
+
+  async encrypt(payload, keys) {
+    const worker = await this.getWorker();
+    try {
+      const iv = new Uint8Array(IV_SIZE);
+      window.crypto.getRandomValues(iv);
+
+      const data = encoder.encode(payload);
+      const raw = await worker.send('encrypt', { keys, iv, data });
+      const hex = toHex(raw);
+
+      return 'v1:' + hex;
+    } finally {
+      this.reclaimWorker(worker);
+    }
+  }
+
+  async decrypt(payload, keys) {
+    const worker = await this.getWorker();
+    try {
+      let version = 0;
+      if (/^v1:/.test(payload)) {
+        version = 1;
+        payload = payload.slice(3);
+      }
+      payload = fromHex(payload);
+      const raw = await worker.send(
+        version === 1 ? 'decrypt' : 'decrypt_legacy',
+        { keys, data: payload });
+      return decoder.decode(raw);
+    } finally {
+      this.reclaimWorker(worker);
+    }
+  }
+
+  // NOTE: We're intentionally not using `Promise.all()` here and below for
+  // better interactivity. Most users will have several apps and it will look
+  // better if they'll load in chunks.
+  async decryptApp(app, keys) {
+    return Object.assign({}, app, {
+      domain: await this.decrypt(app.domain, keys),
+      login: await this.decrypt(app.login, keys),
+      revision: parseInt(await this.decrypt(app.revision, keys), 10) || 1,
+      options: app.options && JSON.parse(await this.decrypt(app.options, keys)),
+    });
+  }
+
+  async encryptApp(app, keys) {
+    return Object.assign({}, app, {
+      domain: await this.encrypt(app.domain, keys),
+      login: await this.encrypt(app.login, keys),
+      revision: await this.encrypt(app.revision.toString(), keys),
+      options: await this.encrypt(JSON.stringify(app.options), keys),
+    });
   }
 
   async computeKeys(master) {
@@ -133,9 +209,3 @@ class DerivePass {
     return computePassword(raw, options);
   }
 }
-
-export default {
-  install(Vue) {
-    Vue.prototype.$derivepass = new DerivePass();
-  }
-};

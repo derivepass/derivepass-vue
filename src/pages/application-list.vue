@@ -57,8 +57,6 @@ import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append';
 import bPaginationNav from 'bootstrap-vue/es/components/pagination-nav/pagination-nav';
 
-import { decryptApp } from '../utils/crypto';
-
 const APPS_PER_PAGE = 10;
 
 export default {
@@ -92,30 +90,22 @@ export default {
     numberOfPages() {
       return Math.ceil(this.allApplications.length / APPS_PER_PAGE);
     },
+    allApplications() {
+      return this.decryptedApps
+        .filter((app) => {
+          return this.filter.test(app.domain) || this.filter.test(app.login);
+        })
+    },
+    applications() {
+      return this.allApplications.slice(
+          (this.currentPage - 1) * APPS_PER_PAGE,
+          this.currentPage * APPS_PER_PAGE);
+    },
     ...mapState({
       decryptedApps(state) {
-        return state.applications.filter((app) => {
-          return app.master === state.emoji && !app.removed;
-        }).map((app) => {
-          return decryptApp(app, state.cryptoKeys);
-        });
+        return state.decryptedApps;
       },
-      allApplications() {
-        return this.decryptedApps
-          .sort((a, b) => {
-            return a.index - b.index;
-          })
-          .filter((app) => {
-            return this.filter.test(app.domain) ||
-              this.filter.test(app.login);
-          })
-      },
-      applications() {
-        return this.allApplications.slice(
-            (this.currentPage - 1) * APPS_PER_PAGE,
-            this.currentPage * APPS_PER_PAGE);
-      },
-    })
+    }),
   },
 
   watch: {
@@ -127,7 +117,7 @@ export default {
           page: this.currentPage === 1 ? undefined : this.currentPage,
         },
       });
-    }
+    },
   },
 
   methods: {

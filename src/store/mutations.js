@@ -35,6 +35,33 @@ export default {
     });
   },
 
+  updateDecryptedApp(state, app) {
+    const existing = state.decryptedApps.find((decrypted) => {
+      return decrypted.uuid === app.uuid;
+    });
+
+    if (!existing) {
+      // Strange, but okay?
+      if (app.removed) {
+        debug('why %j', state.decryptedApps);
+        return;
+      }
+
+      debug('new decrypted app.uuid=%j', app.uuid);
+      state.decryptedApps.push(Object.assign({}, app));
+      return;
+    }
+
+    if (app.removed) {
+      debug('removed decrypted app.uuid=%j', app.uuid);
+      state.decryptedApps.splice(state.decryptedApps.indexOf(existing), 1);
+      return;
+    }
+
+    debug('updated decrypted app.uuid=%j', app.uuid);
+    Object.assign(existing, app);
+  },
+
   setCryptoKeys(state, payload) {
     state.master = payload.master;
     state.cryptoKeys = payload.crypto;
@@ -45,5 +72,10 @@ export default {
     state.cryptoKeys = null;
     state.master = '';
     state.emoji = '';
+    state.decryptedApps = [];
   },
+
+  setDecryptedApps(state, payload) {
+    state.decryptedApps = payload;
+  }
 };

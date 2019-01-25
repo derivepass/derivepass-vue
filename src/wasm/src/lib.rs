@@ -2,8 +2,8 @@ extern crate dumb_crypto;
 extern crate wasm_bindgen;
 
 use cfg_if::cfg_if;
-use wasm_bindgen::prelude::*;
 use dumb_crypto::{aes, aes_cbc, hmac, scrypt, sha256};
+use wasm_bindgen::prelude::*;
 
 cfg_if! {
     // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -12,6 +12,22 @@ cfg_if! {
         extern crate wee_alloc;
         #[global_allocator]
         static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+    }
+}
+
+cfg_if! {
+    // When the `console_error_panic_hook` feature is enabled, we can call the
+    // `set_panic_hook` function at least once during initialization, and then
+    // we will get better error messages if our code ever panics.
+    //
+    // For more details see
+    // https://github.com/rustwasm/console_error_panic_hook#readme
+    if #[cfg(feature = "console_error_panic_hook")] {
+        extern crate console_error_panic_hook;
+        pub use self::console_error_panic_hook::set_once as set_panic_hook;
+    } else {
+        #[inline]
+        pub fn set_panic_hook() {}
     }
 }
 
@@ -28,25 +44,22 @@ pub fn derive(
 
     let s = scrypt::Scrypt::new(r, n, p);
 
-    s.derive(passphrase, salt, &mut out).expect("scrypt derivation to succeed");
+    s.derive(passphrase, salt, &mut out)
+        .expect("scrypt derivation to succeed");
 
     out
 }
 
 #[wasm_bindgen]
-pub fn encrypt(
-    aes_key: &[u8],
-    mac_key: &[u8],
-    iv: &[u8],
-    payload: &[u8],
-) -> Vec<u8> {
+pub fn encrypt(aes_key: &[u8], mac_key: &[u8], iv: &[u8], payload: &[u8]) -> Vec<u8> {
     let mut iv_arr = [0; aes::BLOCK_SIZE];
     iv_arr.copy_from_slice(iv);
 
     let mut cipher = aes_cbc::Cipher::new(iv_arr);
     cipher.init(aes_key).expect("cipher.init to succeed");
 
-    let mut out = cipher.write(payload).expect("cipher.write to succeed");
+    let mut out = iv.to_vec();
+    out.append(&mut cipher.write(payload).expect("cipher.write to succeed"));
     out.append(&mut cipher.flush().expect("cipher.flush to succed"));
 
     let mut hash = hmac::HMac::new(mac_key);
@@ -57,30 +70,23 @@ pub fn encrypt(
 }
 
 #[wasm_bindgen]
-pub fn decrypt(
-    aes_key: &[u8],
-    mac_key: &[u8],
-    iv: &[u8],
-    payload: &[u8],
-) -> Vec<u8> {
-    let mut iv_arr = [0; aes::BLOCK_SIZE];
-    iv_arr.copy_from_slice(iv);
-
-    if payload.len() < sha256::DIGEST_SIZE {
+pub fn decrypt(aes_key: &[u8], mac_key: &[u8], payload: &[u8]) -> Vec<u8> {
+    if payload.len() < aes::BLOCK_SIZE + sha256::DIGEST_SIZE {
         panic!("Payload doesn't have enough bytes for MAC");
     }
 
-    let mut content: Vec<u8> = payload.to_vec();
-    let mac = content.split_off(content.len() - sha256::DIGEST_SIZE);
+    let mut iv = [0; aes::BLOCK_SIZE];
+    iv.copy_from_slice(&payload[..aes::BLOCK_SIZE]);
 
-    let mut decipher = aes_cbc::Decipher::new(iv_arr);
-    decipher.init(aes_key).expect("decipher.init to succeed");
+    let rest = &payload[aes::BLOCK_SIZE..];
+    let mac_off = rest.len() - sha256::DIGEST_SIZE;
 
-    let mut out = decipher.write(&content).expect("cipher.write to succeed");
-    out.append(&mut decipher.flush().expect("cipher.flush to succed"));
+    let content = &rest[0..mac_off];
+    let mac = &rest[mac_off..];
 
     let mut hash = hmac::HMac::new(mac_key);
-    hash.update(&out);
+    hash.update(&iv);
+    hash.update(&content);
     let digest = hash.digest().to_vec();
 
     let mut is_equal = 0;
@@ -91,23 +97,106 @@ pub fn decrypt(
         panic!("Invalid digest");
     }
 
+    let mut decipher = aes_cbc::Decipher::new(iv);
+    decipher.init(aes_key).expect("decipher.init to succeed");
+
+    let mut out = decipher.write(&content).expect("cipher.write to succeed");
+    out.append(&mut decipher.flush().expect("cipher.flush to succed"));
+
     out
 }
 
 #[wasm_bindgen]
-pub fn decrypt_legacy(
-    aes_key: &[u8],
-    iv: &[u8],
-    payload: &[u8],
-) -> Vec<u8> {
-    let mut iv_arr = [0; aes::BLOCK_SIZE];
-    iv_arr.copy_from_slice(iv);
+pub fn decrypt_legacy(aes_key: &[u8], payload: &[u8]) -> Vec<u8> {
+    if payload.len() < aes::BLOCK_SIZE {
+        panic!("Payload doesn't have enough bytes for AES IV");
+    }
 
-    let mut decipher = aes_cbc::Decipher::new(iv_arr);
+    let mut iv = [0; aes::BLOCK_SIZE];
+    iv.copy_from_slice(&payload[..aes::BLOCK_SIZE]);
+
+    let content = &payload[aes::BLOCK_SIZE..];
+
+    let mut decipher = aes_cbc::Decipher::new(iv);
     decipher.init(aes_key).expect("decipher.init to succeed");
 
-    let mut out = decipher.write(payload).expect("cipher.write to succeed");
+    let mut out = decipher.write(content).expect("cipher.write to succeed");
     out.append(&mut decipher.flush().expect("cipher.flush to succed"));
 
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_decrypt_legacy() {
+        let aes_key = [
+            0xe3, 0x3b, 0x22, 0x21, 0xd5, 0x1d, 0xe5, 0xb5, 0x92, 0x17, 0xd9, 0xea, 0x05, 0x83,
+            0x25, 0xa5, 0x1d, 0x3b, 0x32, 0x93, 0x06, 0xcd, 0x1c, 0x98, 0x61, 0xaa, 0x5e, 0x17,
+            0xee, 0xef, 0x16, 0x71,
+        ];
+        let old = [
+            0x7b, 0xc8, 0x5a, 0x06, 0xf6, 0xcb, 0xc3, 0x15, 0xe2, 0x76, 0x96, 0xc4, 0xe6, 0x48,
+            0xc4, 0x6e, 0x21, 0x7c, 0x12, 0x94, 0x62, 0x99, 0x52, 0x25, 0x83, 0x77, 0x39, 0x07,
+            0xc6, 0xbf, 0x32, 0xb4,
+        ];
+
+        assert_eq!(decrypt_legacy(&aes_key, &old), vec![0x6f, 0x68, 0x61, 0x69]);
+    }
+
+    #[test]
+    fn it_should_decrypt_modern() {
+        let payload = [
+            0x43, 0x3b, 0x62, 0x41, 0xc2, 0x9f, 0x03, 0x20, 0x31, 0x47, 0x7f, 0xa3, 0xab, 0xc7,
+            0x19, 0xe0, 0x91, 0x4d, 0x87, 0x70, 0x7a, 0x79, 0x63, 0x82, 0x79, 0xb5, 0x32, 0x55,
+            0xb1, 0xbc, 0xa8, 0xa3, 0x0e, 0x54, 0x2d, 0x77, 0xab, 0x59, 0x46, 0xc7, 0xcd, 0x4f,
+            0x59, 0xcd, 0xd5, 0x4f, 0x13, 0xe1, 0x18, 0x63, 0x95, 0x35, 0x25, 0x86, 0x96, 0x48,
+            0xf0, 0x3a, 0x71, 0x1e, 0x55, 0xd5, 0x73, 0xbf,
+        ];
+
+        let aes_key = [
+            0x16, 0xf1, 0x9d, 0x4f, 0x9f, 0x18, 0x6f, 0x89, 0x1d, 0x8b, 0xb1, 0x1f, 0x2b, 0x84,
+            0xfe, 0x8b, 0x39, 0xcf, 0xf8, 0x10, 0x82, 0x1c, 0xf3, 0x8a, 0x3d, 0x8a, 0xd2, 0x2c,
+            0x1e, 0x08, 0x5f, 0x4b,
+        ];
+
+        let mac_key = [
+            0xfc, 0xf9, 0xd0, 0xb8, 0x71, 0x88, 0x03, 0x8b, 0xa8, 0x0e, 0xa7, 0x04, 0x6e, 0x94,
+            0x89, 0x11, 0xdf, 0xdd, 0x58, 0x13, 0x6c, 0xea, 0x13, 0x22, 0xeb, 0xe4, 0x88, 0xbd,
+            0xdf, 0xae, 0xb2, 0x8c, 0x5f, 0x8e, 0x89, 0x5a, 0x36, 0x2a, 0xcc, 0x43, 0xaa, 0x13,
+            0x14, 0x47, 0xdd, 0x51, 0xa7, 0x41, 0x41, 0x7e, 0x2c, 0x43, 0x38, 0x8f, 0x01, 0x8e,
+            0xa3, 0xdf, 0xbe, 0xf3, 0xe7, 0xa8, 0xe1, 0x6e,
+        ];
+
+        assert_eq!(decrypt(&aes_key, &mac_key, &payload), vec![
+            0x6f, 0x6d, 0x67, 0x2e, 0x63, 0x6f, 0x6d,
+        ]);
+    }
+
+    #[test]
+    fn it_should_encrypt_decrypt_modern() {
+        let aes_key = [
+            0xe3, 0x3b, 0x22, 0x21, 0xd5, 0x1d, 0xe5, 0xb5, 0x92, 0x17, 0xd9, 0xea, 0x05, 0x83,
+            0x25, 0xa5, 0x1d, 0x3b, 0x32, 0x93, 0x06, 0xcd, 0x1c, 0x98, 0x61, 0xaa, 0x5e, 0x17,
+            0xee, 0xef, 0x16, 0x71,
+        ];
+        let mac_key = [
+            0x8a, 0x41, 0x93, 0x94, 0x8b, 0xcd, 0x65, 0x34, 0x76, 0xba, 0x6e, 0xc4, 0x1b, 0x28,
+            0x02, 0xed, 0x41, 0xd4, 0x3e, 0x03, 0x2f, 0x87, 0x90, 0x9a, 0xf0, 0xc4, 0x3e, 0x0c,
+            0x2d, 0x25, 0xaa, 0x83, 0x1c, 0xb2, 0x1a, 0xe0, 0x82, 0x54, 0xf3, 0x09, 0x4c, 0x81,
+            0xe1, 0xe2, 0x57, 0xf5, 0x26, 0xf8, 0xed, 0xbb, 0xdb, 0x60, 0x99, 0xcf, 0xb0, 0xa0,
+            0xc5, 0x55, 0x6c, 0x0b, 0x22, 0x8a, 0x96, 0xf2,
+        ];
+        let iv = [
+            0xe3, 0x3b, 0x22, 0x21, 0xd5, 0x1d, 0xe5, 0xb5, 0x92, 0x17, 0xd9, 0xea, 0x05, 0x83,
+            0x25, 0xa5,
+        ];
+
+        let payload = vec![0x6f, 0x68, 0x61, 0x69];
+        let encrypted = encrypt(&aes_key, &mac_key, &iv, &payload);
+
+        assert_eq!(payload, decrypt(&aes_key, &mac_key, &encrypted));
+    }
 }

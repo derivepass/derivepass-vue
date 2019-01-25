@@ -1,10 +1,5 @@
 // TODO(indutny): dumb-crypto and wasm
-import { createCipheriv, createDecipheriv } from 'browserify-aes';
-import { sha256, hmac } from 'hash.js';
 import * as BN from 'bn.js';
-import * as createDebug from 'debug';
-
-const debug = createDebug('derivepass:utils:crypto');
 
 export const AES_KEY_SIZE = 32;
 export const IV_SIZE = 16;
@@ -13,7 +8,7 @@ export const MAC_SIZE = 32;
 
 export function fromHex(hex) {
   if (hex.length % 2 !== 0) {
-    throw new Error('Invalid hex');
+    throw new Error(`Invalid hex: "${hex}"`);
   }
 
   const alpha = (ch) => {
@@ -49,100 +44,6 @@ export function toHex(buf) {
     res += d;
   }
   return res;
-}
-
-export function isEqual(a, b) {
-  if (a.length !== b.length) {
-    return false;
-  }
-
-  // Probably still not safe, but we shouldn't worry much about it, considering
-  // that Oracle attack doesn't apply for this app.
-  let res = 0;
-  for (let i = 0; i < a.length; i++) {
-    res |= a[i] ^ b[i];
-  }
-
-  return res === 0;
-}
-
-export function encrypt(value, keys) {
-  const iv = new Uint8Array(IV_SIZE);
-  window.crypto.getRandomValues(iv);
-  const cipher = createCipheriv('aes-256-cbc', keys.aesKey, iv);
-
-  const content = [
-    iv,
-    cipher.update(value),
-    cipher.final()
-  ];
-
-  const macStream = hmac(sha256, keys.macKey);
-  for (const elem of content) {
-    macStream.update(elem);
-  }
-  const mac = macStream.digest();
-
-  return 'v1:' + content.map(toHex).join('') + toHex(mac);
-}
-
-export function decrypt(value, keys) {
-  let version = 0;
-  if (/^v1:/.test(value)) {
-    version = 1;
-    value = value.slice(3);
-  }
-
-  value = fromHex(value);
-
-  if (version === 1) {
-    if (value.length <= IV_SIZE + MAC_SIZE) {
-      debug('invalid encrypted value');
-      return '<decrypt failed #0>';
-    }
-
-    const actual = hmac(sha256, keys.macKey)
-        .update(value.slice(0, value.length - MAC_SIZE))
-        .digest();
-    const mac = value.slice(value.length - MAC_SIZE);
-    if (!isEqual(actual, mac)) {
-      debug('MAC mismatch');
-      return '<decrypt failed #1>';
-    }
-
-    value = value.slice(0, value.length - MAC_SIZE);
-  }
-
-  const iv = value.slice(0, IV_SIZE);
-  const content = value.slice(IV_SIZE);
-
-  const d = createDecipheriv('aes-256-cbc', keys.aesKey, iv);
-
-  try {
-    /// XXX(indutny): temporary hack with `hex`
-    return d.update(toHex(content), 'hex') + d.final();
-  } catch (err) {
-    debug('decryption error', err);
-    return '<decrypt failed #2>';
-  }
-}
-
-export function decryptApp(app, keys) {
-  return Object.assign({}, app, {
-    domain: decrypt(app.domain, keys),
-    login: decrypt(app.login, keys),
-    revision: parseInt(decrypt(app.revision, keys), 10) || 1,
-    options: app.options && JSON.parse(decrypt(app.options, keys)),
-  });
-}
-
-export function encryptApp(app, keys) {
-  return Object.assign({}, app, {
-    domain: encrypt(app.domain, keys),
-    login: encrypt(app.login, keys),
-    revision: encrypt(app.revision.toString(), keys),
-    options: encrypt(JSON.stringify(app.options), keys),
-  });
 }
 
 // Password generation
