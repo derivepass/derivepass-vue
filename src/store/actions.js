@@ -75,6 +75,11 @@ export default {
       }
     }));
 
+    // Display recently modified apps first
+    decryptedApps.sort((a, b) => {
+      return b.changedAt - a.changedAt;
+    });
+
     commit('setCryptoKeys', payload);
     commit('setDecryptedApps', decryptedApps);
   }

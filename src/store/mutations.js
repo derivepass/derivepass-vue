@@ -49,6 +49,11 @@ export default {
 
       debug('new decrypted app.uuid=%j', app.uuid);
       state.decryptedApps.push(Object.assign({}, app));
+
+      // Display recently modified apps first
+      state.decryptedApps.sort((a, b) => {
+        return b.changedAt - a.changedAt;
+      });
       return;
     }
 
