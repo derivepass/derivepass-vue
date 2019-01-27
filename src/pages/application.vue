@@ -90,7 +90,9 @@
         "pre": "This action will irreversibly delete:",
         "post": "...from the application list."
       }
-    }
+    },
+
+    "leave": "You have unsaved changes. Are you sure you want to leave?"
   },
   "ru": {
     "title": {
@@ -182,7 +184,9 @@
         "pre": "Это действие необратимо удалит:",
         "post": "...из списка приложений."
       }
-    }
+    },
+
+    "leave": "У вас есть несохраненные изменения. Вы уверены, что хотите покинуть страницу?"
   }
 }
 </i18n>
@@ -429,6 +433,9 @@ export default {
     let isNew;
     if (app && this.$store.getters.isLoggedIn) {
       isNew = false;
+
+      // Clone app, we don't want to update the list of decrypted apps
+      app = Object.assign({}, app);
 
       // Migrate old records
       if (!app.options) {
@@ -724,6 +731,19 @@ export default {
       }).finally(() => {
         this.computing = false;
       });
+    }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    if (!this.hasChanged) {
+      return next();
+    }
+
+    const answer = window.confirm(this.$t('leave'));
+    if (answer) {
+      next();
+    } else {
+      next(false);
     }
   }
 };
