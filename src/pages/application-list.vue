@@ -114,7 +114,6 @@ export default {
         path: '/applications',
         query: {
           filter: newValue,
-          page: this.currentPage === 1 ? undefined : this.currentPage,
         },
       });
     },
