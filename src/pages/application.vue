@@ -599,12 +599,8 @@ export default {
     },
 
     hasPreset() {
-      if (!PRESETS.has(this.app.domain)) {
-        return false;
-      }
-
-      const preset = PRESETS.get(this.app.domain);
-      if (preset.domain !== this.app.domain) {
+      const preset = this.getPreset(this.app.domain);
+      if (preset.domain && preset.domain !== this.app.domain) {
         return true;
       }
 
@@ -628,14 +624,20 @@ export default {
   },
 
   methods: {
-    usePreset() {
-      if (!PRESETS.has(this.app.domain)) {
-        return;
+    getPreset(domain) {
+      if (PRESETS.has(domain)) {
+        return PRESETS.get(domain);
+      } else {
+        return { options: DEFAULT_APP_OPTIONS };
       }
+    },
 
-      const preset = PRESETS.get(this.app.domain);
-      this.app.domain = preset.domain;
-      this.presetDomain = preset.domain;
+    usePreset() {
+      const preset = this.getPreset(this.app.domain);
+      if (preset.domain) {
+        this.app.domain = preset.domain;
+        this.presetDomain = preset.domain;
+      }
 
       const options = preset.options;
       const appOptions = this.app.options;
