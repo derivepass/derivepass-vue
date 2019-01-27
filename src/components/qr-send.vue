@@ -81,6 +81,11 @@ export default {
         }
       }
 
+      // No apps, static image
+      if (list.length === 0) {
+        list.push(init);
+      }
+
       return list;
     },
   },
