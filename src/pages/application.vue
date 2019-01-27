@@ -215,7 +215,7 @@
       <b-button @click="showDetails = !showDetails" variant="link">
         {{ $t('edit') }}
       </b-button>
-      <b-button @click="$router.go(-1)" variant="link">
+      <b-button @click="$router.go(-1)" :disabled="hasChanged" variant="link">
         {{ $t('back') }}
       </b-button>
     </div>
