@@ -1,12 +1,39 @@
 {
-  "error.flatten.whitespace": "Can't contain whitespace",
-  "error.flatten.invalid-start": "Invalid starting character in range \"{range}\"",
-  "error.flatten.invalid-end": "Invalid ending character in range \"{range}\"",
-  "error.flatten.invalid": "Invalid range \"{range}\"",
-  "error.flatten.unterminated": "Unterminated range \"{range}\"",
-
-  "error.cloud-kit.auth-failure": "Authentication failure",
-  "error.cloud-kit.premature-close": "Sign-in window was prematurely closed",
-  "error.cloud-kit.no-auth-url": "No authorization URL in response",
-  "error.cloud-kit.popup-blocked": "Pop-up blocked, please try again"
+  "error": {
+    "flatten": {
+      "whitespace": "Can't contain whitespace",
+      "invalid-start": "Invalid starting character in range \"{range}\"",
+      "invalid-end": "Invalid ending character in range \"{range}\"",
+      "invalid": "Invalid range \"{range}\"",
+      "unterminated": "Unterminated range \"{range}\""
+    },
+    "cloud-kit": {
+      "auth-failure": "Authentication failure",
+      "premature-close": "Sign-in window was prematurely closed",
+      "no-auth-url": "No authorization URL in response",
+      "popup-blocked": "Pop-up blocked, please try again"
+    }
+  },
+  "button": {
+    "start": "Start",
+    "decrypt": "Decrypt",
+    "next": "Next",
+    "reset": "Reset",
+    "dismiss": "Dismiss",
+    "add-app": "Add application",
+    "copy": {
+      "ready": "Copy Password",
+      "complete": "Copied"
+    },
+    "compute": {
+      "idle": "Compute Password",
+      "running": "Computing Password"
+    },
+    "edit": "Edit",
+    "back": "Back"
+  },
+  "label": {
+    "domain": "Domain name",
+    "login": "Username"
+  }
 }

@@ -4,23 +4,12 @@
     "title": {
       "new": "New Application"
     },
-    "copy": {
-      "ready": "Copy Password",
-      "complete": "Copied"
-    },
-    "compute": {
-      "idle": "Compute Password",
-      "running": "Computing Password"
-    },
     "computing": {
       "password": "Computing secure password...",
       "app": "Encrypting application..."
     },
-    "edit": "Edit",
-    "back": "Back",
 
     "domain": {
-      "label": "Domain name",
       "description": "Examples: google.com, fb.com, etc",
       "placeholder": "google.com",
       "feedback": {
@@ -39,7 +28,6 @@
     },
 
     "login": {
-      "label": "Username",
       "description": "Examples: my_user_name, derivepass82",
       "placeholder": "my@email.com",
       "feedback": {
@@ -98,23 +86,12 @@
     "title": {
       "new": "Новое Приложение"
     },
-    "copy": {
-      "ready": "Скопировать Пароль",
-      "complete": "Скопирован"
-    },
-    "compute": {
-      "idle": "Сгенерировать Пароль",
-      "running": "Генерируем Пароль"
-    },
     "computing": {
       "password": "Генерируем надежный пароль...",
       "app": "Зашифровываем приложение..."
     },
-    "edit": "Редактировать",
-    "back": "Назад",
 
     "domain": {
-      "label": "Доменное имя",
       "description": "Примеры: google.com, fb.com, etc",
       "placeholder": "google.com",
       "feedback": {
@@ -133,7 +110,6 @@
     },
 
     "login": {
-      "label": "Имя пользователя",
       "description": "Примеры: my_user_name, derivepass82",
       "placeholder": "my@email.com",
       "feedback": {
@@ -209,20 +185,22 @@
         v-if="password"
         variant="primary"
         @click="copyPassword">
-        {{ copied ? $t('copy.complete') : $t('copy.ready') }}
+        {{ copied ? $t('button.copy.complete') : $t('button.copy.ready') }}
       </b-button>
       <b-button
         v-else
         variant="primary"
         :disabled="!isValidApp"
         @click="compute()">
-        {{ computing === 'password' ? $t('compute.running') : $t('compute.idle') }}
+        {{ computing === 'password' ?
+          $t('button.compute.running') :
+          $t('button.compute.idle') }}
       </b-button>
       <b-button @click="showDetails = !showDetails" variant="link">
-        {{ $t('edit') }}
+        {{ $t('button.edit') }}
       </b-button>
       <b-button @click="$router.go(-1)" :disabled="hasChanged" variant="link">
-        {{ $t('back') }}
+        {{ $t('button.back') }}
       </b-button>
     </div>
 
@@ -233,7 +211,7 @@
     <b-collapse class="py-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
         <b-form-group
-          :label="$t('domain.label')"
+          :label="$t('label.domain')"
           label-for="application-domain"
           :description="$t('domain.description')"
           :invalid-feedback="invalidDomainFeedback"
@@ -257,7 +235,7 @@
         </b-alert>
 
         <b-form-group
-          :label="$t('login.label')"
+          :label="$t('label.login')"
           label-for="application-login"
           :description="$t('login.description')"
           :invalid-feedback="invalidLoginFeedback"

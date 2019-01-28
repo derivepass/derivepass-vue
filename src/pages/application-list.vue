@@ -1,12 +1,10 @@
 <i18n>
 {
   "en": {
-    "filter": "Filter applications",
-    "add": "Add application"
+    "filter": "Filter applications"
   },
   "ru": {
-    "filter": "Поиск приложений",
-    "add": "Новое приложение"
+    "filter": "Поиск приложений"
   }
 }
 </i18n>
@@ -23,7 +21,7 @@
         :placeholder="$t('filter')"/>
       <b-input-group-append>
         <b-button variant="primary" class="float-right" @click="addApplication">
-          {{ $t('add') }}
+          {{ $t('button.add-app') }}
         </b-button>
       </b-input-group-append>
     </b-input-group>

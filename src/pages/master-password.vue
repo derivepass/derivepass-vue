@@ -18,13 +18,6 @@
         "no-match": "Password and confirmation should match"
       }
     },
-    "submit": {
-      "start": "Start",
-      "decrypt": "Decrypt",
-      "next": "Next"
-    },
-    "reset": "Reset",
-    "dismiss": "Dismiss",
     "computing": "Computing decryption keys..."
   },
   "ru": {
@@ -45,13 +38,6 @@
         "no-match": "Пароль и подтверждение должны быть одинаковыми"
       }
     },
-    "submit": {
-      "start": "Начать",
-      "decrypt": "Расшифровать",
-      "next": "Далее"
-    },
-    "reset": "Сброс",
-    "dismiss": "Скрыть",
     "computing": "Генерируем криптографические ключи..."
   }
 }
@@ -61,7 +47,7 @@
   <div>
     <b-alert v-if="error" show dismissable variant="danger">
       {{ error.tag ? $t(error.tag, error.extra) : error.message }}
-      <b-button @click="error = undefined">{{ $t('dismiss') }}</b-button>
+      <b-button @click="error = undefined">{{ $t('button.dismiss') }}</b-button>
     </b-alert>
 
     <b-form
@@ -130,7 +116,7 @@
         class="ml-2"
         v-if="isConfirming"
         type="reset"
-        variant="danger">{{ $t('reset') }}</b-button>
+        variant="danger">{{ $t('button.reset') }}</b-button>
     </b-form>
 
     <computing
@@ -262,14 +248,14 @@ export default {
 
     submitText() {
       if (this.isConfirming) {
-        return this.$t('submit.start');
+        return this.$t('button.start');
       }
 
       if (this.hasApps) {
-        return this.$t('submit.decrypt');
+        return this.$t('button.decrypt');
       }
 
-      return this.$t('submit.next');
+      return this.$t('button.next');
     },
 
     canSubmit() {
