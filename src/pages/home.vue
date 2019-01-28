@@ -86,7 +86,8 @@ uu<i18n>
 
     <footer class="text-right px-1">
       <small>
-        Copyright {{new Date().getFullYear()}}, Fedor Indutny
+        Copyright {{new Date().getFullYear()}},
+        <a href="https://twitter.com/indutny" target="_blank">Fedor Indutny</a>
         <br/>
         <a href="https://github.com/derivepass/derivepass-vue" target="_blank">
           {{ $t('source') }}
