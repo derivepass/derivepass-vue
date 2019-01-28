@@ -65,12 +65,12 @@
 
       <b-navbar-nav class="ml-auto">
         <b-nav-item
-          href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md"
+          href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md&labels=enhancement"
           target="_blank">
           {{ $t('suggest') }}
         </b-nav-item>
         <b-nav-item
-          href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md"
+          href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md&labels=bug"
           target="_blank">
           {{ $t('bug') }}
         </b-nav-item>
