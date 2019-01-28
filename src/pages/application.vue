@@ -193,6 +193,8 @@
 
 <template>
   <div>
+    <tutorial v-if="newUser && !computing" :state="tutorialState"/>
+
     <template v-if="isNew">
       <h3>{{ $t('title.new') }}</h3>
     </template>
@@ -372,6 +374,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
 import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
@@ -384,6 +388,8 @@ import bModal from 'bootstrap-vue/es/components/modal/modal';
 import bModalDirective from 'bootstrap-vue/es/directives/modal/modal';
 
 import Computing from '../components/computing';
+import Tutorial from '../components/tutorial';
+
 import { passwordEntropyBits } from '../utils/crypto';
 import {
   parseAppOptions, flattenRange, DEFAULT_APP_OPTIONS,
@@ -410,7 +416,7 @@ export default {
     bCollapse, bModal, bButton, bButtonGroup, bForm,
     bFormGroup, bFormInput, bAlert,
 
-    Computing,
+    Computing, Tutorial,
   },
   directives: {
     bToggle: bToggleDirective,
@@ -431,7 +437,7 @@ export default {
     }
 
     let isNew;
-    if (app && this.$store.getters.isLoggedIn) {
+    if (app) {
       isNew = false;
 
       // Clone app, we don't want to update the list of decrypted apps
@@ -477,6 +483,24 @@ export default {
   },
 
   computed: {
+    ...mapGetters([ 'newUser' ]),
+
+    tutorialState() {
+      if (this.password) {
+        return 'application.password';
+      }
+
+      if (this.app.domain && this.app.login) {
+        return 'application.username';
+      }
+
+      if (this.app.domain) {
+        return 'application.domain';
+      }
+
+      return 'application.empty';
+    },
+
     domainState() {
       return this.invalidDomainFeedback === null;
     },

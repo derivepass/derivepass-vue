@@ -1,4 +1,4 @@
-uu<i18n>
+<i18n>
 {
   "en": {
     "lead": "Compute secure passwords without storing them anywhere.",

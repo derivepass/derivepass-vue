@@ -13,6 +13,10 @@
 
 <template>
   <div>
+    <tutorial
+      v-if="newUser"
+      :state="tutorialState"/>
+
     <b-input-group class="mb-2">
       <b-form-input
         v-model="rawFilter"
@@ -48,7 +52,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import * as uuidV4 from 'uuid/v4';
 
 import bButton from 'bootstrap-vue/es/components/button/button';
@@ -57,12 +61,16 @@ import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append';
 import bPaginationNav from 'bootstrap-vue/es/components/pagination-nav/pagination-nav';
 
+import Tutorial from '../components/tutorial';
+
 const APPS_PER_PAGE = 10;
 
 export default {
   name: 'application-list',
   components: {
     bInputGroup, bFormInput, bInputGroupAppend, bButton, bPaginationNav,
+
+    Tutorial,
   },
 
   data() {
@@ -72,6 +80,10 @@ export default {
   },
 
   computed: {
+    tutorialState() {
+      return 'application-list.first';
+    },
+
     currentPage() {
       return Math.max(1, parseInt(this.$route.query.page || '1', 10));
     },
@@ -106,6 +118,8 @@ export default {
         return state.decryptedApps;
       },
     }),
+
+    ...mapGetters([ 'newUser' ]),
   },
 
   watch: {

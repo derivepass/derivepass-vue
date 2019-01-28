@@ -68,8 +68,11 @@
       @submit.prevent="onSubmit"
       @reset.prevent="onReset"
       autocomplete="off">
+      <b-form-group v-if="newUser && tutorialState !== 'hide'">
+        <tutorial :state="tutorialState"/>
+      </b-form-group>
       <b-form-group>
-        <div :class="emojiClass">
+        <div v-if="!newUser || !!password" :class="emojiClass" id="emoji">
           {{emoji}}
         </div>
       </b-form-group>
@@ -138,7 +141,7 @@
 
 <script>
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import bAlert from 'bootstrap-vue/es/components/alert/alert';
 import bButton from 'bootstrap-vue/es/components/button/button';
@@ -147,6 +150,7 @@ import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 
 import Computing from '../components/computing';
+import Tutorial from '../components/tutorial';
 import emojiHash from '../utils/emoji-hash';
 
 const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
@@ -155,7 +159,7 @@ export default {
   name: 'master-password',
   components: {
     bAlert, bButton, bForm, bFormGroup, bFormInput,
-    Computing,
+    Computing, Tutorial,
   },
 
   data() {
@@ -179,10 +183,9 @@ export default {
         const emoji = this.emoji;
         return apps.some((app) => app.master === emoji);
       },
-      newUser(state) {
-        return state.applications.length === 0;
-      }
     }),
+
+    ...mapGetters([ 'newUser' ]),
 
     emoji() {
       return emojiHash(this.password);
@@ -195,6 +198,27 @@ export default {
 
     emojiConfirm() {
       return emojiHash(this.confirmPassword);
+    },
+
+    // Tutorial
+    tutorialState() {
+      if (this.computing) {
+        return 'hide';
+      }
+
+      if (!this.password) {
+        return 'master.empty';
+      }
+
+      if (this.isConfirming) {
+        if (this.canSubmit) {
+          return 'master.submit';
+        } else {
+          return 'master.confirm';
+        }
+      }
+
+      return 'master.password';
     },
 
     // Form field validation
@@ -266,7 +290,7 @@ export default {
       const emoji = this.emoji;
 
       if (this.isConfirming) {
-        if (!this.confirmState) {
+        if (!this.canSubmit) {
           // Confirmation doesn't match
           return;
         }
