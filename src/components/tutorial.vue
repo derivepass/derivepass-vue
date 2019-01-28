@@ -3,35 +3,35 @@
   "en": {
     "master": {
       "empty": "Hello!|Let's walk you through the basics|Choose a strong Master Password|Memorize it or write it down...|...and enter it below",
-      "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":100}",
-      "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":100}",
+      "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":true}",
+      "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Perfect!|Click \"@:(button.start)\" to continue"
     },
     "application-list": {
-      "first": "You don't have any applications yet|Let's fix this by creating one|Click \"@:(button.add-app)\" to continue{\"delay\":100}"
+      "first": "You don't have any applications yet|Let's fix this by creating one|Click \"@:(button.add-app)\" to continue{\"delay\":true}"
     },
     "application": {
-      "empty": "What the heck is \"Application\"?|Suppose that you'd like to register on a website: fancypillows.com|Naturally, they ask you to provide a password|Instead of choosing one manually, you could use DerivePass{\"silent\":\"glasses\"}Type the name of website in \"@:(label.domain)\" field to continue{\"delay\":100}",
-      "domain": "Fantastic!{\"silent\":\"thumb\"}Now let's fill \"@:(label.login)\" field{\"delay\":100}",
+      "empty": "What the heck is \"Application\"?|Suppose that you'd like to register on a website: fancypillows.com|Naturally, they ask you to provide a password|Instead of choosing one manually, you could use DerivePass{\"silent\":\"glasses\"}Type the name of website in \"@:(label.domain)\" field to continue{\"delay\":true}",
+      "domain": "Fantastic!{\"silent\":\"thumb\"}Now let's fill \"@:(label.login)\" field{\"delay\":true}",
       "username": "Lovely{\"silent\":\"heart\"}Generate the password password by hitting \"@:(button.compute.idle)\"",
-      "password": "Copy the password by clicking \"@:(button.copy.ready)\"|Saving the application will complete this tutorial{\"delay\":100}"
+      "password": "Copy the password by clicking \"@:(button.copy.ready)\"|Saving the application will complete this tutorial{\"delay\":true}"
     }
   },
   "ru": {
     "master": {
       "empty": "Здравствуйте!|Давайте вместе разберемся, как пользоваться DerivePass|Выберите надежный Мастер Пароль|Запомните его или запишите...|...и введите его в поле ниже",
-      "password": "Прекрасный выбор!|Возможно, вас заинтересовали emoji внизу?{\"silent\":\"sweaty\"}Они уникально подобраны для вашего Мастер Пароля|Проверить правильность ввода очень просто|Если хотя бы один символ был набран неверно|Emoji будут отличаться от тех, что вы видите сейчас|Несмотря на это, Мастер Пароль нельзя подглядеть и восстановить из emoji|Давайте нажмем \"@:(button.next)\"{\"delay\":100}",
-      "confirm": "Все еще помните ваш Мастер Пароль?|Введите его еще один раз для подтверждения|Если что-то пошло не так, вы всегда можете начать сначала, нажав \"@:(button.reset)\"{\"delay\":100}",
+      "password": "Прекрасный выбор!|Возможно, вас заинтересовали emoji внизу?{\"silent\":\"sweaty\"}Они уникально подобраны для вашего Мастер Пароля|Проверить правильность ввода очень просто|Если хотя бы один символ был набран неверно|Emoji будут отличаться от тех, что вы видите сейчас|Несмотря на это, Мастер Пароль нельзя подглядеть и восстановить из emoji|Давайте нажмем \"@:(button.next)\"{\"delay\":true}",
+      "confirm": "Все еще помните ваш Мастер Пароль?|Введите его еще один раз для подтверждения|Если что-то пошло не так, вы всегда можете начать сначала, нажав \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Замечательно!|Нажмите \"@:(button.start)\", чтобы продолжить"
     },
     "application-list": {
-      "first": "У вас пока нет приложений|Давайте исправим это, создав одно!|Нажмите \"@:(button.add-app)\" для продолжения{\"delay\":100}"
+      "first": "У вас пока нет приложений|Давайте исправим это, создав одно!|Нажмите \"@:(button.add-app)\" для продолжения{\"delay\":true}"
     },
     "application": {
-    "empty": "Что такое \"Приложение\"?|Допустим, вы хотите зарегистрироваться на веб-сайте: fancypillows.com|Для этого вам, наверняка, будет необходимо выбрать пароль|Вместо того, чтобы выбирать его вручную, вы можете использовать DerivePass{\"silent\":\"glasses\"}Введите название веб-сайта в поле \"@:(label.domain)\", чтобы продолжить{\"delay\":100}",
-      "domain": "Прекрасно!{\"silent\":\"thumb\"}Теперь давайте заполним поле \"@:(label.login)\"{\"delay\":100}",
+    "empty": "Что такое \"Приложение\"?|Допустим, вы хотите зарегистрироваться на веб-сайте: fancypillows.com|Для этого вам, наверняка, будет необходимо выбрать пароль|Вместо того, чтобы выбирать его вручную, вы можете использовать DerivePass{\"silent\":\"glasses\"}Введите название веб-сайта в поле \"@:(label.domain)\", чтобы продолжить{\"delay\":true}",
+      "domain": "Прекрасно!{\"silent\":\"thumb\"}Теперь давайте заполним поле \"@:(label.login)\"{\"delay\":true}",
       "username": "Изумительно!{\"silent\":\"heart\"}Вы можете сгенерировать пароль, нажав \"@:(button.compute.idle)\"",
-      "password": "Скопируйте пароль, щелкнув по \"@:(button.copy.ready)\"|Сохранение данного приложения завершит наше обучение{\"delay\":100}"
+      "password": "Скопируйте пароль, щелкнув по \"@:(button.copy.ready)\"|Сохранение данного приложения завершит наше обучение{\"delay\":true}"
     }
   }
 }
@@ -69,7 +69,7 @@ const SILENT = {
   'heart': '🥰',
 };
 
-const DEFAULT_DELAY = 40;
+const DEFAULT_DELAY = 60;
 
 const SPLIT_RE = /\||(\{[^}]*\})/g
 
@@ -164,7 +164,8 @@ export default {
 
       const result = sentence.slice(0, current);
       if (current >= sentence.length) {
-        index.letter = -(separators[index.sentence].delay || DEFAULT_DELAY);
+        index.letter = -(separators[index.sentence].delay ? 2 : 1) *
+          DEFAULT_DELAY;
         index.sentence++;
         index.sentence %= sentences.length;
       }
