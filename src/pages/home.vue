@@ -17,6 +17,12 @@ uu<i18n>
         "Every bit of information that is stored locally and/or remotely (through optional iCloud synchronization) is encrypted with AES key generated from the Master Password with {scrypt} algorithm, using <code>derivepass/aes</code> as a salt. The data is further passed to HMAC-SHA256 algorithm to ensure the data integrity."
       ]
     },
+    "privacy": {
+      "title": "Privacy",
+      "description": [
+        "Your privacy is important for us. Your data is stored locally <b>on your computer</b>, unless you decide to use disabled by default remote storage (e.g., iCloud). We <b>never</b> store non-encrypted website domain names, usernames, or passwords. <b>No tracking</b> of any kind is used on this website."
+      ]
+    },
     "source": "source code"
   },
   "ru": {
@@ -34,6 +40,12 @@ uu<i18n>
         "Алгоритм {scrypt} используется для вычисления паролей приложений и ключей шифрования/аутентификации. Благодаря криптографическим качествам {scrypt}, потеря одного пароля для приложения не выдаст злоумышленникам ваш Мастер Пароль и не позволит им вычислить прочие пароли от ваших приложений.",
         "Доменное имя приложения (название веб-сайта), имя пользователя и \"ревизия\" используются для генерации уникального и надежного пароля. В частности, <code>domain/username(#revision)?</code> используется в качестве \"соли\" для {scrypt}. Таким образом, увеличение \"ревизии\" приведет к изменению сгенерированного пароля. Это удобно в ситуациях, когда необходима смена пароля.",
         "Вся информация, которая хранится на вашем компьютере и/или удаленно (через необязательную синхронизацию с iCloud), зашифрована AES ключом, сгенерированным из Мастер Пароля с помощью алгоритма {scrypt}, используя <code>derivepass/aes</code> в качестве \"соли\". Данные, в последствии, получают HMAC-SHA256 подпись, с целью подтверждения их подлинности."
+      ]
+    },
+    "privacy": {
+      "title": "Конфиденциальность",
+      "description": [
+        "Ваша конфиденциальность - наш приоритет. Вся информация хранится <b>на вашем компьютере</b>, если вы не используете, отключенное по умолчанию, удаленное хранилище (например, iCloud). Мы <b>не храним</b> незашифрованные адреса веб-сайтов, имена пользователей или пароли. <b>Трекинг</b> не используется на этом веб-сайте."
       ]
     },
     "source": "исходный код"
@@ -67,11 +79,19 @@ uu<i18n>
           <p v-html="$t('description[2]')"/>
         </b-col>
       </b-row>
+
+      <b-row><b-col><hr/></b-col></b-row>
+
       <b-row>
         <b-col>
-          <hr/>
+          <h3 class="mb-2" id="privacy">{{ $t('privacy.title') }}</h3>
+
+          <p v-html="$t('privacy.description[0]')"/>
         </b-col>
       </b-row>
+
+      <b-row><b-col><hr/></b-col></b-row>
+
       <b-row>
         <b-col>
           <h3 class="mb-2" id="security">{{ $t('security.title') }}</h3>
