@@ -7,7 +7,9 @@
     "logout": "Logout",
     "master": "Master Password",
     "home": "Home Page",
-    "logo": "Logotype"
+    "logo": "Logotype",
+    "suggest": "Suggest feature",
+    "bug": "Report bug"
   },
   "ru": {
     "applications": "Приложения",
@@ -16,7 +18,9 @@
     "logout": "Выйти",
     "master": "Мастер Пароль",
     "home": "Главная Страница",
-    "logo": "Логотип"
+    "logo": "Логотип",
+    "suggest": "Предложить идею",
+    "bug": "Сообщить об ошибке"
   }
 }
 </i18n>
@@ -60,6 +64,16 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
+        <b-nav-item
+          href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md"
+          target="_blank">
+          {{ $t('suggest') }}
+        </b-nav-item>
+        <b-nav-item
+          href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md"
+          target="_blank">
+          {{ $t('bug') }}
+        </b-nav-item>
         <b-nav-item-dropdown :text="$root.$i18n.locale" right>
           <b-dropdown-item
             href="#"
