@@ -11,6 +11,7 @@ export default class LocalStorage extends Sync {
     super(store);
 
     this.db = window.localStorage;
+    this.isBuffering = false;
 
     this.start();
   }

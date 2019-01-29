@@ -13,6 +13,8 @@ export default class Sync {
     this.received = new Map();
     this.buffer = new Set();
     this.bufferTimer = null;
+
+    this.isBuffering = true;
   }
 
   subscribe() {
@@ -72,6 +74,13 @@ export default class Sync {
     debug('received app with uuid %j changedAt %j', app.uuid, app.changedAt);
 
     this.received.set(app.uuid, app);
+
+    // Store apps immediately when storage isn't remote
+    if (!this.isBuffering) {
+      this.sendApps([ app.uuid ]);
+      return;
+    }
+
     this.buffer.add(app.uuid);
 
     if (this.bufferTimer) {
