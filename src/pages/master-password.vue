@@ -46,8 +46,10 @@
 <template>
   <div>
     <b-alert v-if="error" show dismissable variant="danger">
-      {{ error.tag ? $t(error.tag, error.extra) : error.message }}
-      <b-button @click="error = undefined">{{ $t('button.dismiss') }}</b-button>
+      {{ error.tag ? $root.$t(error.tag, error.extra) : error.message }}
+      <b-button @click="error = undefined">
+        {{ $root.$t('button.dismiss') }}
+      </b-button>
     </b-alert>
 
     <b-form
@@ -116,7 +118,7 @@
         class="ml-2"
         v-if="isConfirming"
         type="reset"
-        variant="danger">{{ $t('button.reset') }}</b-button>
+        variant="danger">{{ $root.$t('button.reset') }}</b-button>
     </b-form>
 
     <computing
@@ -248,14 +250,14 @@ export default {
 
     submitText() {
       if (this.isConfirming) {
-        return this.$t('button.start');
+        return this.$root.$t('button.start');
       }
 
       if (this.hasApps) {
-        return this.$t('button.decrypt');
+        return this.$root.$t('button.decrypt');
       }
 
-      return this.$t('button.next');
+      return this.$root.$t('button.next');
     },
 
     canSubmit() {

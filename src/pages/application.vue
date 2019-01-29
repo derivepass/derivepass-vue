@@ -185,7 +185,8 @@
         v-if="password"
         variant="primary"
         @click="copyPassword">
-        {{ copied ? $t('button.copy.complete') : $t('button.copy.ready') }}
+        {{ copied ? $root.$t('button.copy.complete') :
+           $root.$t('button.copy.ready') }}
       </b-button>
       <b-button
         v-else
@@ -193,14 +194,14 @@
         :disabled="!isValidApp"
         @click="compute()">
         {{ computing === 'password' ?
-          $t('button.compute.running') :
-          $t('button.compute.idle') }}
+          $root.$t('button.compute.running') :
+          $root.$t('button.compute.idle') }}
       </b-button>
       <b-button @click="showDetails = !showDetails" variant="link">
-        {{ $t('button.edit') }}
+        {{ $root.$t('button.edit') }}
       </b-button>
       <b-button @click="$router.go(-1)" :disabled="hasChanged" variant="link">
-        {{ $t('button.back') }}
+        {{ $root.$t('button.back') }}
       </b-button>
     </div>
 
@@ -211,7 +212,7 @@
     <b-collapse class="py-3" id="application-details" v-model="showDetails">
       <b-form @submit.prevent="onSave" autocomplete="off">
         <b-form-group
-          :label="$t('label.domain')"
+          :label="$root.$t('label.domain')"
           label-for="application-domain"
           :description="$t('domain.description')"
           :invalid-feedback="invalidDomainFeedback"
@@ -235,7 +236,7 @@
         </b-alert>
 
         <b-form-group
-          :label="$t('label.login')"
+          :label="$root.$t('label.login')"
           label-for="application-login"
           :description="$t('login.description')"
           :invalid-feedback="invalidLoginFeedback"

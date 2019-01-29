@@ -21,7 +21,7 @@
         :placeholder="$t('filter')"/>
       <b-input-group-append>
         <b-button variant="primary" class="float-right" @click="addApplication">
-          {{ $t('button.add-app') }}
+          {{ $root.$t('button.add-app') }}
         </b-button>
       </b-input-group-append>
     </b-input-group>
