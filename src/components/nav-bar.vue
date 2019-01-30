@@ -8,6 +8,7 @@
     "master": "Master Password",
     "home": "Home Page",
     "logo": "Logotype",
+    "extra": "Extra",
     "suggest": "Suggest feature",
     "bug": "Report bug"
   },
@@ -19,6 +20,7 @@
     "master": "Мастер Пароль",
     "home": "Главная Страница",
     "logo": "Логотип",
+    "extra": "Дополнительно",
     "suggest": "Предложить идею",
     "bug": "Сообщить об ошибке"
   }
@@ -64,16 +66,18 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-item
-          href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md&labels=enhancement"
-          target="_blank">
-          {{ $t('suggest') }}
-        </b-nav-item>
-        <b-nav-item
-          href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md&labels=bug"
-          target="_blank">
-          {{ $t('bug') }}
-        </b-nav-item>
+        <b-nav-item-dropdown :text="$t('extra')" right>
+          <b-dropdown-item
+            href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md&labels=enhancement"
+            target="_blank">
+            {{ $t('suggest') }}
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md&labels=bug"
+            target="_blank">
+            {{ $t('bug') }}
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
         <b-nav-item-dropdown :text="$root.$i18n.locale" right>
           <b-dropdown-item
             href="#"
