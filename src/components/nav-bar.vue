@@ -66,18 +66,24 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
+        <!-- Extra -->
+
         <b-nav-item-dropdown :text="$t('extra')" right>
           <b-dropdown-item
             href="https://github.com/derivepass/derivepass-vue/issues/new?template=feature_request.md&labels=enhancement"
             target="_blank">
             {{ $t('suggest') }}
           </b-dropdown-item>
+
           <b-dropdown-item
             href="https://github.com/derivepass/derivepass-vue/issues/new?template=bug_report.md&labels=bug"
             target="_blank">
             {{ $t('bug') }}
           </b-dropdown-item>
         </b-nav-item-dropdown>
+
+        <!-- Locale choice -->
+
         <b-nav-item-dropdown :text="$root.$i18n.locale" right>
           <b-dropdown-item
             href="#"
