@@ -43,7 +43,6 @@ export default {
     if (!existing) {
       // Strange, but okay?
       if (app.removed) {
-        debug('why %j', state.decryptedApps);
         return;
       }
 
