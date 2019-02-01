@@ -23,6 +23,18 @@
     "extra": "Дополнительно",
     "suggest": "Предложить идею",
     "bug": "Сообщить об ошибке"
+  },
+  "ca": {
+    "applications": "Aplicacions",
+    "settings": "Configuració",
+    "about": "Quant a",
+    "logout": "Tanca sessió",
+    "master": "Contrasenya Mestre",
+    "home": "Pàgina Inicial",
+    "logo": "Logo",
+    "extra": "Extra",
+    "suggest": "Suggerir funcionalitat",
+    "bug": "Reportar incidència"
   }
 }
 </i18n>
@@ -122,6 +134,7 @@ export default {
     return {
       isLogoVisible: false,
       langs: [
+        { latin: 'ca', native: 'Catalan' },
         { latin: 'en', native: 'English' },
         { latin: 'ru', native: 'Русский' }
       ],

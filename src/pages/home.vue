@@ -49,6 +49,31 @@
       ]
     },
     "source": "исходный код"
+  },
+  "ca": {
+    "lead": "Computa contrasenyes mestres sense desar-les enlloc.",
+    "start": "Comença",
+    "description": [
+      "La majoria de websites requereixen una contrasenya per regitrar-se. Emprar la mateixa contrasenya a tot arreu és insegur. Emprar contrasenyes individuals segures i recordar-les totes - impossible!",
+      "<b>DerivePass</b> és aquí per ajudar en aquesta tasca! Escull la <i>Contrasenya Mestre</i> un sol cop i utilitza-la per generar un nombre <b>il·limitat</b> de contrasenyes segures.",
+      "A diferència dels gestors tradicionals de contrasenyes, <b>DerivePass</b> mai puja ni la <i>Contrasenya Mestre</i> ni cap de les altres contrasenyes al núvol. La única informació que es desa <b>encriptada</b> són noms de dominis i d'usuaris."
+    ],
+    "security": {
+      "title": "Seguretat",
+      "subtitle": "Detalls Tècnics",
+      "description": [
+        "L'algoritme {scrypt} és emprat per derivar contrasenyes d'aplicacions i claus d'encriptació/desencriptació. Degut a les fortes propietats criptogràfiques de {scrypt}, el compromís d'una sola aplicació no comprometrà la Contrasenya Mestre, així com tampoc comprometrà cap altra contrasenya d'altres aplicacions.",
+        "Els noms de domini (websites), noms d'usuari i revisió són emprats per generar una contrasenya única i segura. En particular, <code>domini/usuari(#revisió)?</code> s'empra com a salt de {scrypt}. Així doncs, cada increment de revisió resultarà en una contrasenya diferent. Això és convenient per a canviar la contrasenya sempre que faci falta.",
+        "Cada bit d'informació que es desa localment i/o remotament (a través de la sincronització opcional d'iCloud) és xifrat amb una clau AES generada a partir de la Contrasenya Mestre amb l'algoritme {scrypt}, emprant <code>derivepass/aes</code> com a salt. Les dades són lavors passades a l'algoritme HMAC-SHA256 per assegurar la integritat de les dades."
+      ]
+    },
+    "privacy": {
+      "title": "Privacitat",
+      "description": [
+        "La teva privacitat ens importa. Les teves dades es desen localment <b>al teu ordinador</b>, a menys que vulguis fer servir emmagatzematge remot (deshabilitat per defecte). Nosaltres <b>mai</b> emmagatzemem noms de domini, usuaris o contrasenyes sense encriptar. Aquest website <b>no fa seguiments</b> de cap tipus en aquest web."
+      ]
+    },
+    "source": "codi font"
   }
 }
 </i18n>

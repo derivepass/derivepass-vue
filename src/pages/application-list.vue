@@ -5,6 +5,9 @@
   },
   "ru": {
     "filter": "Поиск приложений"
+  },
+  "ca": {
+    "filter": "Filtra aplicacions"
   }
 }
 </i18n>

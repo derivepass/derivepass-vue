@@ -39,6 +39,26 @@
       }
     },
     "computing": "Генерируем криптографические ключи..."
+  },
+  "ca": {
+    "master": {
+      "description": "Emprat per desencriptar l'emmagatzematge i per computar les contrasenyes",
+      "label": {
+        "new": "Escull la teva Contrasenya Mestre",
+        "existing": "Introdueix la teva Contrasenya Mestre"
+      },
+      "feedback": {
+        "empty": "La Contrasenya Mestre no pot ser buida"
+      }
+    },
+    "confirm": {
+      "label": "Confirma la teva Contrasenya Mestre",
+      "feedback": {
+        "almost": "Va, uns pocs caràcters més...",
+        "no-match": "La contrasenya i la confirmació han de coincidir"
+      }
+    },
+    "computing": "Computant claus de desxifratge..."
   }
 }
 </i18n>

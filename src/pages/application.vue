@@ -49,14 +49,14 @@
       "danger": "Most websites do not require editing options below",
       "allowed": {
         "label": "Allowed characters",
-        "description": "Characters that CAN be present in the password",
+        "description": "Characters that <b>can</b> be present in the password",
         "feedback": {
           "empty": "Can't be empty"
         }
       },
       "required": {
         "label": "Required characters",
-        "description": "Characters that MUST be present in the password"
+        "description": "Characters that <b>must</b> be present in the password"
       },
       "max-len": {
         "label": "Password length",
@@ -131,14 +131,14 @@
       "danger": "Большинство веб-сайтов не требуют изменения настроек ниже",
       "allowed": {
         "label": "Разрешенные символы",
-        "description": "Символы, которые МОГУТ присутствовать в пароле",
+        "description": "Символы, которые <b>могут</b> присутствовать в пароле",
         "feedback": {
           "empty": "Поле не может быть пустым"
         }
       },
       "required": {
         "label": "Необходимые символы",
-        "description": "Символы, которые ДОЛЖНЫ присутствовать в пароле"
+        "description": "Символы, которые <b>должны</b> присутствовать в пароле"
       },
       "max-len": {
         "label": "Длина пароля",
@@ -163,6 +163,88 @@
     },
 
     "leave": "У вас есть несохраненные изменения. Вы уверены, что хотите покинуть страницу?"
+  },
+  "ca": {
+    "title": {
+      "new": "Nova Aplicació"
+    },
+    "computing": {
+      "password": "Computant contrasenya segura...",
+      "app": "Encriptant aplicació..."
+    },
+
+    "domain": {
+      "description": "Exemples: google.com, fb.com, etc",
+      "placeholder": "google.com",
+      "feedback": {
+        "empty": "No pots deixar el domini buit",
+        "reserved": "Dispensa, aquest domini està reservat per a ús intern",
+        "www": "El domini no ha de començar amb `www.`, `http://`, o qualsevol altre `schema://`",
+        "upper-case": "El domini ha de ser en minúscules",
+        "whitespace": "El domini no pot començar ni acabar amb espai"
+      }
+    },
+
+    "preset": {
+      "title": "Hi ha una configuració <b>recomanada</b> per a aquest domini.",
+      "danger": "<b>Atenció</b>: Canviar la configuració d'una aplicació existent canviarà la contrasenya computada. Considera computar i copiar la contrasenya actual abans de fer cap canvi.",
+      "use": "Fes-la servir"
+    },
+
+    "login": {
+      "description": "Exemples: el_meu_nom, derivepass82",
+      "placeholder": "el_meu@email.com",
+      "feedback": {
+        "empty": "El nom d'usuari no pot quedar buit",
+        "whitespace": "El nom d'usuari no pot començar ni acabar amb espai"
+      }
+    },
+
+    "revision": {
+      "label": "Revisió",
+      "description": "Incrementa-ho una unitat per canviar la contrasenya",
+      "feedback": {
+        "non-positive": "La revisió ha de ser major que zero"
+      }
+    },
+
+    "extra": {
+      "button": "Opcions Extra",
+      "danger": "La majoria de llocs web no requereixen que editis les opcions que tens a continuació",
+      "allowed": {
+        "label": "Caràcters permesos",
+        "description": "Caràcters que <b>poden</b> aparèixer a la contrasenya",
+        "feedback": {
+          "empty": "No pot quedar buit"
+        }
+      },
+      "required": {
+        "label": "Caràcters requerits",
+        "description": "Caràcters que <b>han</b> d'aparèixer a la contrasenya"
+      },
+      "max-len": {
+        "label": "Llargària de la contrasenyae",
+        "feedback": {
+          "less-than-one": "Ha de ser més gran que 1",
+          "less-than-required": "La llargària mínima és de {len} caràcters",
+          "entropy": "La contrasenya no és prou segura. Si et plau, incrementa la llargària o afegeix més caràcters permesos"
+        }
+      },
+      "save": {
+        "ready": "Desa",
+        "complete": "Desat"
+      },
+      "reset": "Reinicia",
+      "delete": {
+        "button": "Esborra",
+        "title": "Confirmar Supressió",
+        "confirm": "Esborra",
+        "pre": "Aquesta acció esborrarà de manera irreversible:",
+        "post": "...de la llita d'aplicacions."
+      }
+    },
+
+    "leave": "Tens canvis sense desar. Segur que vols marxar?"
   }
 }
 </i18n>

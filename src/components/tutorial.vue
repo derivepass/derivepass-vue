@@ -33,6 +33,23 @@
       "username": "Изумительно!{\"silent\":\"heart\"}Вы можете сгенерировать пароль, нажав \"@:(button.compute.idle)\"",
       "password": "Скопируйте пароль, щелкнув по \"@:(button.copy.ready)\"|Сохранение данного приложения завершит наше обучение{\"delay\":true}"
     }
+  },
+  "ca": {
+    "master": {
+      "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memoritza-la, o anota-te-la...|...i introdueix-la a continuació",
+      "password": "Genial elecció!!|Deus estar pensant què signifiquen aquests emoji{\"silent\":\"sweaty\"}Representen la teva Contrasenya Mestre d'una manera única|És molt fàcil comprovar que l'has escrita correctament|Inclús si et deixes un sol caràcter|Els emoji no seran els mateixos|No pateixis si reveles una contrasenya per això|La Contrasenya Mestre no es pot extreure d'elles|Va, apretem el botó \"@:(button.next)\"{\"delay\":true}",
+      "confirm": "Encara recordes la teva Contrasenya Mestre?|Va, posa-la un cop més per confirmar-ho|Si res esta malament, pots començar de nou prement el botó \"@:(button.reset)\"{\"delay\":true}",
+      "submit": "Perfecte!|Prem \"@:(button.start)\" per continuar"
+    },
+    "application-list": {
+      "first": "Encara no tens cap aplicació|Solucionem-ho afegeint-ne una|Prem \"@:(button.add-app)\" per continuar{\"delay\":true}"
+    },
+    "application": {
+      "empty": "Què nassos és \"Aplicació\"?|Suposa que vols registrar-te a un lloc web: coixins-guais.cat|Naturalment, et demanaran una contrasenya|Enlloc de triar-ne una manualment, pots emprar DerivePass{\"silent\":\"glasses\"}Escriu el nom del lloc web al camp \"@:(label.domain)\" per continuar{\"delay\":true}",
+      "domain": "Fantàstic!{\"silent\":\"thumb\"}Ara omple el camp \"@:(label.login)\"{\"delay\":true}",
+      "username": "Preciós{\"silent\":\"heart\"}Genera la contrasenya prement \"@:(button.compute.idle)\"",
+      "password": "Copia la contrasenya prement \"@:(button.copy.ready)\"|Desa l'aplicació per completar aquest tutorial{\"delay\":true}"
+    }
   }
 }
 </i18n>

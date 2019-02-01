@@ -23,6 +23,18 @@
         "second": "сек | сек"
       }
     }
+  },
+  "ca": {
+    "update": {
+      "error": "Error d'actualització:",
+      "running": "Actualitzant...",
+      "available": {
+        "description": "Actualització disponible",
+        "install": "instal·la ara",
+        "or": "o en",
+        "second": "segon | segons"
+      }
+    }
   }
 }
 </i18n>
