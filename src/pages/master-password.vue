@@ -42,7 +42,7 @@
   },
   "ca": {
     "master": {
-      "description": "Emprat per desxifrar l'emmagatzematge i per computar les contrasenyes",
+      "description": "Emprat per desencriptar l'emmagatzematge i per computar les contrasenyes",
       "label": {
         "new": "Escull la teva Contrasenya Mestre",
         "existing": "Introdueix la teva Contrasenya Mestre"
