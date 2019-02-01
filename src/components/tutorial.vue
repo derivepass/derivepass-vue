@@ -36,7 +36,7 @@
   },
   "ca": {
     "master": {
-      "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memorítza-la, o anota-te-la...|...i introdueix-la a continuació",
+      "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memoritza-la, o anota-te-la...|...i introdueix-la a continuació",
       "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":true}",
       "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Perfect!|Click \"@:(button.start)\" to continue"
