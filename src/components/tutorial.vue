@@ -33,6 +33,23 @@
       "username": "Изумительно!{\"silent\":\"heart\"}Вы можете сгенерировать пароль, нажав \"@:(button.compute.idle)\"",
       "password": "Скопируйте пароль, щелкнув по \"@:(button.copy.ready)\"|Сохранение данного приложения завершит наше обучение{\"delay\":true}"
     }
+  },
+  "ca": {
+    "master": {
+      "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memorítza-la, o anota-te-la...|...i introdueix-la a continuació",
+      "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":true}",
+      "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":true}",
+      "submit": "Perfect!|Click \"@:(button.start)\" to continue"
+    },
+    "application-list": {
+      "first": "You don't have any applications yet|Let's fix this by creating one|Click \"@:(button.add-app)\" to continue{\"delay\":true}"
+    },
+    "application": {
+      "empty": "What the heck is \"Application\"?|Suppose that you'd like to register on a website: fancypillows.com|Naturally, they ask you to provide a password|Instead of choosing one manually, you could use DerivePass{\"silent\":\"glasses\"}Type the name of website in \"@:(label.domain)\" field to continue{\"delay\":true}",
+      "domain": "Fantastic!{\"silent\":\"thumb\"}Now let's fill \"@:(label.login)\" field{\"delay\":true}",
+      "username": "Lovely{\"silent\":\"heart\"}Generate the password password by hitting \"@:(button.compute.idle)\"",
+      "password": "Copy the password by clicking \"@:(button.copy.ready)\"|Saving the application will complete this tutorial{\"delay\":true}"
+    }
   }
 }
 </i18n>

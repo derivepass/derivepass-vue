@@ -15,6 +15,14 @@
     "stop-send": "Остановить отправку",
     "receive": "Получить",
     "stop-receive": "Прекратить получение"
+  },
+  "ca": {
+    "title": "Sincronització QR",
+    "description": "Sincronitza dades entre dos dispositius mostrant codis QR a un d'ells, i escanejant-los amb l'altre.",
+    "send": "Envia",
+    "stop-send": "Atura enviament",
+    "receive": "Rep",
+    "stop-receive": "Atura recepció"
   }
 }
 </i18n>

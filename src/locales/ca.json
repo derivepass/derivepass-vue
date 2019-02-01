@@ -1,0 +1,39 @@
+{
+  "error": {
+    "flatten": {
+      "whitespace": "No pot haver-hi espais en blanc",
+      "invalid-start": "Hi ha un caràcter inicial no vàlid al rang \"{range}\"",
+      "invalid-end": "Hi ha un caràcter final no vàlid al rang \"{range}\"",
+      "invalid": "Rang no vàlid \"{range}\"",
+      "unterminated": "Rang no acabat \"{range}\""
+    },
+    "cloud-kit": {
+      "auth-failure": "Error d'autenticació",
+      "premature-close": "La finestra d'autenticació s'ha tancat prematurament",
+      "no-auth-url": "No hi ha una URL d'autorització a la resposta",
+      "popup-blocked": "El pop-up ha estat blocat, intenta-ho de nou si et plau"
+    }
+  },
+  "button": {
+    "start": "Comença",
+    "decrypt": "Desxifra",
+    "next": "Següent",
+    "reset": "Reinicia",
+    "dismiss": "Ignora",
+    "add-app": "Afegeix aplicació",
+    "copy": {
+      "ready": "Copia Contrasenya",
+      "complete": "Copiada"
+    },
+    "compute": {
+      "idle": "Computa Contrasenya",
+      "running": "Computant Contrasenya"
+    },
+    "edit": "Edita",
+    "back": "Enrere"
+  },
+  "label": {
+    "domain": "Nom de domini",
+    "login": "Nom d'usuari"
+  }
+}

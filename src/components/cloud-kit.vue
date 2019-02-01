@@ -33,6 +33,23 @@
     "disable": "Отключить",
     "sign-in": "Авторизовать",
     "sign-out": "Деавторизовать"
+  },
+  "ca": {
+    "title": "Sincronitza amb iCloud",
+    "loading": {
+      "init": "Connectant a iCloud...",
+      "enable": "Habilitant sincronització d'iCloud...",
+      "disable": "Deshabilitant sincronització d'iCloud...",
+      "sign-in": "Iniciant sessió a iCloud...",
+      "sign-out": "Tancant sessió a iCloud..."
+    },
+    "failed": "Error en connectar a iCloud!",
+    "details": "Detalls",
+    "dismiss": "Ignora",
+    "enable": "Habilita",
+    "disable": "Deshabilita",
+    "sign-in": "Inicia sessió",
+    "sign-out": "Tanca sessió"
   }
 }
 </i18n>

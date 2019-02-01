@@ -11,6 +11,12 @@
     "complete": "Синхронизация завершена",
     "init-video": "Инициализируем видео...",
     "not-supported": "Видео запись не поддерживается браузером"
+  },
+  "ca": {
+    "error": "Error",
+    "complete": "Sincronització completada",
+    "init-video": "Iniciant vídeo...",
+    "not-supported": "El navegador no suporta enregistrament de vídeo"
   }
 }
 </i18n>
