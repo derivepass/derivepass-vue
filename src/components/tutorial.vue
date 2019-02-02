@@ -37,18 +37,18 @@
   "ca": {
     "master": {
       "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memoritza-la, o anota-te-la...|...i introdueix-la a continuació",
-      "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":true}",
-      "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":true}",
-      "submit": "Perfect!|Click \"@:(button.start)\" to continue"
+      "password": "Genial elecció!!|Deus estar pensant què signifiquen aquests emoji{\"silent\":\"sweaty\"}Representen la teva Contrasenya Mestre d'una manera única|És molt fàcil comprovar que l'has escrita correctament|Inclús si et deixes un sol caràcter|Els emoji no seran els mateixos|No pateixis si reveles una contrasenya per això|La Contrasenya Mestre no es pot extreure d'elles|Va, apretem el botó \"@:(button.next)\"{\"delay\":true}",
+      "confirm": "Encara recordes la teva Contrasenya Mestre?|Va, posa-la un cop més per confirmar-ho|Si res esta malament, pots començar de nou prement el botó \"@:(button.reset)\"{\"delay\":true}",
+      "submit": "Perfecte!|Prem \"@:(button.start)\" per continuar"
     },
     "application-list": {
-      "first": "You don't have any applications yet|Let's fix this by creating one|Click \"@:(button.add-app)\" to continue{\"delay\":true}"
+      "first": "Encara no tens cap aplicació|Solucionem-ho afegeint-ne una|Prem \"@:(button.add-app)\" per continuar{\"delay\":true}"
     },
     "application": {
-      "empty": "What the heck is \"Application\"?|Suppose that you'd like to register on a website: fancypillows.com|Naturally, they ask you to provide a password|Instead of choosing one manually, you could use DerivePass{\"silent\":\"glasses\"}Type the name of website in \"@:(label.domain)\" field to continue{\"delay\":true}",
-      "domain": "Fantastic!{\"silent\":\"thumb\"}Now let's fill \"@:(label.login)\" field{\"delay\":true}",
-      "username": "Lovely{\"silent\":\"heart\"}Generate the password password by hitting \"@:(button.compute.idle)\"",
-      "password": "Copy the password by clicking \"@:(button.copy.ready)\"|Saving the application will complete this tutorial{\"delay\":true}"
+      "empty": "Què nassos és \"Aplicació\"?|Suposa que vols registrar-te a un lloc web: coixins-guais.cat|Naturalment, et demanaran una contrasenya|Enlloc de triar-ne una manualment, pots emprar DerivePass{\"silent\":\"glasses\"}Escriu el nom del lloc web al camp \"@:(label.domain)\" per continuar{\"delay\":true}",
+      "domain": "Fantàstic!{\"silent\":\"thumb\"}Ara omple el camp \"@:(label.login)\"{\"delay\":true}",
+      "username": "Preciós{\"silent\":\"heart\"}Genera la contrasenya prement \"@:(button.compute.idle)\"",
+      "password": "Copia la contrasenya prement \"@:(button.copy.ready)\"|Desa l'aplicació per completar aquest tutorial{\"delay\":true}"
     }
   }
 }
