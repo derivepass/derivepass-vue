@@ -84,7 +84,7 @@
 
         <!-- Locale choice -->
 
-        <b-nav-item-dropdown :text="$root.$i18n.locale" right>
+        <b-nav-item-dropdown :text="currentLocale" right>
           <b-dropdown-item
             href="#"
             v-for="(lang, i) in langs"
@@ -134,6 +134,13 @@ export default {
     },
     secureLogo() {
       return this.$store.getters.isLoggedIn ? 'secure' : '';
+    },
+
+    currentLocale() {
+      const setting = this.$root.$i18n.locale;
+      const isSupported = this.langs.some((lang) => lang.latin === setting);
+
+      return isSupported ? setting : 'en';
     }
   },
 
