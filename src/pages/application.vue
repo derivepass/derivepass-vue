@@ -49,14 +49,14 @@
       "danger": "Most websites do not require editing options below",
       "allowed": {
         "label": "Allowed characters",
-        "description": "Characters that CAN be present in the password",
+        "description": "Characters that <b>can</b> be present in the password",
         "feedback": {
           "empty": "Can't be empty"
         }
       },
       "required": {
         "label": "Required characters",
-        "description": "Characters that MUST be present in the password"
+        "description": "Characters that <b>must</b> be present in the password"
       },
       "max-len": {
         "label": "Password length",
@@ -131,14 +131,14 @@
       "danger": "Большинство веб-сайтов не требуют изменения настроек ниже",
       "allowed": {
         "label": "Разрешенные символы",
-        "description": "Символы, которые МОГУТ присутствовать в пароле",
+        "description": "Символы, которые <b>могут</b> присутствовать в пароле",
         "feedback": {
           "empty": "Поле не может быть пустым"
         }
       },
       "required": {
         "label": "Необходимые символы",
-        "description": "Символы, которые ДОЛЖНЫ присутствовать в пароле"
+        "description": "Символы, которые <b>должны</b> присутствовать в пароле"
       },
       "max-len": {
         "label": "Длина пароля",
@@ -213,14 +213,14 @@
       "danger": "La majoria de llocs web no requereixen que editis les opcions que tens a continuació",
       "allowed": {
         "label": "Caràcters permesos",
-        "description": "Caràcters que PODEN aparèixer a la contrasenya",
+        "description": "Caràcters que <b>poden</b> aparèixer a la contrasenya",
         "feedback": {
           "empty": "No pot quedar buit"
         }
       },
       "required": {
         "label": "Caràcters requerits",
-        "description": "Caràcters que HAN d'aparèixer a la contrasenya"
+        "description": "Caràcters que <b>han</b> d'aparèixer a la contrasenya"
       },
       "max-len": {
         "label": "Llargària de la contrasenyae",
