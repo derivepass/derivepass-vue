@@ -56,7 +56,7 @@
     "description": [
       "La majoria de websites requereixen una contrasenya per regitrar-se. Emprar la mateixa contrasenya a tot arreu és insegur. Emprar contrasenyes individuals segures i recordar-les totes - impossible!",
       "<b>DerivePass</b> és aquí per ajudar en aquesta tasca! Escull la <i>Contrasenya Mestre</i> un sol cop i utilitza-la per generar un nombre <b>il·limitat</b> de contrasenyes segures.",
-      "A diferència dels gestors tradicionals de contrasenyes, <b>DerivePass</b> mai puja ni la <i>Contrasenya Mestre</i> ni cap de les altres contrasenyes al núvol. La única informació que es desa <b>encrypted</b> són noms de dominis i d'usuaris."
+      "A diferència dels gestors tradicionals de contrasenyes, <b>DerivePass</b> mai puja ni la <i>Contrasenya Mestre</i> ni cap de les altres contrasenyes al núvol. La única informació que es desa <b>encriptada</b> són noms de dominis i d'usuaris."
     ],
     "security": {
       "title": "Seguretat",
