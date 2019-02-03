@@ -462,7 +462,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([ 'newUser' ]),
+    ...mapGetters([ 'newUser', 'isLoggedIn' ]),
 
     tutorialState() {
       if (this.password) {
@@ -740,7 +740,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    if (!this.hasChanged) {
+    if (!this.hasChanged || !this.isLoggedIn) {
       return next();
     }
 
