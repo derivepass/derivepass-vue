@@ -20,7 +20,7 @@
     "privacy": {
       "title": "Privacy",
       "description": [
-        "Your privacy is important for us. Your data is stored locally <b>on your computer</b>, unless you decide to use disabled by default remote storage (e.g., iCloud). We <b>never</b> store non-encrypted website domain names, usernames, or passwords. <b>No tracking</b> of any kind is used on this website."
+        "Your privacy is important to us. Your data is stored locally <b>on your computer</b>, unless you decide to use disabled by default remote storage (e.g., iCloud). We <b>never</b> store non-encrypted website domain names, usernames, or passwords. <b>No tracking</b> of any kind is used on this website."
       ]
     },
     "source": "source code"
