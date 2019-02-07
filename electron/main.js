@@ -6,8 +6,11 @@ const { parse: parseQuery } = require('querystring');
 const path = require('path');
 const fs = require('fs');
 
-const DIST = path.join(__dirname, '..', 'dist');
-const INDEX_HTML = path.join(DIST, 'index.html');
+let STATIC = path.join(__dirname, 'static');
+if (!fs.existsSync(STATIC)) {
+  STATIC = path.join(__dirname, '..', 'dist');
+}
+const INDEX_HTML = path.join(STATIC, 'index.html');
 const PRELOAD = path.join(__dirname, 'preload.js');
 
 let window = null;
@@ -56,7 +59,7 @@ app.on('ready', () =>{
     }
 
     url = url.replace(/^electron\//, '');
-    let file = path.join(DIST, url);
+    let file = path.join(STATIC, url);
 
     if (url === '' || !fs.existsSync(file)) {
       // Push History
