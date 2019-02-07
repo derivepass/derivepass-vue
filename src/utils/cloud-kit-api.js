@@ -7,6 +7,7 @@ const API_TOKENS = {
     'a549ed0b287668fdcef031438d4350e1e96ec12e758499bc1360a03564becaf8',
   'production': 
     'cd95e9dcb918b2d45b94a10416eaed02df8727d7b6fdde4669a5fbcacefafe1b',
+  'electron': '3d81fb3790c935f8fe396a21d0acf93a2b0b886797abb95813855c3ffc062a59',
 };
 
 const AUTH_TOKEN_KEY = 'derivepass/cloud-kit/auth-token';
@@ -16,8 +17,10 @@ export default class CloudKitAPI {
     this.env = env;
     this.apiToken = API_TOKENS[env];
     this.authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+
+    const apiEnv = env === 'electron' ? 'production' : env;
     this.base = 'https://api.apple-cloudkit.com/database/1/' +
-      `iCloud.com.indutny.DerivePass/${env}`;
+      `iCloud.com.indutny.DerivePass/${apiEnv}`;
 
     this.authURL = null;
   }
@@ -66,9 +69,14 @@ export default class CloudKitAPI {
         'error.cloud-kit.no-auth-url');
     }
 
+    if (this.env === 'electron') {
+      return await this.electronSignIn();
+    }
+
     const child = window.open(this.authURL,
       'derivepass.iCloud.Auth',
       'width=500,height=500');
+
     if (!child) {
       throw new LocaleError('Pop-up blocked, please try again',
         'error.cloud-kit.popup-blocked');
@@ -104,8 +112,7 @@ export default class CloudKitAPI {
             'error.cloud-kit.auth-failure'));
         }
 
-        this.authToken = authToken;
-        localStorage.setItem(AUTH_TOKEN_KEY, authToken);
+        this.setAuthToken(authToken);
         resolve();
       };
       window.addEventListener('message', onMessage);
@@ -119,6 +126,27 @@ export default class CloudKitAPI {
           'error.cloud-kit.premature-close'));
       });
     });
+  }
+
+  async electronSignIn() {
+    const response = await window.electron.iCloudAuth(this.authURL);
+    console.log(response);
+    if (response.canceled) {
+      throw new LocaleError('Sign-in window was prematurely closed',
+        'error.cloud-kit.premature-close');
+    }
+
+    if (response.errorMessage) {
+      throw new Error(detail.errorMessage);
+    }
+
+    const authToken = response.ckWebAuthToken || response.ckSession;
+    if (!authToken) {
+      throw new LocaleError('Authentication failure',
+        'error.cloud-kit.auth-failure');
+    }
+
+    this.setAuthToken(authToken);
   }
 
   async signOut() {
@@ -166,5 +194,11 @@ export default class CloudKitAPI {
     }
 
     return res.response;
+  }
+
+  // Private
+  setAuthToken(token) {
+    this.authToken = token;
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
   }
 }

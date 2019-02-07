@@ -1,5 +1,6 @@
 export const ENV =
-  process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  location.protocol === 'derivepass:' ? 'electron' :
+    process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export const LOCALE_KEY = 'derivepass/config/locale';
 

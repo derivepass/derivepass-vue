@@ -1,0 +1,26 @@
+{
+  "name": "derivepass-electron",
+  "version": "1.0.0",
+  "description": "Electron app for DerivePass",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/derivepass/derivepass-vue.git"
+  },
+  "keywords": [
+    "derivepass",
+    "electron"
+  ],
+  "author": "Fedor Indutny <fedor@indutny.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derivepass/derivepass-vue/issues"
+  },
+  "homepage": "https://github.com/derivepass/derivepass-vue#readme",
+  "devDependencies": {
+    "electron": "^4.0.4"
+  }
+}
