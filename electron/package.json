@@ -10,10 +10,14 @@
   "build": {
     "appId": "com.electron.derivepass",
     "productName": "DerivePass",
+    "publish": [ "github" ],
     "files": [
       "main.js",
       "preload.js",
-      { "from": "../dist", "to": "static" }
+      {
+        "from": "../dist",
+        "to": "static"
+      }
     ]
   },
   "repository": {
@@ -34,5 +38,7 @@
     "electron": "^4.0.4",
     "electron-builder": "^20.38.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "electron-updater": "^4.0.6"
+  }
 }
