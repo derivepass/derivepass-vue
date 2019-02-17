@@ -45,8 +45,14 @@ const RAW = {
   'nic.ru': {
     options: {
       allowed: 'a-zA-Z0-9',
-    }
+    },
   },
+
+  'hrblock.com': {
+    options: {
+      required: '$'
+    }
+  }
 }
 
 const PRESETS = new Map();
