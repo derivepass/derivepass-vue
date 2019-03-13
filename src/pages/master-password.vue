@@ -74,7 +74,6 @@
 
     <b-form
       @submit.prevent="onSubmit"
-      @reset.prevent="onReset"
       autocomplete="off">
       <b-form-group v-if="newUser && tutorialState !== 'hide'">
         <tutorial :state="tutorialState"/>
@@ -342,16 +341,6 @@ export default {
         this.error = err;
         this.computing = false;
       });
-    },
-
-    onReset() {
-      this.password = '';
-      this.confirmPassword = '';
-      this.passwordChanged = false;
-      this.confirmChanged = false;
-      this.isConfirming = false;
-
-      Vue.nextTick(() => this.$refs.passwordRef.focus());
     },
   }
 };
