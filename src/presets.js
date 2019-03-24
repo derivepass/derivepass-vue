@@ -50,9 +50,15 @@ const RAW = {
 
   'hrblock.com': {
     options: {
-      required: '$'
-    }
-  }
+      required: '$',
+    },
+  },
+
+  'nyumlc.org': {
+    options: {
+      maxLength: 20,
+    },
+  },
 }
 
 const PRESETS = new Map();
