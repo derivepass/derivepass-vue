@@ -2,8 +2,11 @@
   "name": "DerivePass",
   "version": "1.0.1",
   "private": true,
+  "author": "Fedor Indutny <fedor@indutny.com>",
+  "description": "Compute secure passwords without storing them anywhere",
   "license": "MIT",
   "main": "src/electron/main.js",
+  "repository": "git@github.com:derivepass/derivepass-vue",
   "build": {
     "appId": "com.electron.derivepass",
     "productName": "DerivePass",
@@ -13,7 +16,10 @@
     "files": [
       "src/electron",
       "dist"
-    ]
+    ],
+    "directories": {
+      "output": "dist-electron"
+    }
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -24,7 +30,7 @@
     "electron": "electron .",
     "electron:build": "electron-builder"
   },
-  "dependencies": {
+  "devDependencies": {
     "bn.js": "^4.11.8",
     "bootstrap-vue": "^2.0.0-rc.18",
     "debug": "^4.1.1",
@@ -38,9 +44,7 @@
     "vue-i18n": "^8.10.0",
     "vue-router": "^3.0.3",
     "vuex": "^3.1.0",
-    "worker-loader": "^2.0.0"
-  },
-  "devDependencies": {
+    "worker-loader": "^2.0.0",
     "@kazupon/vue-i18n-loader": "^0.3.0",
     "@vue/cli-plugin-eslint": "^3.5.1",
     "@vue/cli-plugin-pwa": "^3.5.1",
