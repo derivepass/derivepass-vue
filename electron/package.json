@@ -10,7 +10,9 @@
   "build": {
     "appId": "com.electron.derivepass",
     "productName": "DerivePass",
-    "publish": [ "github" ],
+    "publish": [
+      "github"
+    ],
     "files": [
       "main.js",
       "preload.js",
@@ -36,7 +38,7 @@
   "homepage": "https://github.com/derivepass/derivepass-vue#readme",
   "devDependencies": {
     "electron": "^4.0.4",
-    "electron-builder": "^20.38.5"
+    "electron-builder": "^20.40.2"
   },
   "dependencies": {
     "electron-updater": "^4.0.6"
