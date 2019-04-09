@@ -135,7 +135,7 @@
         <a href="https://twitter.com/indutny" target="_blank">Fedor Indutny</a>
         <br/>
         <a href="https://github.com/derivepass/derivepass-vue" target="_blank">
-          {{ $t('source') }}
+          {{ $t('source') }} @ {{ version }}
         </a>
       </small>
     </footer>
@@ -150,9 +150,15 @@ import bRow from 'bootstrap-vue/es/components/layout/row';
 
 import FancyLogo from '../components/fancy-logo';
 
+import { version } from '../../package';
+
 export default {
   name: 'home',
   components: { bButton, bCol, bContainer, bRow, FancyLogo },
+
+  data() {
+    return { version };
+  },
 
   computed: {
     scrypt() {

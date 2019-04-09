@@ -130,14 +130,13 @@ export default class CloudKitAPI {
 
   async electronSignIn() {
     const response = await window.electron.iCloudAuth(this.authURL);
-    console.log(response);
     if (response.canceled) {
       throw new LocaleError('Sign-in window was prematurely closed',
         'error.cloud-kit.premature-close');
     }
 
     if (response.errorMessage) {
-      throw new Error(detail.errorMessage);
+      throw new Error(response.errorMessage);
     }
 
     const authToken = response.ckWebAuthToken || response.ckSession;
