@@ -1,17 +1,13 @@
 const {
   app, BrowserWindow, protocol, session, shell, ipcMain: ipc,
 } = require('electron');
-const { autoUpdater } = require('electron-updater');
 
 const { parse: parseURL } = require('url');
 const { parse: parseQuery } = require('querystring');
 const path = require('path');
 const fs = require('fs');
 
-let STATIC = path.join(__dirname, 'static');
-if (!fs.existsSync(STATIC)) {
-  STATIC = path.join(__dirname, '..', 'dist');
-}
+const STATIC = path.join(__dirname, '..', '..', 'dist');
 const INDEX_HTML = path.join(STATIC, 'index.html');
 const PRELOAD = path.join(__dirname, 'preload.js');
 
@@ -99,8 +95,6 @@ app.on('ready', () =>{
     });
 
   createWindow();
-
-  autoUpdater.checkForUpdatesAndNotify();
 });
 
 // Quit when all windows are closed.

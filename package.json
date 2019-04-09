@@ -3,12 +3,26 @@
   "version": "1.0.1",
   "private": true,
   "license": "MIT",
+  "main": "src/electron/main.js",
+  "build": {
+    "appId": "com.electron.derivepass",
+    "productName": "DerivePass",
+    "publish": [
+      "github"
+    ],
+    "files": [
+      "src/electron",
+      "dist"
+    ]
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "now-build": "npm run build && cp -rf dist/precache-manifest*.js dist/precache-manifest.common.js",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "electron": "electron .",
+    "electron:build": "electron-builder"
   },
   "dependencies": {
     "bn.js": "^4.11.8",
@@ -35,6 +49,8 @@
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
     "chai": "^4.1.2",
+    "electron": "^4.1.4",
+    "electron-builder": "^20.39.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
     "mocha": "^5.2.0",
