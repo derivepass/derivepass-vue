@@ -8,7 +8,7 @@
   "main": "src/electron/main.js",
   "repository": "git@github.com:derivepass/derivepass-vue",
   "build": {
-    "appId": "com.electron.derivepass",
+    "appId": "com.indutny.derivepass-electron",
     "productName": "DerivePass",
     "mac": {
       "category": "public.app-category.productivity"
