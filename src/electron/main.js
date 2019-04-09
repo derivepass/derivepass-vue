@@ -1,6 +1,8 @@
 const {
   app, BrowserWindow, protocol, session, shell, ipcMain: ipc,
 } = require('electron');
+const log = require('electron-log');
+const { autoUpdater } = require("electron-updater");
 
 const { parse: parseURL } = require('url');
 const { parse: parseQuery } = require('querystring');
@@ -13,6 +15,10 @@ const PRELOAD = path.join(__dirname, 'preload.js');
 
 let window = null;
 const iCloudQueue = [];
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
 
 function createWindow () {
   if (window) {
@@ -95,6 +101,8 @@ app.on('ready', () =>{
     });
 
   createWindow();
+
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
 // Quit when all windows are closed.

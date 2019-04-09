@@ -10,6 +10,9 @@
   "build": {
     "appId": "com.electron.derivepass",
     "productName": "DerivePass",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
     "publish": [
       "github"
     ],
@@ -28,7 +31,8 @@
     "now-build": "npm run build && cp -rf dist/precache-manifest*.js dist/precache-manifest.common.js",
     "test:unit": "vue-cli-service test:unit",
     "electron": "electron .",
-    "electron:build": "electron-builder"
+    "electron:build": "npm run build && electron-builder",
+    "electron:publish": "npm run electron:build -- -p always"
   },
   "devDependencies": {
     "bn.js": "^4.11.8",
@@ -84,5 +88,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "dependencies": {
+    "electron-log": "^3.0.5",
+    "electron-updater": "^4.0.6"
+  }
 }
