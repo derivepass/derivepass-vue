@@ -13,6 +13,10 @@ const STATIC = path.join(__dirname, '..', '..', 'dist');
 const INDEX_HTML = path.join(STATIC, 'index.html');
 const PRELOAD = path.join(__dirname, 'preload.js');
 
+// Request update every 4 hours for those who run it over prolonged periods
+// of time.
+const UPDATE_FREQUENCY = 4 * 3600 * 1000;
+
 let window = null;
 const iCloudQueue = [];
 
@@ -102,7 +106,15 @@ app.on('ready', () =>{
 
   createWindow();
 
-  autoUpdater.checkForUpdatesAndNotify();
+  setInterval(() => {
+    autoUpdater.checkForUpdatesAndNotify().catch(() => {
+      // Ignore
+    });
+  }, UPDATE_FREQUENCY);
+
+  autoUpdater.checkForUpdatesAndNotify().catch(() => {
+    // Ignore
+  });
 });
 
 // Quit when all windows are closed.
