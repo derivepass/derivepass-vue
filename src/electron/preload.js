@@ -11,7 +11,7 @@ Object.assign(window.electron, {
 
     ipc.send('icloud:auth', { seq, url });
 
-    return await new Promise((resolve, reject) => {
+    return await new Promise((resolve) => {
       queue.set(seq, (payload) => {
         queue.delete(seq);
 

@@ -126,7 +126,7 @@ app.on('window-all-closed', () => {
 
 // Open windows in external browser
 app.on('web-contents-created', (_, contents) => {
-  contents.on('new-window', (e, url, frame, disposition, options, features) => {
+  contents.on('new-window', (e, url) => {
     e.preventDefault();
     shell.openExternal(url);
   });
@@ -136,7 +136,7 @@ app.on('activate', () => {
   createWindow();
 });
 
-ipc.on('icloud:auth', ({ sender }, { seq, url }) => {
+ipc.on('icloud:auth', (_, { seq, url }) => {
   const popup = new BrowserWindow({
     center: true,
     width: 500,
