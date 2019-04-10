@@ -160,6 +160,9 @@ export default class DerivePass {
       const raw = await worker.send(
         version === 1 ? 'decrypt' : 'decrypt_legacy',
         { keys, data: payload });
+      if (!raw) {
+        return undefined;
+      }
       return decoder.decode(raw);
     } finally {
       this.reclaimWorker(worker);
@@ -170,11 +173,24 @@ export default class DerivePass {
   // better interactivity. Most users will have several apps and it will look
   // better if they'll load in chunks.
   async decryptApp(app, keys) {
-    return Object.assign({}, app, {
+    const raw = {
       domain: await this.decrypt(app.domain, keys),
       login: await this.decrypt(app.login, keys),
-      revision: parseInt(await this.decrypt(app.revision, keys), 10) || 1,
-      options: app.options && JSON.parse(await this.decrypt(app.options, keys)),
+      revision: await this.decrypt(app.revision, keys),
+      options: app.options && await this.decrypt(app.options, keys),
+    };
+    if (raw.domain === undefined ||
+        raw.login === undefined ||
+        raw.revision === undefined ||
+        (app.options && raw.options === undefined)) {
+      return null;
+    }
+
+    return Object.assign({}, app, {
+      domain: raw.domain,
+      login: raw.login,
+      revision: parseInt(raw.revision, 10) || 1,
+      options: raw.options && JSON.parse(raw.options),
     });
   }
 

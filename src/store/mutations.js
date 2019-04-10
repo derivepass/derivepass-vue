@@ -69,13 +69,11 @@ export default {
   setCryptoKeys(state, payload) {
     state.master = payload.master;
     state.cryptoKeys = payload.crypto;
-    state.emoji = payload.emoji;
   },
 
   resetCryptoKeys(state) {
     state.cryptoKeys = null;
     state.master = '';
-    state.emoji = '';
     state.decryptedApps = [];
   },
 

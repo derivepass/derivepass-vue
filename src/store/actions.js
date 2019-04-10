@@ -1,9 +1,5 @@
 import * as createDebug from 'debug';
 
-import {
-  DEFAULT_APP_OPTIONS,
-} from '../utils/common';
-
 const debug = createDebug('derivepass:store:actions');
 
 function scrubApp(app) {
@@ -30,6 +26,9 @@ export default {
   receiveApp({ state, getters, commit }, app) {
     if (app.removed) {
       app = scrubApp(app);
+    } else if (app.master) {
+      // Scrub emojis
+      app = Object.assign({}, app, { master: '' });
     }
     commit('receiveApp', app);
 
@@ -39,11 +38,15 @@ export default {
       return;
     }
 
-    if (!getters.isLoggedIn || app.master !== state.emoji) {
+    if (!getters.isLoggedIn) {
       return;
     }
 
     state.derivepass.decryptApp(app, state.cryptoKeys).then((decrypted) => {
+      if (!decrypted) {
+        return;
+      }
+
       commit('updateDecryptedApp', decrypted);
     }).catch((err) => {
       debug('decryption error=%j', err.message);
@@ -56,24 +59,16 @@ export default {
   },
 
   async setCryptoKeys({ state, commit }, payload) {
-    const { emoji } = payload;
-
     const matchingApps = state.applications.filter((app) => {
-      return app.master === emoji && !app.removed;
+      return !app.removed;
     });
 
-    const decryptedApps = await Promise.all(matchingApps.map(async (app) => {
-      try {
-        return await state.derivepass.decryptApp(app, payload.crypto);
-      } catch (e) {
-        return Object.assign({}, app, {
-          domain: '<error>',
-          login: '<error>',
-          revision: 1,
-          options: Object.assign({}, DEFAULT_APP_OPTIONS),
-        });
-      }
+    let decryptedApps = await Promise.all(matchingApps.map(async (app) => {
+      return await state.derivepass.decryptApp(app, payload.crypto);
     }));
+
+    // Filter out any apps encrypted with a different AES key
+    decryptedApps = decryptedApps.filter((app) => app !== null);
 
     // Display recently modified apps first
     decryptedApps.sort((a, b) => {

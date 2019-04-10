@@ -70,7 +70,7 @@ pub fn encrypt(aes_key: &[u8], mac_key: &[u8], iv: &[u8], payload: &[u8]) -> Vec
 }
 
 #[wasm_bindgen]
-pub fn decrypt(aes_key: &[u8], mac_key: &[u8], payload: &[u8]) -> Vec<u8> {
+pub fn decrypt(aes_key: &[u8], mac_key: &[u8], payload: &[u8]) -> Option<Vec<u8>> {
     if payload.len() < aes::BLOCK_SIZE + sha256::DIGEST_SIZE {
         panic!("Payload doesn't have enough bytes for MAC");
     }
@@ -94,7 +94,7 @@ pub fn decrypt(aes_key: &[u8], mac_key: &[u8], payload: &[u8]) -> Vec<u8> {
         is_equal |= digest_elem ^ mac_elem;
     }
     if is_equal != 0 {
-        panic!("Invalid digest");
+        return None
     }
 
     let mut decipher = aes_cbc::Decipher::new(iv);
@@ -103,11 +103,11 @@ pub fn decrypt(aes_key: &[u8], mac_key: &[u8], payload: &[u8]) -> Vec<u8> {
     let mut out = decipher.write(&content).expect("cipher.write to succeed");
     out.append(&mut decipher.flush().expect("cipher.flush to succed"));
 
-    out
+    Some(out)
 }
 
 #[wasm_bindgen]
-pub fn decrypt_legacy(aes_key: &[u8], payload: &[u8]) -> Vec<u8> {
+pub fn decrypt_legacy(aes_key: &[u8], payload: &[u8]) -> Option<Vec<u8>> {
     if payload.len() < aes::BLOCK_SIZE {
         panic!("Payload doesn't have enough bytes for AES IV");
     }
@@ -123,7 +123,7 @@ pub fn decrypt_legacy(aes_key: &[u8], payload: &[u8]) -> Vec<u8> {
     let mut out = decipher.write(content).expect("cipher.write to succeed");
     out.append(&mut decipher.flush().expect("cipher.flush to succed"));
 
-    out
+    Some(out)
 }
 
 #[cfg(test)]
@@ -143,7 +143,7 @@ mod tests {
             0xc6, 0xbf, 0x32, 0xb4,
         ];
 
-        assert_eq!(decrypt_legacy(&aes_key, &old), vec![0x6f, 0x68, 0x61, 0x69]);
+        assert_eq!(decrypt_legacy(&aes_key, &old).unwrap(), vec![0x6f, 0x68, 0x61, 0x69]);
     }
 
     #[test]
@@ -170,7 +170,7 @@ mod tests {
             0xa3, 0xdf, 0xbe, 0xf3, 0xe7, 0xa8, 0xe1, 0x6e,
         ];
 
-        assert_eq!(decrypt(&aes_key, &mac_key, &payload), vec![
+        assert_eq!(decrypt(&aes_key, &mac_key, &payload).unwrap(), vec![
             0x6f, 0x6d, 0x67, 0x2e, 0x63, 0x6f, 0x6d,
         ]);
     }
@@ -197,6 +197,6 @@ mod tests {
         let payload = vec![0x6f, 0x68, 0x61, 0x69];
         let encrypted = encrypt(&aes_key, &mac_key, &iv, &payload);
 
-        assert_eq!(payload, decrypt(&aes_key, &mac_key, &encrypted));
+        assert_eq!(payload, decrypt(&aes_key, &mac_key, &encrypted).unwrap());
     }
 }

@@ -149,7 +149,6 @@ import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
 
 import Computing from '../components/computing';
 import Tutorial from '../components/tutorial';
-import emojiHash from '../utils/emoji-hash';
 
 const LOGOUT_TIMEOUT = 3 * 60 * 1000; // 3 minutes of total inactivity
 
@@ -178,16 +177,11 @@ export default {
     ...mapState({
       hasApps(state) {
         const apps = state.applications;
-        const emoji = this.emoji;
-        return apps.some((app) => app.master === emoji);
+        return apps;
       },
     }),
 
     ...mapGetters([ 'newUser' ]),
-
-    emoji() {
-      return emojiHash(this.password);
-    },
 
     // Tutorial
     tutorialState() {
@@ -276,8 +270,6 @@ export default {
 
   methods: {
     onSubmit() {
-      const emoji = this.emoji;
-
       if (this.isConfirming) {
         if (!this.canSubmit) {
           // Confirmation doesn't match
@@ -301,7 +293,6 @@ export default {
         return this.$store.dispatch('setCryptoKeys', {
           master: this.password,
           crypto: keys,
-          emoji: emoji,
         });
       }).then(() => {
         this.$autoLogout.login(() => {

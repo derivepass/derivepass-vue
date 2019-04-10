@@ -4,5 +4,9 @@ This can be compiled with `wasm-pack`. Just run:
 wasm-pack build
 ```
 
-...and copy `src/wasm/pkg/derivepass_bg.wasm` to
-`src/plugins/derivepass/wasm/binding.wasm.bin`.
+...and copy:
+
+```sh
+cp -rf src/wasm/pkg/derivepass_bg.wasm \
+  src/store/derivepass/wasm/binding.wasm.bin
+```

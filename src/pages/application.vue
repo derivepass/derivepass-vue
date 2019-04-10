@@ -517,7 +517,7 @@ export default {
         login: '',
         revision: 1,
 
-        master: this.$store.state.emoji,
+        master: '',
         index: parseInt(this.$route.query.index, 10) || 0,
         removed: false,
         changedAt: Date.now(),

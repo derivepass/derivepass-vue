@@ -150,6 +150,7 @@ export default class Binding {
           const mem = getUint32Memory();
           const rustptr = mem[retptr / 4];
           const rustlen = mem[retptr / 4 + 1];
+          if (rustptr === 0) return;
 
           const realRet = getArrayU8FromWasm(rustptr, rustlen).slice();
           wasm.__wbindgen_free(rustptr, rustlen * 1);
@@ -181,6 +182,7 @@ export default class Binding {
           const mem = getUint32Memory();
           const rustptr = mem[retptr / 4];
           const rustlen = mem[retptr / 4 + 1];
+          if (rustptr === 0) return;
 
           const realRet = getArrayU8FromWasm(rustptr, rustlen).slice();
           wasm.__wbindgen_free(rustptr, rustlen * 1);

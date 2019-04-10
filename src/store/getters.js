@@ -1,6 +1,6 @@
 export default {
   isLoggedIn(state) {
-    return state.cryptoKeys && state.emoji;
+    return state.cryptoKeys;
   },
 
   newUser(state) {
