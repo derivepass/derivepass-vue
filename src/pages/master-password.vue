@@ -78,11 +78,6 @@
       <b-form-group v-if="newUser && tutorialState !== 'hide'">
         <tutorial :state="tutorialState"/>
       </b-form-group>
-      <b-form-group>
-        <div v-if="!newUser || !!password" :class="emojiClass" id="emoji">
-          {{emoji}}
-        </div>
-      </b-form-group>
       <template v-if="!isConfirming">
         <b-form-group
           v-if="!isConfirming"
@@ -104,11 +99,6 @@
         </b-form-group>
       </template>
       <template v-else>
-        <b-form-group>
-          <div class="emoji-hash text-center">
-            {{emojiConfirm}}
-          </div>
-        </b-form-group>
         <b-form-group
           v-if="isConfirming"
           :label="$t('confirm.label')"
@@ -137,6 +127,7 @@
         class="ml-2"
         v-if="isConfirming"
         type="reset"
+        @click.prevent="reset"
         variant="danger">{{ $root.$t('button.reset') }}</b-button>
     </b-form>
 
@@ -196,15 +187,6 @@ export default {
 
     emoji() {
       return emojiHash(this.password);
-    },
-
-    emojiClass() {
-      return 'emoji-hash text-center ' +
-        (this.isConfirming ? 'emoji-hash-gray' : '');
-    },
-
-    emojiConfirm() {
-      return emojiHash(this.confirmPassword);
     },
 
     // Tutorial
@@ -342,18 +324,16 @@ export default {
         this.computing = false;
       });
     },
+
+    reset() {
+      this.password = '';
+      this.confirmPassword = '';
+      this.passwordChanged = false;
+      this.confirmChanged = false;
+      this.isConfirming = false;
+
+      Vue.nextTick(() => this.$refs.passwordRef.focus());
+    },
   }
 };
 </script>
-
-<style scoped>
-.emoji-hash {
-  font-size: 48px;
-  font-family: Apple Color Emoji;
-  transition: filter 0.25s;
-}
-
-.emoji-hash-gray {
-  filter: grayscale(25%) blur(1px);
-}
-</style>

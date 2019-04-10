@@ -3,7 +3,7 @@
   "en": {
     "master": {
       "empty": "Hello!|Let's walk you through the basics|Choose a strong Master Password|Memorize it or write it down...|...and enter it below",
-      "password": "Excellent choice!|You might be wondering what those emoji mean{\"silent\":\"sweaty\"}They represent your Master Password in a unique way|It is very easy to check that you typed it correctly|Even if a single character is off|The emoji won't be the same|Don't be worried about revealing your password, though|Master Password can't be recovered from them|Let's hit \"@:(button.next)\" button{\"delay\":true}",
+      "password": "Excellent choice!|Let's hit \"@:(button.next)\" button{\"delay\":true}",
       "confirm": "Still remember your Master Password?|Let's type it one more time to confirm|If something is wrong, you can start from scratch by hitting \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Perfect!|Click \"@:(button.start)\" to continue"
     },
@@ -20,7 +20,7 @@
   "ru": {
     "master": {
       "empty": "Здравствуйте!|Давайте вместе разберемся, как пользоваться DerivePass|Выберите надежный Мастер Пароль|Запомните его или запишите...|...и введите его в поле ниже",
-      "password": "Прекрасный выбор!|Возможно, вас заинтересовали emoji внизу?{\"silent\":\"sweaty\"}Они уникально подобраны для вашего Мастер Пароля|Проверить правильность ввода очень просто|Если хотя бы один символ был набран неверно|Emoji будут отличаться от тех, что вы видите сейчас|Несмотря на это, Мастер Пароль нельзя подглядеть и восстановить из emoji|Давайте нажмем \"@:(button.next)\"{\"delay\":true}",
+      "password": "Прекрасный выбор!|Давайте нажмем \"@:(button.next)\"{\"delay\":true}",
       "confirm": "Все еще помните ваш Мастер Пароль?|Введите его еще один раз для подтверждения|Если что-то пошло не так, вы всегда можете начать сначала, нажав \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Замечательно!|Нажмите \"@:(button.start)\", чтобы продолжить"
     },
@@ -37,7 +37,7 @@
   "ca": {
     "master": {
       "empty": "Hola!|Anem a veure els bàsics|Escull una Contrasenya Mestre forta|Memoritza-la, o anota-te-la...|...i introdueix-la a continuació",
-      "password": "Genial elecció!!|Deus estar pensant què signifiquen aquests emoji{\"silent\":\"sweaty\"}Representen la teva Contrasenya Mestre d'una manera única|És molt fàcil comprovar que l'has escrita correctament|Inclús si et deixes un sol caràcter|Els emoji no seran els mateixos|No pateixis si reveles una contrasenya per això|La Contrasenya Mestre no es pot extreure d'elles|Va, apretem el botó \"@:(button.next)\"{\"delay\":true}",
+      "password": "Genial elecció!!|Va, apretem el botó \"@:(button.next)\"{\"delay\":true}",
       "confirm": "Encara recordes la teva Contrasenya Mestre?|Va, posa-la un cop més per confirmar-ho|Si res esta malament, pots començar de nou prement el botó \"@:(button.reset)\"{\"delay\":true}",
       "submit": "Perfecte!|Prem \"@:(button.start)\" per continuar"
     },
