@@ -363,9 +363,11 @@
           <b-form-group
             :label="$t('extra.allowed.label')"
             label-for="application-allowed-chars"
-            :description="$t('extra.allowed.description')"
             :invalid-feedback="invalidAllowedFeedback"
             :state="allowedState">
+            <template v-slot:description>
+              <span v-html="$t('extra.allowed.description')"/>
+            </template>
             <b-form-input
               required
               id="application-allowed-chars"
@@ -377,9 +379,11 @@
           <b-form-group
             :label="$t('extra.required.label')"
             label-for="application-required-chars"
-            :description="$t('extra.required.description')"
             :invalid-feedback="invalidRequiredFeedback"
             :state="requiredState">
+            <template v-slot:description>
+              <span v-html="$t('extra.required.description')"/>
+            </template>
             <b-form-input
               id="application-required-chars"
               v-model="app.options.required"
