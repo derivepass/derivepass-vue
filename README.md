@@ -59,7 +59,8 @@ New releases of electron app could be published with:
 npm run electron:publish
 ```
 
-NOTE: requires `GH_TOKEN` env variable
+NOTE: requires `GH_TOKEN` env variable and appropriate developer certificates
+in the Keychain for macOS builds.
 
 ### Running tests
 ```
