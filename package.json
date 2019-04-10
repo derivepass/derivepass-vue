@@ -1,6 +1,6 @@
 {
   "name": "DerivePass",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "author": "Fedor Indutny <fedor@indutny.com>",
   "description": "Compute secure passwords without storing them anywhere",
