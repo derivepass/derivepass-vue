@@ -28,7 +28,7 @@ export default {
       app = scrubApp(app);
     } else if (app.master) {
       // Scrub emojis
-      app = Object.assign({}, app, { master: '' });
+      app = Object.assign({}, app, { changedAt: Date.now(), master: '' });
     }
     commit('receiveApp', app);
 
