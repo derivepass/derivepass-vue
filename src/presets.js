@@ -59,6 +59,12 @@ const RAW = {
       maxLength: 20,
     },
   },
+
+  'redislabs.com': {
+    options: {
+      required: '$',
+    },
+  },
 }
 
 const PRESETS = new Map();
