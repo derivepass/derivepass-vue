@@ -25,6 +25,10 @@
       "ready": "Copy Password",
       "complete": "Copied"
     },
+    "show": {
+      "hidden": "Show Password",
+      "shown": "Hide Password"
+    },
     "compute": {
       "idle": "Compute Password",
       "running": "Computing Password"
