@@ -689,8 +689,8 @@ export default {
 
     hasPreset() {
       const preset = this.getPreset(this.app.domain);
-      if (preset.domain && preset.domain !== this.app.domain) {
-        return true;
+      if (!preset.domain || preset.domain !== this.app.domain) {
+        return false;
       }
 
       const options = preset.options;
