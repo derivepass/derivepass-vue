@@ -4,23 +4,23 @@
     "lead": "Compute secure passwords without storing them anywhere.",
     "start": "Start",
     "description": [
-      "Most websites require password on Sign Up. Using the same password everywhere is insecure. Using individual secure passwords and remembering all of them - impossible!",
-      "<b>DerivePass</b> is here to help with the task! Choose the <i>Master Password</i> once and use it to generate <b>unlimited</b> number of secure website passwords.",
-      "Unlike traditional password managers, <b>DerivePass</b> never uploads neither the <i>Master Password</i> nor website passwords to the Cloud. The only information that is stored is <b>encrypted</b> website domain names and usernames."
+      "Most websites require a password on Sign Up. Using the same password everywhere is insecure. Using individual secure passwords and remembering all of them - impossible!",
+      "<b>DerivePass</b> is here to help with the task! Choose the <i>Master Password</i> once and use it to generate an <b>unlimited</b> number of secure website passwords.",
+      "Unlike traditional password managers, <b>DerivePass</b> never uploads either the <i>Master Password</i> or website passwords to the cloud. The only information that is stored is <b>encrypted</b> website domain names and usernames."
     ],
     "security": {
       "title": "Security",
       "subtitle": "Technical Details",
       "description": [
-        "{scrypt} algorithm is used for deriving application passwords and encryption/authentication keys. Due to the strong cryptographic properties of {scrypt}, compromise of a single application password does not leak the Master Password, and does not compromise any other application passwords either.",
-        "Application's domain name (website), username, and revision are used for generating unique and secure password. In particular, <code>domain/username(#revision)?</code> is used as a salt parameter of {scrypt}. Thus every revision increment will result in a different generated password. This is convenient for changing the password whenever it is required.",
-        "Every bit of information that is stored locally and/or remotely (through optional iCloud synchronization) is encrypted with AES key generated from the Master Password with {scrypt} algorithm, using <code>derivepass/aes</code> as a salt. The data is further passed to HMAC-SHA256 algorithm to ensure the data integrity."
+        "The {scrypt} algorithm is used for deriving application passwords and encryption/authentication keys. Due to the strong cryptographic properties of {scrypt}, the compromise of any single application password does not compromise any other application passwords or the Master password.",
+        "An application's domain name (website), username, and revision are used for generating unique and secure passwords. In particular, <code>domain/username(#revision)?</code> is used as a {salt} parameter of {scrypt}. Thus every revision increment will result in a completely different generated password. This is convenient for changing the password whenever it is required.",
+        "Every bit of information that is stored locally and/or remotely (through optional iCloud synchronization) is encrypted with an {AES} key generated from the Master Password via the {scrypt} algorithm, using <code>derivepass/aes</code> as a {salt}. The data is further passed to the {HMAC} algorithm to ensure the data integrity."
       ]
     },
     "privacy": {
       "title": "Privacy",
       "description": [
-        "Your privacy is important to us. Your data is stored locally <b>on your computer</b>, unless you decide to use disabled by default remote storage (e.g., iCloud). We <b>never</b> store non-encrypted website domain names, usernames, or passwords. <b>No tracking</b> of any kind is used on this website."
+        "Your privacy is important to us. Your data is stored only locally <b>on your computer</b>, by default, unless you manually decide to use remote storage (e.g., iCloud). We <b>never</b> store unencrypted website domain names, usernames, or passwords. <b>No tracking</b> of any kind is used on this website."
       ]
     },
     "source": "source code"
@@ -39,7 +39,7 @@
       "description": [
         "Алгоритм {scrypt} используется для вычисления паролей приложений и ключей шифрования/аутентификации. Благодаря криптографическим качествам {scrypt}, потеря одного пароля для приложения не выдаст злоумышленникам ваш Мастер Пароль и не позволит им вычислить прочие пароли от ваших приложений.",
         "Доменное имя приложения (название веб-сайта), имя пользователя и \"ревизия\" используются для генерации уникального и надежного пароля. В частности, <code>domain/username(#revision)?</code> используется в качестве \"соли\" для {scrypt}. Таким образом, увеличение \"ревизии\" приведет к изменению сгенерированного пароля. Это удобно в ситуациях, когда необходима смена пароля.",
-        "Вся информация, которая хранится на вашем компьютере и/или удаленно (через необязательную синхронизацию с iCloud), зашифрована AES ключом, сгенерированным из Мастер Пароля с помощью алгоритма {scrypt}, используя <code>derivepass/aes</code> в качестве \"соли\". Данные, в последствии, получают HMAC-SHA256 подпись, с целью подтверждения их подлинности."
+        "Вся информация, которая хранится на вашем компьютере и/или удаленно (через необязательную синхронизацию с iCloud), зашифрована {AES} ключом, сгенерированным из Мастер Пароля с помощью алгоритма {scrypt}, используя <code>derivepass/aes</code> в качестве \"соли\". Данные, в последствии, получают {HMAC} подпись, с целью подтверждения их подлинности."
       ]
     },
     "privacy": {
@@ -64,7 +64,7 @@
       "description": [
         "L'algoritme {scrypt} és emprat per derivar contrasenyes d'aplicacions i claus d'encriptació/desencriptació. Degut a les fortes propietats criptogràfiques de {scrypt}, el compromís d'una sola aplicació no comprometrà la Contrasenya Mestre, així com tampoc comprometrà cap altra contrasenya d'altres aplicacions.",
         "Els noms de domini (websites), noms d'usuari i revisió són emprats per generar una contrasenya única i segura. En particular, <code>domini/usuari(#revisió)?</code> s'empra com a salt de {scrypt}. Així doncs, cada increment de revisió resultarà en una contrasenya diferent. Això és convenient per a canviar la contrasenya sempre que faci falta.",
-        "Cada bit d'informació que es desa localment i/o remotament (a través de la sincronització opcional d'iCloud) és xifrat amb una clau AES generada a partir de la Contrasenya Mestre amb l'algoritme {scrypt}, emprant <code>derivepass/aes</code> com a salt. Les dades són lavors passades a l'algoritme HMAC-SHA256 per assegurar la integritat de les dades."
+        "Cada bit d'informació que es desa localment i/o remotament (a través de la sincronització opcional d'iCloud) és xifrat amb una clau {AES} generada a partir de la Contrasenya Mestre amb l'algoritme {scrypt}, emprant <code>derivepass/aes</code> com a salt. Les dades són lavors passades a l'algoritme {HMAC} per assegurar la integritat de les dades."
       ]
     },
     "privacy": {
@@ -122,9 +122,9 @@
           <h3 class="mb-2" id="security">{{ $t('security.title') }}</h3>
           <h6 class="mb-3"><i>({{ $t('security.subtitle') }})</i></h6>
 
-          <p v-html="$t('security.description[0]', { scrypt })"/>
-          <p v-html="$t('security.description[1]', { scrypt })"/>
-          <p v-html="$t('security.description[2]', { scrypt })"/>
+          <p v-html="$t('security.description[0]', { scrypt, AES, salt, HMAC })"/>
+          <p v-html="$t('security.description[1]', { scrypt, AES, salt, HMAC })"/>
+          <p v-html="$t('security.description[2]', { scrypt, AES, salt, HMAC })"/>
         </b-col>
       </b-row>
     </b-container>
@@ -164,6 +164,21 @@ export default {
     scrypt() {
       return '<a href="https://en.wikipedia.org/wiki/Scrypt" target="_blank">' +
         '<code>scrypt</code>' +
+        '</a>';
+    },
+    AES() {
+      return '<a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" target="_blank">' +
+        '<code>AES</code>' +
+        '</a>';
+    },
+    salt() {
+      return '<a href="https://en.wikipedia.org/wiki/Salt_(cryptography)" target="_blank">' +
+        'salt' +
+        '</a>';
+    },
+    HMAC() {
+      return '<a href="https://en.wikipedia.org/wiki/HMAC" target="_blank">' +
+        '<code>HMAC-SHA256</code>' +
         '</a>';
     }
   }
