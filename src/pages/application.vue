@@ -264,11 +264,18 @@
 
     <div class="d-flex flex-column flex-md-row application-buttons">
       <b-button
-        v-if="password"
+        v-if="password && !shown"
         variant="primary"
         @click="copyPassword">
         {{ copied ? $root.$t('button.copy.complete') :
            $root.$t('button.copy.ready') }}
+      </b-button>
+      <b-button
+        v-if="password"
+        :variant="shown ? 'primary' : 'outline-danger'"
+        @click="showPassword">
+        {{ shown ? $root.$t('button.show.shown') :
+           $root.$t('button.show.hidden') }}
       </b-button>
       <b-button
         v-else
@@ -286,6 +293,12 @@
         {{ $root.$t('button.back') }}
       </b-button>
     </div>
+
+    <h3
+      v-if="shown"
+      class="mb-2" >
+      {{ this.password }}
+    </h3>
 
     <computing
       :active="!!computing"
@@ -539,6 +552,7 @@ export default {
 
       showDetails: isNew,
       copied: false,
+      shown: false,
       saved: false,
       computing: false,
       error: null,
@@ -689,8 +703,8 @@ export default {
 
     hasPreset() {
       const preset = this.getPreset(this.app.domain);
-      if (preset.domain && preset.domain !== this.app.domain) {
-        return true;
+      if (!preset.domain || preset.domain !== this.app.domain) {
+        return false;
       }
 
       const options = preset.options;
@@ -772,6 +786,7 @@ export default {
       // Reset password
       this.password = '';
       this.copied = false;
+      this.shown = false;
       this.saved = false;
 
       if (this.presetDomain && this.app.domain !== this.presetDomain) {
@@ -787,6 +802,10 @@ export default {
       setTimeout(() => this.copied = false, 2500);
 
       this.$copyText(this.password);
+    },
+    showPassword() {
+      this.shown = !this.shown;
+      setTimeout(() => this.shown = false, 20000);
     },
     onSave() {
       const app = Object.assign(this.app, { changedAt: Date.now() });
