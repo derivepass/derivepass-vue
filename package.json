@@ -39,7 +39,7 @@
     "@vue/cli-plugin-eslint": "^3.5.1",
     "@vue/cli-plugin-pwa": "^3.5.1",
     "@vue/cli-plugin-unit-mocha": "^3.5.1",
-    "@vue/cli-service": "^3.5.3",
+    "@vue/cli-service": "^5.0.8",
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
     "bn.js": "^4.11.8",
